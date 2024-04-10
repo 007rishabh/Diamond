@@ -1,12 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
+import 'react-native-gesture-handler'
 import { StyleSheet, Text, View } from 'react-native';
+import StackNavigation from './Navigation/StackNavigation';
 
+import BottomNavigation from './Navigation/BottomNavigation';
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <StackNavigation/>
+   
   );
 }
 
