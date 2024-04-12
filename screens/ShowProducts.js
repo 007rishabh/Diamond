@@ -1,25 +1,12 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { FontAwesome } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import {useNavigation} from '@react-navigation/native'
-const Product = ({ route }) => {
-    const navigation= useNavigation()
+const ShowProducts = ({ route }) => {
     const { product } = route.params;
     const { name, price, category, subcategory } = product;
     return (
         <View style={{ marginTop: 20 }}>
-        <View style={{flexDirection:'row'}}>
-            <Text style={{ padding: 10, fontSize: 24, fontWeight: 500 }}>Product</Text>
-            <TouchableOpacity style={{marginLeft:'55%',marginTop:20}} 
-            onPress={navigation.navigate('AddDiamond')}
-            >
-            <FontAwesome name="edit" size={24} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity style={{marginTop:20,marginLeft:10}}>
-            <AntDesign name="delete" size={24} color="black" />
-            </TouchableOpacity>
-        </View>
+            <Text style={{ padding: 10, fontSize: 24, fontWeight: 500, marginLeft: '35%' }}>Product</Text>
             <View style={{ alignItems: 'center', marginTop: 50 ,flexDirection:'row'}}>
                 <View style={{width:'50%'}}>
                     <FontAwesome name="diamond" size={40} color="black" style={{marginLeft:'30%'}} />
@@ -49,7 +36,7 @@ const Product = ({ route }) => {
     )
 }
 
-export default Product
+export default ShowProducts
 
 const styles = StyleSheet.create({
     submitBtn: {

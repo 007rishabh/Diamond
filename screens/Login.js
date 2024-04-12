@@ -1,23 +1,76 @@
-import { StyleSheet, Text, View,TextInput ,TouchableOpacity} from 'react-native'
-import React from 'react'
-import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, View,TextInput ,TouchableOpacity,Alert} from 'react-native'
+import React, { useState } from 'react'
 
-const Login = () => {
-    const navigation=useNavigation()
+import {baseurl} from '../../Front/Constant'
+// import Home from './Home'
+// import { useState } from 'react'
+
+const Login = ({navigation}) => {
+
+
+  const  [password, setPassword] = useState('admin')
+  const  [email, setEmail] = useState('admin@gmail.com')
+
+  const add = async () => {
+
+      const url = `${baseurl}/auth/signin`;
+    const res = await fetch(url, {
+        headers: {
+            "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({email, password }),
+    });
+    const result = await res.json()
+    console.log(res, result)
+
+    Alert.alert("Alert Title", result.message, [
+        {
+            text: "OK", onPress: () => {
+
+                if (res.status === 200) {
+                  if(true){
+                  // if(result.data.role === "admin"){
+                    navigation.navigate('Admin')
+
+                  }
+                  else{
+                    navigation.navigate('HomeScreen')
+                  }
+                }
+                else {
+                    setPassword('')
+                }
+            }
+        }
+    ]);
+
+
+};
+
+    
   return (
     <View style={styles.container}>
-      <Text style={styles.pageText}>Login</Text>
+      <Text style={styles.pageText}>Login User/Admin</Text>
       <View style={{marginHorizontal:20}}>
         <Text style={{fontSize:20,fontWeight:700}}>Email</Text>
-        <TextInput style={styles.textInput}/>
+        <TextInput 
+        value={email} 
+        style={styles.textInput}
+        onChangeText={(email)=>setEmail(email)}
+        />
         <Text style={{fontSize:20,fontWeight:700}}>Password</Text>
-        <TextInput style={styles.textInput}/>
+        <TextInput style={styles.textInput}
+        value={password} 
+        onChangeText={(password)=>setPassword(password)}
+        />
       </View>
       <TouchableOpacity
-        style={styles.submitBtn } onPress={()=> navigation.navigate('HomeScreen')} >
+        style={styles.submitBtn } onPress={add} >
         <Text style={{ marginLeft: 160, fontSize: 20 }} >Login</Text>
       </TouchableOpacity>
       <Text style={styles.linkText}>Not A User Please? <Text onPress={() => navigation.navigate('Register')} style={styles.link}>REGISTER</Text></Text>
+      
 
     </View>
   )

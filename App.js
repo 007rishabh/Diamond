@@ -1,12 +1,14 @@
 import 'react-native-gesture-handler'
 import { StyleSheet, Text, View } from 'react-native';
 import StackNavigation from './Navigation/StackNavigation';
-
-import BottomNavigation from './Navigation/BottomNavigation';
+import AddDiamond from './screens/AddDiamond';
+import Admin from './screens/Admin';
 export default function App() {
   return (
     <StackNavigation/>
-   
+    // <AddDiamond/>
+    // <Admin/>
+    
   );
 }
 

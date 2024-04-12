@@ -1,79 +1,56 @@
 import { StyleSheet, Text, View ,ScrollView, TouchableOpacity} from 'react-native'
-import React from 'react'
-// import { useNavigation } from '@react-navigation/native';
+import React ,{Fragment, useEffect} from 'react'
+import Product from './Product'
+import { useNavigation } from '@react-navigation/native';
+import {baseurl} from '../../Front/Constant'
 const Trade = () => {
-    // const navigation=useNavigation()
+    const navigation=useNavigation()
+    const  [products, setProducts] = React.useState([])
+    useEffect(() => {
+        const getDiamonds = async () => {
+            // const url = "http://192.168.1.46:8080/api/diamonds";
+            const url = `${baseurl}/diamonds`;
+            const res = await fetch(url, {
+                method: "GET",
+            });
+            const result = await res.json()
+            if (res.status===200){
+                const data =result.reduce((acc,item)=>{
+                    if (!acc[item.category]){
+                        acc[item.category]=[]
+                    }
+                    acc[item.category]=[...acc[item.category],item];
+                    return acc
+                },{})
+                console.log(data)
+                setProducts(data)
+            }
+        }
+        getDiamonds()
+    }, [])
+    
+   
   return (
     <>
     <View>
-    <Text style={styles.headingText}>12 Carat</Text>
-    <ScrollView horizontal={true} style={styles.container}>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]} >
-            <Text>Diamond 1</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]}>
-            <Text>Diamond 2</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]}>
-            <Text>Diamond 3</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]}>
-            <Text>Diamond 4</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]}>
-            <Text>Diamond 5</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]}>
-            <Text>Diamond 6</Text>
-        </TouchableOpacity>
-    </ScrollView>
+    {
+        Object.entries(products).map(([key,value])=>(
+            <Fragment key={key}>
+            <Text style={styles.headingText}>{`${key} carat`}</Text>
+            <ScrollView horizontal={true} style={styles.container}>
+            {
+                value.map((product)=>(
+                    <TouchableOpacity key={product.id} style={[styles.card , styles.cardElevated]} onPress={()=> navigation.navigate('Product',{product})}>
+                    <Text>{product.name}</Text>
+                    </TouchableOpacity>
+                ))
+            }
+            </ScrollView>
+            </Fragment>
+        ))
+    }
   </View>
-    <View>
-    <Text style={styles.headingText}>14 Carat</Text>
-    <ScrollView horizontal={true} style={styles.container}>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]}>
-            <Text>Diamond 1</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]}>
-            <Text>Diamond 2</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]}>
-            <Text>Diamond 3</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]}>
-            <Text>Diamond 4</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]}>
-            <Text>Diamond 5</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]}>
-            <Text>Diamond 6</Text>
-        </TouchableOpacity>
-    </ScrollView>
-  </View>
-    <View>
-    <Text style={styles.headingText}>16 Carat</Text>
-    <ScrollView horizontal={true} style={styles.container}>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]}>
-            <Text>Diamond 1</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]}>
-            <Text>Diamond 2</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]}>
-            <Text>Diamond 3</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]}>
-            <Text>Diamond 4</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]}>
-            <Text>Diamond 5</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.card , styles.cardElevated]}>
-            <Text>Diamond 6</Text>
-        </TouchableOpacity>
-    </ScrollView>
-  </View>
+  
   </>
   )
 }
