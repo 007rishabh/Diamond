@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Button, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useEffect } from 'react'
-import { baseurl } from '../../Front/Constant'
+import {baseurl} from '../Constant'
 import {useNavigation,useIsFocused} from '@react-navigation/native'
 const ShowNews = () => {
     const navigation =useNavigation()
@@ -31,10 +31,10 @@ const deleteNews = async (id)=>{
 
 }
     return (
-        <View>
+        <ScrollView style={{backgroundColor:'#74b9ff',flex:1}}>
             {
                 news.map((item) => (
-
+                    <ScrollView >
                     <View key={item.id} style={{ height: 150, backgroundColor: '#b2bec3', borderRadius: 8, gap: 10, margin: 5, flexDirection: 'row' }}>
                         <View style={{ flex: 1 }}>
                             <Text>Image</Text>
@@ -54,9 +54,10 @@ const deleteNews = async (id)=>{
                             </TouchableOpacity>
                         </View>
                     </View>
+                    </ScrollView>
                 )
                 )}
-        </View>
+        </ScrollView>
     )
 }
 

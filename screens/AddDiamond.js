@@ -7,7 +7,8 @@ import {
     Alert,
 } from "react-native";
 import React, { useState } from "react";
-import {baseurl} from '../../Front/Constant'
+import {baseurl} from '../Constant'
+import ImagePickerExample from "./Image";
 const AddDiamond = () => {
     const [name, setName] = useState();
     const [category, setCategory] = useState();
@@ -69,6 +70,10 @@ const AddDiamond = () => {
                     style={styles.textInput}
                     onChangeText={(value) => setPrice(value)}
                 />
+                <Text style={{ fontSize: 20, fontWeight: 700 }}>Image</Text>
+                <View style={{padding:10}}>
+                <ImagePickerExample />
+                </View>
             </View>
             <TouchableOpacity style={styles.submitBtn} onPress={add}>
                 <Text style={{ marginLeft: 160, fontSize: 20 }}>Add</Text>
@@ -83,13 +88,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
-        // backgroundColor:'#FFF2E1'
+        backgroundColor:'#74b9ff'
     },
     pageText: {
         fontSize: 40,
         fontWeight: "bold",
         textAlign: "center",
-        color: "#31363F",
+        
         marginBottom: 20,
     },
     textInput: {
@@ -102,7 +107,7 @@ const styles = StyleSheet.create({
         color: "grey",
     },
     submitBtn: {
-        backgroundColor: "#6AD4DD",
+        backgroundColor: "#00b894",
         height: 50,
         marginHorizontal: 25,
         borderRadius: 80,

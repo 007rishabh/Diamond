@@ -3,7 +3,7 @@ import React from 'react'
 
 const History = () => {
   return (
-    <View>
+    <View style={{backgroundColor:"#74b9ff",height:'100%'}}>
       <Text>History</Text>
     </View>
   )

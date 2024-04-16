@@ -29,17 +29,17 @@ const BottomNavigation = () => {
           else if (rn ==='History'){
             iconName = focused ? 'calendar-clear' : 'calendar-clear-outline'
           }
-          return <Ionicons name={iconName} size={30} color={'black'}/>
+          return <Ionicons name={iconName} size={30} color={'white'}/>
       },
-      tabBarStyle:{backgroundColor:'#0984e3',position:'absolute'},
+      tabBarStyle:{backgroundColor:'black',position:'absolute'},
       tabBarShowLabel: false ,
       tabBarHideOnKeyboard:true,
     })}>
-        <Tab.Screen name={"Home"} component={Home}/> 
-        <Tab.Screen name={"Trade"} component={Trade}/> 
-        <Tab.Screen name={"News"} component={News}/> 
-        <Tab.Screen name={"History"} component={History}/> 
-        <Tab.Screen name={"Setting"} component={Setting}/> 
+        <Tab.Screen name={"Home"} component={Home} options={{headerShown:false}}  /> 
+        <Tab.Screen name={"Trade"} component={Trade} options={{headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/> 
+        <Tab.Screen name={"News"} component={News} options={{headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/> 
+        <Tab.Screen name={"History"} component={History} options={{headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/> 
+        <Tab.Screen name={"Setting"} component={Setting} options={{headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/> 
     </Tab.Navigator>
    
   )

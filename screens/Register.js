@@ -2,7 +2,7 @@ import { StyleSheet, Text, View,TextInput ,TouchableOpacity, Alert} from 'react-
 import React, { useState } from 'react'
 // import { useNavigation } from '@react-navigation/native';
 // import Home from './Home';
-import {baseurl} from '../../Front/Constant'
+import {baseurl} from '../Constant'
 const Register = ({navigation}) => {
     // const navigation = useNavigation()
     const  [username, setName] = useState()
@@ -22,7 +22,7 @@ const Register = ({navigation}) => {
               "Content-Type": "application/json",
           },
           method: "POST",
-          body: JSON.stringify({ username,email, password }),
+          body: JSON.stringify({ username,email, password ,walletAmount:0}),
       });
       const result = await res.json()
       console.log(res, result)
@@ -85,13 +85,12 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         justifyContent:'center',
-        // backgroundColor:'#FFF2E1'
+        backgroundColor:'#36A7E6'
     },
     pageText:{
         fontSize:40,
         fontWeight:'bold',
         textAlign:"center",
-        color:'#31363F',
         marginBottom:20
     },
     textInput:{
@@ -104,7 +103,7 @@ const styles = StyleSheet.create({
         color:'grey'
     },
     submitBtn: {
-        backgroundColor:'#6AD4DD',
+        backgroundColor:'#00b894',
        height: 50,
        marginHorizontal: 25,
        borderRadius: 80,

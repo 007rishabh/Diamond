@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native'
 import React, { useEffect } from 'react'
-import { baseurl } from '../../Front/Constant'
+import {baseurl} from '../Constant'
 import {useNavigation,useIsFocused} from '@react-navigation/native'
 const ShowAdmins = () => {
     const navigation =useNavigation()

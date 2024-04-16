@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native'
 import React, { useEffect } from 'react'
-import {baseurl} from '../../Front/Constant'
+import {baseurl} from '../Constant'
 
 const New = () => {
   const [news, setNews] = React.useState([])
@@ -21,11 +21,11 @@ const New = () => {
   }, [])
 
   return (
-    <View>
+    <View style={{backgroundColor:"#74b9ff",height:'100%'}}>
       {
         news.map((item)=>(
 
-          <TouchableOpacity key={item.id} style ={{height:150,backgroundColor:'#b2bec3',borderRadius:8,gap:10,margin:5,flexDirection:'row'}}>
+          <TouchableOpacity key={item.id} style ={{height:150,backgroundColor:'#dfe6e9',borderRadius:8,gap:10,margin:5,flexDirection:'row'}}>
             <View style={{flex:1}}>
               <Text>Image</Text>
             </View>

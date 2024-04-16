@@ -7,9 +7,10 @@ import {
     Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import {baseurl} from '../../Front/Constant'
+import {baseurl} from '../Constant'
+import ImagePickerExample from "./Image";
 const AddNews = ({route,navigation}) => {
-    const {id,newstitle,newscontent}=route.params;
+    const {id,newstitle,newscontent}=route.params || {id:null,newstitle:'',newscontent:''};
     const [title, setTitle] = useState();
     const [content, setContent] = useState();
     useEffect(()=>{
@@ -35,7 +36,7 @@ const AddNews = ({route,navigation}) => {
             {
                 text: "OK", onPress: () => {
                     if (res.status === 201) {
-                        // navigation.navigate('Home')
+                        navigation.navigate('ShowNews')
                     }
                     
                 }
@@ -44,7 +45,6 @@ const AddNews = ({route,navigation}) => {
 
     };
     const edit = async () => {
-        // const url = "http://192.168.1.49:8080/api/news/";
         const url = `${baseurl}/news/${id}`;
         const res = await fetch(url, {
             headers: {
@@ -94,7 +94,10 @@ const AddNews = ({route,navigation}) => {
                     style={styles.textInput}
                     onChangeText={(value) => setContent(value)}
                 />
-                
+                <Text style={{ fontSize: 20, fontWeight: 700 }}>Image</Text>
+                <View style={{padding:10}}>
+                <ImagePickerExample />
+                </View>
             </View>
             <TouchableOpacity style={styles.submitBtn} onPress={submitHandler}>
                 <Text style={{ marginLeft: 160, fontSize: 20 }}>{id ? 'Edit' : 'Add'}</Text>
@@ -109,7 +112,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
-        // backgroundColor:'#FFF2E1'
+        backgroundColor:'#74b9ff'
     },
     pageText: {
         fontSize: 40,
@@ -128,7 +131,7 @@ const styles = StyleSheet.create({
         color: "grey",
     },
     submitBtn: {
-        backgroundColor: "#6AD4DD",
+        backgroundColor: "#00b894",
         height: 50,
         marginHorizontal: 25,
         borderRadius: 80,

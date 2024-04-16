@@ -1,70 +1,149 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
-import { FontAwesome } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import {useNavigation} from '@react-navigation/native'
-const Product = ({ route }) => {
-    const navigation= useNavigation()
-    const { product } = route.params;
-    const { name, price, category, subcategory } = product;
-    return (
-        <View style={{ marginTop: 20 }}>
-        <View style={{flexDirection:'row'}}>
-            <Text style={{ padding: 10, fontSize: 24, fontWeight: 500 }}>Product</Text>
-            <TouchableOpacity style={{marginLeft:'55%',marginTop:20}} 
-            onPress={navigation.navigate('AddDiamond')}
-            >
-            <FontAwesome name="edit" size={24} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity style={{marginTop:20,marginLeft:10}}>
-            <AntDesign name="delete" size={24} color="black" />
-            </TouchableOpacity>
-        </View>
-            <View style={{ alignItems: 'center', marginTop: 50 ,flexDirection:'row'}}>
-                <View style={{width:'50%'}}>
-                    <FontAwesome name="diamond" size={40} color="black" style={{marginLeft:'30%'}} />
-                </View>
-                <View style={{width:'50%'}}>
-                <Text style={{ fontSize: 20, fontWeight: 400, marginTop: 20, marginLeft:'30%' }}>{name}</Text>
-                <Text style={{ fontSize: 20, fontWeight: 400, marginTop: 20 ,marginLeft:'30%'}}>{price}</Text>
-                <Text style={{ fontSize: 20, fontWeight: 400, marginTop: 20 ,marginLeft:'30%' }}>{category}</Text>
-                <Text style={{ fontSize: 20, fontWeight: 400, marginTop: 20 ,marginLeft:'30%' }}>{subcategory}</Text>
-                </View>
-                </View>
-            <TouchableOpacity
-                style={[styles.submitBtn, styles.green]} >
-                <Text style={{ marginLeft: 160, fontSize: 20 }} >Buy</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={[styles.submitBtn, styles.red]} >
-                <Text style={{ marginLeft: 160, fontSize: 20 }} >Sell</Text>
-            </TouchableOpacity>
-            <View style={{ marginLeft: 70 }}>
-                <FontAwesome name="bar-chart-o" size={200} color="black" />
-            </View>
-            <View style={{ marginLeft: 70 }}>
-                <FontAwesome name="bar-chart-o" size={200} color="black" />
-            </View>
-        </View>
-    )
-}
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  SafeAreaView,
+  ToastAndroid
+} from "react-native";
+import React, { useState } from "react";
+import { FontAwesome } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { baseurl } from "../Constant";
 
-export default Product
+const Product = ({ route }) => {
+  const navigation = useNavigation();
+  const { product } = route.params;
+  const { id, name, price, category, subcategory } = product;
+  const [qty, setQty] = useState();
+  const buyDiamonds = async () => {
+    // const url = "http://192.168.1.46:8080/api/diamonds";
+    const userId = await AsyncStorage.getItem("userId");
+    // console.log(JSON.stringify({
+    //   userId,
+    //   productId: product.id,
+    //   quantity: qty,
+    //   type: "buy",
+    //   totalPrice: product.price,
+    // }))
+    const url = `${baseurl}/order`;
+    const res = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({
+        userId,
+        productId: product.id,
+        quantity: qty,
+        type: "buy",
+        totalPrice: product.price * qty,
+      }),
+    });
+    console.log(res)
+    const result = await res.json();
+    ToastAndroid.show(result.message, ToastAndroid.SHORT);
+  };
+
+  return (
+    <>
+      <SafeAreaView style={{ backgroundColor: "#74b9ff", flex: 1, padding: 20 }}>
+        <View style={{ borderColor: 'black' }}>
+          <View style={{ padding: 10 }}>
+            <Image
+              source={require("../assets/diamond.jpg")}
+              style={{ height: 240, width: "100%" }}
+            />
+          </View>
+          <View style={{borderWidth:2,padding:5,borderRadius:15,backgroundColor:'#1e3799'}}>
+            <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+              <Text style={{ fontSize: 20, fontWeight: "500" }}>Blue Diamond</Text>
+              <Text style={{ fontSize: 20, fontWeight: "500" }}>Per Price</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-around",
+                // marginTop: 10,
+                padding: 10
+              }}
+            >
+              <TextInput
+                style={{
+                  backgroundColor: "#dfe6e9",
+                  height: 40,
+                  width: 60,
+                  borderRadius: 8,
+                  padding: 10,
+                }}
+                placeholder="Qty"
+                value={qty}
+                onChangeText={(text) => setQty(text)}
+              />
+              <Text style={{ fontSize: 20, fontWeight: "500" }}>New</Text>
+              <Text style={{ fontSize: 20, fontWeight: "500" }}>
+                {product.price}
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-around",
+                // marginTop: 10,
+                padding: 10
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  height: 40,
+                  width: 60,
+                  backgroundColor: "#81ecec",
+                  justifyContent: "center",
+                  borderRadius: 8,
+                }}
+                onPress={buyDiamonds}
+              >
+                <Text style={{ textAlign: "center" }}>Buy</Text>
+              </TouchableOpacity>
+              <Text style={{ fontSize: 20, fontWeight: "500" }}>Old</Text>
+              <Text style={{ fontSize: 20, fontWeight: "500", color: 'grey' }}>
+                {product.price}
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View style={{}}>
+          <Image
+            source={require("../assets/trade1.png")}
+            style={{ height: 240, width: 370, marginTop: 90 }}
+          />
+
+        </View>
+      </SafeAreaView>
+    </>
+  );
+};
+
+export default Product;
 
 const styles = StyleSheet.create({
-    submitBtn: {
-        backgroundColor: '#6AD4DD',
-        height: 50,
-        marginHorizontal: 25,
-        borderRadius: 80,
-        justifyContent: 'center',
-        marginBottom: 20,
-        marginTop: 20
-    },
-    green: {
-        backgroundColor: '#55efc4'
-    },
-    red: {
-        backgroundColor: '#ff7675'
-    }
-})
+  submitBtn: {
+    backgroundColor: "#6AD4DD",
+    height: 50,
+    marginHorizontal: 25,
+    borderRadius: 80,
+    justifyContent: "center",
+    marginBottom: 20,
+    marginTop: 20,
+  },
+  green: {
+    backgroundColor: "#55efc4",
+  },
+  red: {
+    backgroundColor: "#ff7675",
+  },
+});
