@@ -35,7 +35,7 @@ const deleteNews = async (id)=>{
             {
                 news.map((item) => (
                     <ScrollView >
-                    <View key={item.id} style={{ height: 150, backgroundColor: '#b2bec3', borderRadius: 8, gap: 10, margin: 5, flexDirection: 'row' }}>
+                    <View key={item.id} style={{ height: 200, backgroundColor: '#b2bec3', borderRadius: 8, gap: 10, margin: 5, flexDirection: 'row' }}>
                         <View style={{ flex: 1 }}>
                             <Text>Image</Text>
                         </View>
@@ -47,10 +47,10 @@ const deleteNews = async (id)=>{
                         </View>
                         <View style={{flexDirection:'row'}}>
                             <TouchableOpacity style={{ borderRadius: 8 }} onPress={()=>navigation.navigate('AddNews',{id:item.id,newstitle:item.title,newscontent:item.content})}>
-                                <Text style={{ padding: 10, backgroundColor: "blue", fontWeight: "900", marginTop: 100, marginRight: 10 }}>Edit</Text>
+                                <Text style={{ padding: 10, backgroundColor: "#55efc4", fontWeight: "900", marginTop: 100, marginRight: 10 ,borderRadius:8}}>Edit</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{ borderRadius: 8 }} onPress={()=>deleteNews(item.id)}>
-                                <Text style={{ padding: 10, backgroundColor: "blue", fontWeight: "900", marginTop: 100, marginRight: 10 }}>Delete</Text>
+                                <Text style={{ padding: 10, backgroundColor: "#fab1a0", fontWeight: "900", marginTop: 100, marginRight: 10 ,borderRadius:8}}>Delete</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

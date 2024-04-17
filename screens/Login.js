@@ -46,7 +46,7 @@ const Login = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../assets/ddd.png")}
+        source={require("../assets/new.png")}
         style={{
           width: 150,
           height: 150,
@@ -57,14 +57,14 @@ const Login = ({ navigation }) => {
       />
 
       <Text style={styles.pageText}>Login User/Admin</Text>
-      <View style={{ marginHorizontal: 20 }}>
-        <Text style={{ fontSize: 25, fontWeight: 700 }}>Email</Text>
+      <View style={{ marginHorizontal: 20 ,marginVertical:20}}>
+        <Text style={{ fontSize: 20, fontWeight: 700 }}>Email</Text>
         <TextInput
           value={email}
           style={styles.textInput}
           onChangeText={(email) => setEmail(email)}
         />
-        <Text style={{ fontSize: 25, fontWeight: 700 }}>Password</Text>
+        <Text style={{ fontSize: 20, fontWeight: 700 }}>Password</Text>
         <TextInput
           style={styles.textInput}
           value={password}
@@ -72,7 +72,7 @@ const Login = ({ navigation }) => {
         />
       </View>
       <TouchableOpacity style={styles.submitBtn} onPress={add}>
-        <Text style={{ marginLeft: 150, fontSize: 20 }}>Login</Text>
+        <Text style={{ textAlign:"center",fontSize:20 }}>Login</Text>
       </TouchableOpacity>
       <Text style={styles.linkText}>
         Not A User Please?{" "}
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#36A7E6",
   },
   pageText: {
-    fontSize: 40,
+    fontSize: 35,
     fontWeight: "bold",
     textAlign: "center",
     color: "black",

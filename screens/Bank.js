@@ -27,7 +27,7 @@ const Bank = () => {
       <Text style={{fontSize:20,fontWeight:'600'}}>IFSC code</Text>
       <TextInput style={{backgroundColor:'#fff',borderRadius:10,height:40}} placeholder="Enter IFSC COde" />
       <TouchableOpacity style={styles.submitBtn}>
-        <Text style={{}}> Submit</Text>
+        <Text style={{textAlign:'center'}}> Submit</Text>
       </TouchableOpacity>
     </View>
   )

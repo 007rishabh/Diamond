@@ -31,7 +31,7 @@ const StackNavigation = () => {
       <Stack.Screen name="Login" component={Login} options={{headerShown:false}}/>
       <Stack.Screen name="HomeScreen" component={BottomNavigation} options={{headerShown:false}}/>
       <Stack.Screen name ="Product" component={Product} options={{title:' Product',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>
-      <Stack.Screen name ="Admin" component={Admin} options={{headerShown:false}}/>
+      <Stack.Screen name ="Admin" component={Admin} options={{title:'Admin',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'},headerBackVisible:false}}/>
       <Stack.Screen name ="User" component={User} options={{headerShown:false}}/>
       <Stack.Screen name ="AddDiamond" component={AddDiamond} options={{headerShown:false}}/>
       <Stack.Screen name ="AddNews" component={AddNews} options={{title:' News',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>

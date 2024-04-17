@@ -7,8 +7,8 @@ import { useNavigation } from '@react-navigation/native';
 export default function Admin() {
   const navigation = useNavigation()
   return (
-    <SafeAreaView style={{gap:10,backgroundColor:'#36A7E6', height:'100%'}}>
-    <Text style={{fontSize:20,padding:10,fontWeight:700}}>Admin</Text>
+    <View style={{gap:10,backgroundColor:'#36A7E6', height:'100%'}}>
+    <View style={{marginTop:10,padding:5,gap:8}}>
     <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} >
     <FontAwesome5 name="user-alt" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>
       <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}
@@ -29,14 +29,7 @@ export default function Admin() {
         onPress={()=> navigation.navigate("AddNews")}
         >ADD News</Text>
     </TouchableOpacity>
-    <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} >
-    <FontAwesome name="history" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>      
-    <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>History</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} >
-    <Ionicons name="wallet" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>      
-    <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>ADD Wallet</Text>
-    </TouchableOpacity>
+    
     <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}}
     onPress={()=> navigation.navigate('ShowNews')}
     >
@@ -72,7 +65,8 @@ export default function Admin() {
     <Ionicons name="log-out" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>      
     <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}} >Logout</Text>
     </TouchableOpacity>
-    </SafeAreaView>
+    </View>
+    </View>
   )
 }
 

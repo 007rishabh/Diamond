@@ -53,7 +53,7 @@ const Pending = () => {
             style={{
               flexDirection: "row",
               justifyContent:'space-between',
-              height: 270,
+              height: 350,
               backgroundColor: "#74b9ff",
               borderRadius: 10,
               padding:10,

@@ -5,10 +5,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { baseurl } from "../Constant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
-import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from '@expo/vector-icons';
 const Home = () => {
-  const [amount, setAmount] = React.useState(0);
   const isfocused = useIsFocused();
 
   const [currentamount, setCurrentAmount] = React.useState(0);
@@ -16,28 +14,10 @@ const Home = () => {
     const userId = await AsyncStorage.getItem("userId");
     const res = await fetch(`${baseurl}/portfolio/${userId}`);
     const result = await res.json();
+    console.log(result)
     setCurrentAmount(result.walletAmount);
   };
-
-  
-  const addAmount = async () => {
-    const userId = await AsyncStorage.getItem("userId");
-    console.log(userId, amount);
-    const res = await fetch(`${baseurl}/portfolio/addMoney/${userId}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "PUT",
-      body: JSON.stringify({
-        walletAmount: amount,
-      }),
-    });
-    const result = await res.json();
-    ToastAndroid.show(result.message ?? "wallet updated", ToastAndroid.SHORT);
-    getPortfolio();
-  };
-
-  useEffect(() => {
+ useEffect(() => {
     getPortfolio();
   }, [isfocused]);
   const Press =()=>{
@@ -58,16 +38,16 @@ const Home = () => {
             flexDirection: "row",
             gap: 5,
             backgroundColor: "black",
-            borderRadius: 5,
+            justifyContent:'space-evenly'
           }}
         >
           <View style={{ width: "20%" }}>
             <Image
-              source={require("../assets/ddd.png")}
-              style={{ height: 50, width: 50, borderRadius: 2 }}
+              source={require("../assets/new.png")}
+              style={{ height: 50, width: 50, borderRadius: 50}}
             />
           </View>
-          <View style={{ width: "50%" }}>
+          <View style={{ width: "65%" }}>
             <Text
               style={{
                 fontSize: 30,
@@ -79,7 +59,7 @@ const Home = () => {
               Diamond Mall
             </Text>
           </View>
-          <TouchableOpacity style={{marginLeft:80,marginTop:10}} onPress={Press}>
+          <TouchableOpacity style={{marginTop:10}} onPress={Press}>
           <AntDesign name="wallet" size={24} color="white" />
           </TouchableOpacity>
           
@@ -99,28 +79,28 @@ const Home = () => {
           <View style={{ padding: 10, flex: 1 }}>
             <Text style={{ fontSize: 24, fontWeight: 500 }}>Top Gainer</Text>
 
-            <View style={{backgroundColor:'#b8e994', padding:8,borderRadius:15,margin:5}}>
+            <View style={{backgroundColor:'#fff', padding:8,borderRadius:15,margin:5}}>
             <Text style={{fontSize:20}}>Rishabh</Text>
             <Text>RUBY</Text>
             <Text style={{color:'green',fontSize:20}}>+1000</Text>
             
             </View>
 
-            <View style={{backgroundColor:'#b8e994', padding:8,borderRadius:15,margin:5}}>
+            <View style={{backgroundColor:'#fff', padding:8,borderRadius:15,margin:5}}>
             <Text style={{fontSize:20}}>Lucky</Text>
             <Text>RUBY</Text>
             <Text style={{color:'green',fontSize:20}}>+789</Text>
             
             </View>
 
-            <View style={{backgroundColor:'#b8e994', padding:8,borderRadius:15,margin:5}}>
+            <View style={{backgroundColor:'#fff', padding:8,borderRadius:15,margin:5}}>
             <Text style={{fontSize:20}}>Harsh</Text>
             <Text>RUBY</Text>
             <Text style={{color:'green',fontSize:20}}>+180</Text>
             
             </View>
 
-            <View style={{backgroundColor:'#b8e994', padding:8,borderRadius:15,margin:5}}>
+            <View style={{backgroundColor:'#fff', padding:8,borderRadius:15,margin:5}}>
             <Text style={{fontSize:20}}>Deepanshu</Text>
             <Text>RUBY</Text>
             <Text style={{color:'green',fontSize:20}}>+10</Text>
@@ -130,28 +110,27 @@ const Home = () => {
           </View>
           <View style={{ padding: 10, flex: 1 }}>
             <Text style={{ fontSize: 24, fontWeight: 500 }}>Top Losser</Text>
-            <View style={{backgroundColor:'#e77f67', padding:8,borderRadius:15,margin:5}}>
+            <View style={{backgroundColor:'#fff', padding:8,borderRadius:15,margin:5}}>
             <Text style={{fontSize:20}}>Sparsh</Text>
             <Text>Koniroor</Text>
             <Text style={{color:'red',fontSize:20}}>-1000</Text>
             
             </View>
 
-            <View style={{backgroundColor:'#e77f67', padding:8,borderRadius:15,margin:5}}>
+            <View style={{backgroundColor:'#fff', padding:8,borderRadius:15,margin:5}}>
             <Text style={{fontSize:20}}>Amit</Text>
             <Text>Koniroor</Text>
             <Text style={{color:'red',fontSize:20}}>-800</Text>
             
             </View>
 
-            <View style={{backgroundColor:'#e77f67', padding:8,borderRadius:15,margin:5}}>
+            <View style={{backgroundColor:'#fff', padding:8,borderRadius:15,margin:5}}>
             <Text style={{fontSize:20}}>Neraj</Text>
             <Text>Koniroor</Text>
             <Text style={{color:'red',fontSize:20}}>-450</Text>
-            
             </View>
 
-            <View style={{backgroundColor:'#e77f67', padding:8,borderRadius:15,margin:5}}>
+            <View style={{backgroundColor:'#fff', padding:8,borderRadius:15,margin:5}}>
             <Text style={{fontSize:20}}>Sajal</Text>
             <Text>Koniroor</Text>
             <Text style={{color:'red',fontSize:20}}>-100</Text>

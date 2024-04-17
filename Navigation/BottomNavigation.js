@@ -32,7 +32,8 @@ const BottomNavigation = () => {
           return <Ionicons name={iconName} size={30} color={'white'}/>
       },
       tabBarStyle:{backgroundColor:'black',position:'absolute'},
-      tabBarShowLabel: false ,
+      tabBarShowLabel: true ,
+      tabBarLabelStyle:{fontSize:12},
       tabBarHideOnKeyboard:true,
     })}>
         <Tab.Screen name={"Home"} component={Home} options={{headerShown:false}}  /> 

@@ -48,7 +48,7 @@ const deleteUser = async (id)=>{
                         <View style={{flexDirection:'row'}}>
                             
                             <TouchableOpacity style={{ borderRadius: 8 }} onPress={()=>deleteUser(item.id)}>
-                                <Text style={{ padding: 10, backgroundColor: "blue", fontWeight: "900", marginTop: 100, marginRight: 10 }}>Delete</Text>
+                                <Text style={{ padding: 10, backgroundColor: "#fab1a0", fontWeight: "900", marginTop: 100, marginRight: 10 ,borderRadius:8}}>Delete</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

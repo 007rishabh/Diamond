@@ -10,9 +10,11 @@ import {
 import React, { useEffect } from "react";
 import { baseurl } from "../Constant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { Ionicons } from '@expo/vector-icons';
 const UserWallet = () => {
   const [amount, setAmount] = React.useState(0);
+  const [utf, setutf] = React.useState();
+  
   const [currentamount, setCurrentAmount] = React.useState(0);
   const getPortfolio = async () => {
     const userId = await AsyncStorage.getItem("userId");
@@ -22,14 +24,16 @@ const UserWallet = () => {
   };
   const addAmount = async () => {
     const userId = await AsyncStorage.getItem("userId");
-    console.log(userId, amount);
-    const res =await fetch(`${baseurl}/portfolio/addMoney/${userId}`, {
+    console.log(userId, amount,utf);
+    const res =await fetch(`${baseurl}/payment/`, {
       headers: {
         "Content-Type": "application/json",
       },
-      method: "PUT",
+      method: "POST",
       body: JSON.stringify({
-        walletAmount: amount,
+        amount,
+        userId,
+        utf
       }),
     });
     const result = await res.json()
@@ -47,6 +51,7 @@ const UserWallet = () => {
         <Text>Your Available Balance:</Text>
         <Text>{currentamount}</Text>
       </View>
+
       <View
         style={{
           padding: 10,
@@ -56,7 +61,10 @@ const UserWallet = () => {
           backgroundColor: "#74b9ff",
         }}
       >
-        <Text style={{ fontSize: 20, fontWeight: "600" }}>ADD Amount</Text>
+      <View style={{marginHorizontal:60}}>
+      <Ionicons name="qr-code-sharp" size={250} color="black" />
+      </View>
+        <Text style={{ fontSize: 20, fontWeight: "600" }}>Enter Amount</Text>
         <TextInput
           value={amount+''}
           style={{
@@ -66,6 +74,17 @@ const UserWallet = () => {
             padding: 10,
           }}
           onChangeText={(value) => setAmount(value)}
+        />
+        <Text style={{ fontSize: 20, fontWeight: "600" }}>Enter last 4 digits of UTF</Text>
+         <TextInput
+          value={utf}
+          style={{
+            backgroundColor: "#fff",
+            height: 40,
+            borderRadius: 10,
+            padding: 10,
+          }}
+          onChangeText={(value) => setutf(value)}
         />
         <TouchableOpacity style={styles.submitBtn} onPress={addAmount}>
           <Text style={{ textAlign: "center", fontSize: 20 }}> Submit</Text>

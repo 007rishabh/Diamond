@@ -70,9 +70,9 @@ const Portfolio = () => {
         <View
           key={index}
           style={{
-            flexDirection: "row",
+            // flexDirection: "row",
             justifyContent: "space-between",
-            height: 240,
+            height: 300,
             backgroundColor: "#eee",
             borderRadius: 10,
             padding: 10,
@@ -87,7 +87,7 @@ const Portfolio = () => {
               borderRadius: 10,
             }}
           >
-            <Text style={{ textAlign: "center", fontSize: 20 }}>
+            <Text style={{ textAlign: "center", fontSize: 20,fontWeight:'bold' }}>
               {"Diamond name: " + product.name ?? "product name it is"}
             </Text>
             <Text style={{ textAlign: "center", fontSize: 20 }}>
@@ -96,12 +96,8 @@ const Portfolio = () => {
             <Text style={{ textAlign: "center", fontSize: 20 }}>
               {"current price: " + product.buyPrice}
             </Text>
-          </View>
-          <View
-            style={{
-              flex: 1,
-            }}
-          >
+          
+        
             <TouchableOpacity
               style={[styles.submitBtn, styles.red]}
               onPress={() =>
@@ -114,7 +110,7 @@ const Portfolio = () => {
             >
               <Text style={{ textAlign: "center", fontSize: 20 }}>sell</Text>
             </TouchableOpacity>
-          </View>
+            </View>
         </View>
       ))}
     </ScrollView>
@@ -136,8 +132,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 25,
     borderRadius: 80,
     justifyContent: "center",
-    marginBottom: 20,
-    marginTop: 20,
+    alignItems: "center",
     width: 150,
+    marginLeft:110
   },
 });
