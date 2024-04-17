@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Front",
+    "name": "Diamond Mall",
     "slug": "Front",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -38,7 +38,14 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": ["path/to/file.ttf"]
+        }
       ]
     ]
+    
   }
 }

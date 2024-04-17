@@ -1,14 +1,22 @@
 import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
+import { Ionicons ,Entypo} from '@expo/vector-icons';
+import { FontAwesome,Octicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation} from '@react-navigation/native';
 import Login from './Login';
 export default function Setting() {
   const navigation = useNavigation()
   return (
-    <View style={{gap:10,paddingTop:20,paddingHorizontal:10,backgroundColor:"#36A7E6",height:'100%'}}>
+    <>
+    <LinearGradient
+    // Background Linear Gradient
+    colors={['#36A7E6', '#073854']}
+    style={styles.background}
+  />
+    
+    <View style={{gap:10,paddingTop:20,paddingHorizontal:10,height:'100%'}}>
     <Pressable style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} >
     <FontAwesome5 name="user-alt" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>
       <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Edit Profile</Text>
@@ -23,15 +31,15 @@ export default function Setting() {
     onPress={()=>navigation.navigate('Portfolio')}
     >
     <FontAwesome name="star" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>      
-    <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Porducts</Text>
+    <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}> My Porducts</Text>
     </Pressable>
     <Pressable style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} onPress={()=>navigation.navigate('UserWallet')}>
-    <FontAwesome name="star" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>      
-    <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Wallet</Text>
+    <Entypo name="wallet" size={24} color="black"  style={{marginLeft:5,marginTop:5}}/>
+        <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Wallet</Text>
     </Pressable>
     <Pressable style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} >
-    <FontAwesome name="star" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>      
-    <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Reffral</Text>
+    <Octicons name="cross-reference" size={24} color="black"  style={{marginLeft:5,marginTop:5}}/>
+        <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Reffral</Text>
     </Pressable>
     <Pressable style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} >
     <Ionicons name="help-circle-outline" size={24} color="black" style={{marginLeft:5,marginTop:5}} />      
@@ -43,7 +51,16 @@ export default function Setting() {
     </Pressable>
     
     </View>
+    </>
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height:'100%'
+  },
+})

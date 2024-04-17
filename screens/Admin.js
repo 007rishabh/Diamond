@@ -4,10 +4,16 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
 export default function Admin() {
   const navigation = useNavigation()
   return (
-    <View style={{gap:10,backgroundColor:'#36A7E6', height:'100%'}}>
+    <View style={{gap:10, height:'100%'}}>
+    <LinearGradient
+    // Background Linear Gradient
+    colors={['#36A7E6', '#073854']}
+    style={styles.background}
+  />
     <View style={{marginTop:10,padding:5,gap:8}}>
     <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} >
     <FontAwesome5 name="user-alt" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>
@@ -70,4 +76,12 @@ export default function Admin() {
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height:'100%'
+  },
+})

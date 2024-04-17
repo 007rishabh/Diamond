@@ -7,6 +7,7 @@ import {
     Alert,
 } from "react-native";
 import React, { useState } from "react";
+import { LinearGradient } from 'expo-linear-gradient';
 import {baseurl} from '../Constant'
 import ImagePickerExample from "./Image";
 const AddDiamond = () => {
@@ -44,6 +45,11 @@ const AddDiamond = () => {
     };
     return (
         <View style={styles.container}>
+        <LinearGradient
+          // Background Linear Gradient
+          colors={['#36A7E6', '#073854']}
+          style={styles.background}
+        />
             <Text style={styles.pageText}>Add Diamond</Text>
             <View style={{ marginHorizontal: 20 }}>
                 <Text style={{ fontSize: 20, fontWeight: 700 }}>Name</Text>
@@ -88,7 +94,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
-        backgroundColor:'#74b9ff'
+        // backgroundColor:'#74b9ff'
     },
     pageText: {
         fontSize: 40,
@@ -121,4 +127,11 @@ const styles = StyleSheet.create({
     link: {
         color: "red",
     },
+    background: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        height:'100%'
+      },
 });

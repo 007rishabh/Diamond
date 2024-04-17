@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState, useEffect } from "react";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { baseurl } from "../Constant";
@@ -22,8 +23,15 @@ const History = () => {
   }, []);
 
   return (
+    
     <ScrollView>
-      <View style={{ backgroundColor: "#74b9ff", height: "100%", gap: 10,padding:10 }}>
+    <LinearGradient
+          // Background Linear Gradient
+          colors={['#36A7E6', '#073854']}
+          style={styles.background}
+        />
+
+      <View style={{  height: "100%", gap: 10,padding:10 }}>
         {history.map((order, index) => {
           return (
             <View
@@ -62,4 +70,12 @@ const History = () => {
 
 export default History;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height:'100%'
+  },
+});

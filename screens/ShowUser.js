@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native'
 import React, { useEffect } from 'react'
 import {baseurl} from '../Constant'
 import {useNavigation,useIsFocused} from '@react-navigation/native'
+import { LinearGradient } from 'expo-linear-gradient';
 const ShowUsers = () => {
     const navigation =useNavigation()
     const isfocused =useIsFocused()
@@ -33,7 +34,12 @@ const deleteUser = async (id)=>{
 
 }
     return (
-        <View style={{backgroundColor:'#74b9ff',height:'100%'}}>
+        <View style={{height:'100%'}}>
+        <LinearGradient
+          // Background Linear Gradient
+          colors={['#36A7E6', '#073854']}
+          style={styles.background}
+        />
             {
                 users.map((item) => (
 
@@ -60,4 +66,12 @@ const deleteUser = async (id)=>{
 
 export default ShowUsers
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    background: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        height:'100%'
+      },
+})

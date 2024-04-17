@@ -30,14 +30,11 @@ const ForgetPassword = () => {
     }
   }, [count])
   return (
-    <View style={{ flex: 1, justifyContent: 'center', backgroundColor: '#FFF2E1' }}>
-      <Text style={styles.pageText}>Login</Text>
-      <View>
-        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 8 }}>Phone</Text>
-        <TextInput style={styles.textInput} />
-      </View>
-      <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 8 }}>Enter OTP</Text>
+    <View style={{ flex: 1, justifyContent: 'center', backgroundColor: '#36A7E6' }}>
+    
+      <Text style={styles.pageText}>Forget Password</Text>
       <View style={styles.otpView}>
+      <Text style={{ fontSize: 20, fontWeight: '500' }}>Enter OTP</Text>
         <TextInput ref={et1} style={[styles.input, { borderColor: f1.length >= 1 ? 'blue' : 'black' }]} keyboardType='number-pad' maxLength={1} value={f1} onChangeText={txt => {
           setF1(txt)
           if (txt.length >= 1) {
@@ -68,29 +65,24 @@ const ForgetPassword = () => {
             et3.current.focus()
           }
         }} />
-        <TextInput ref={et5} style={[styles.input, { borderColor: f5.length >= 1 ? 'blue' : 'black' }]} keyboardType='number-pad' maxLength={1} value={f5} onChangeText={txt => {
-          setF5(txt)
-          if (txt.length >= 1) {
-            et6.current.focus()
-          } else if (txt.length < 1) {
-            et4.current.focus()
-          }
-        }} />
-        <TextInput ref={et6} style={[styles.input, { borderColor: f6.length >= 1 ? 'blue' : 'black' }]} keyboardType='number-pad' maxLength={1} value={f6} onChangeText={txt => {
-          setF6(txt)
-          if (txt.length >= 1) {
-            et6.current.focus()
-          } else if (txt.length < 1) {
-            et5.current.focus()
-          }
-        }} />
+       
+      
+      </View>
+    
+      <View>
+        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 8 }}>Password</Text>
+        <TextInput style={styles.textInput} />
+      </View>
+      <View>
+        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 8 }}>Confirm Password</Text>
+        <TextInput style={styles.textInput} />
       </View>
       <View style={styles.resend}>
-        <Text style={{fontSize:20,fontWeight:'700',color:count==0 ? 'blue': 'grey'}} onPress={()=>{
-          setCount(60)
-        }}>Resend Otp?</Text>
-        {count !==0 && (<Text style={{marginLeft:20,fontSize:20}}>{count+ ' Seconds'}</Text>)}
-      </View>
+      <Text style={{fontSize:20,fontWeight:'700',color:count==0 ? 'blue': 'grey'}} onPress={()=>{
+        setCount(60)
+      }}>Resend Otp?</Text>
+      {count !==0 && (<Text style={{marginLeft:20,fontSize:20}}>{count+ ' Seconds'}</Text>)}
+    </View>
       <TouchableOpacity
         disabled={f1 != '' && f2 != '' && f3 != '' && f4 != '' && f5 != '' && f6 != '' ? false : true}
         style={[styles.submitBtn, { backgroundColor: f1 != '' && f2 != '' && f3 != '' && f4 != '' && f5 != '' && f6 != '' ? 'blue' : 'grey' }]} >
@@ -107,7 +99,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: 'bold',
     textAlign: "center",
-    color: '#31363F',
+    color: '#fff',
     marginBottom: 20,
   },
   textInput: {
@@ -126,8 +118,9 @@ const styles = StyleSheet.create({
   otpView: {
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginLeft:10,
+    gap:10
   },
   input: {
     height: 50,
@@ -139,7 +132,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: 'center',
     fontSize: 18,
-    fontWeight: '700'
+    fontWeight: '700',
+    backgroundColor:'#fff'
   },
   submitBtn: {
     // backgroundColor:'#6AD4DD',

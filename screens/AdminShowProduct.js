@@ -9,6 +9,7 @@ import React, { Fragment, useEffect } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { baseurl } from "../Constant";
+import { LinearGradient } from 'expo-linear-gradient';
 const AdminShowProduct = () => {
   const navigation = useNavigation();
   const [products, setProducts] = React.useState([]);
@@ -26,7 +27,8 @@ const AdminShowProduct = () => {
     getDiamonds();
   }, []);
   const deleteProduct = async (id) => {
-    const url = `${baseurl}/diamonds/${id}`;
+    console.log('deleting')
+    const url = `${baseurl}/diamond/${id}`;
     const res = await fetch(url, {
       method: "DELETE",
     });
@@ -34,7 +36,12 @@ const AdminShowProduct = () => {
   };
 
   return (
-    <ScrollView style={{ backgroundColor: "#74b9ff", flex: 1 }}>
+    <ScrollView style={{ flex: 1 }}>
+    <LinearGradient
+          // Background Linear Gradient
+          colors={['#36A7E6', '#073854']}
+          style={styles.background}
+        />
       {products.map((item) => {
         return (
           <View
@@ -51,7 +58,7 @@ const AdminShowProduct = () => {
               <Text style={{ fontSize: 20 }}>{item.name}</Text>
               <TouchableOpacity
                 style={{ marginLeft: "auto" }}
-                onPress={deleteProduct}
+                onPress={()=>deleteProduct(item.id)}
               >
                 <AntDesign name="delete" size={24} color="black" />
               </TouchableOpacity>
@@ -102,5 +109,12 @@ const styles = StyleSheet.create({
     shadowColor: "black",
     shadowOpacity: 0.4,
     shadowRadius: 2,
+  },
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height:'100%'
   },
 });

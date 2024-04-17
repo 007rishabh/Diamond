@@ -6,9 +6,10 @@ import {
   TouchableOpacity,
   Alert,
   Image,
+  ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
-
+import React, { useState, useRef, useEffect } from "react";
+import { LinearGradient } from 'expo-linear-gradient';
 import { baseurl } from "../Constant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -16,73 +17,105 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const add = async () => {
-    const url = `${baseurl}/auth/signin`;
-    const res = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-    });
-    const result = await res.json();
-    console.log(res, result);
+    try {
+      setLoading(true);
+      const url = `${baseurl}/auth/signin`;
+      const res = await fetch(url, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
+      const result = await res.json();
+      console.log(res, result);
 
-    await AsyncStorage.setItem("userId", String(result.data.id));
+      await AsyncStorage.setItem("userId", String(result.data.id));
 
-    if (res.status === 200) {
-      if (result.data.role === "admin") {
-        navigation.navigate("Admin");
+      if (res.status === 200) {
+        if (result.data.role === "admin") {
+          navigation.navigate("Admin");
+        } else {
+          navigation.navigate("HomeScreen");
+        }
       } else {
-        navigation.navigate("HomeScreen");
+        setPassword("");
       }
-    } else {
-      setPassword("");
+    } catch {
+    } finally {
+      setLoading(false);
     }
   };
 
   // <Image source={require('../assets/ddd.png')} />
 
+  if (loading) return <ActivityIndicator size="large" color="#00ff00" />;
+
   return (
+    
     <View style={styles.container}>
+    <LinearGradient
+    // Background Linear Gradient
+    colors={['#36A7E6', '#073854']}
+    style={styles.background}
+  />
       <Image
-        source={require("../assets/new.png")}
+        source={require("../assets/DI.png")}
         style={{
-          width: 150,
-          height: 150,
-          marginLeft: 120,
-          marginBottom: 70,
+          width: 200,
+          height: 200,
+          marginLeft: 100,
+          // marginBottom: 0,
           borderRadius: 75,
         }}
       />
+      {loading ? (
+        <ActivityIndicator size="large" color="#00ff00" />
+      ) : (
+        <>
+          <Text style={styles.pageText}> User Login</Text>
+          <View style={{ marginHorizontal: 20, marginVertical: 20 }}>
+            <Text style={{ fontSize: 20, fontWeight: 700 }}>Email</Text>
+            <TextInput
+              value={email}
+              style={styles.textInput}
+              onChangeText={(email) => setEmail(email)}
+            />
+            <Text style={{ fontSize: 20, fontWeight: 700 }}>Password</Text>
+            <TextInput
+              style={styles.textInput}
+              value={password}
+              onChangeText={(password) => setPassword(password)}
+            />
+            
+           
+          </View>
+          <TouchableOpacity style={styles.submitBtn} onPress={add}>
+            <Text style={{ textAlign: "center", fontSize: 20 }}>Login</Text>
+          </TouchableOpacity>
 
-      <Text style={styles.pageText}>Login User/Admin</Text>
-      <View style={{ marginHorizontal: 20 ,marginVertical:20}}>
-        <Text style={{ fontSize: 20, fontWeight: 700 }}>Email</Text>
-        <TextInput
-          value={email}
-          style={styles.textInput}
-          onChangeText={(email) => setEmail(email)}
-        />
-        <Text style={{ fontSize: 20, fontWeight: 700 }}>Password</Text>
-        <TextInput
-          style={styles.textInput}
-          value={password}
-          onChangeText={(password) => setPassword(password)}
-        />
-      </View>
-      <TouchableOpacity style={styles.submitBtn} onPress={add}>
-        <Text style={{ textAlign:"center",fontSize:20 }}>Login</Text>
-      </TouchableOpacity>
-      <Text style={styles.linkText}>
-        Not A User Please?{" "}
-        <Text
-          onPress={() => navigation.navigate("Register")}
-          style={styles.link}
-        >
-          REGISTER
-        </Text>
-      </Text>
+          <Text style={styles.linkText}>
+            Not A User Please?{" "}
+            <Text
+              onPress={() => navigation.navigate("Register")}
+              style={styles.link}
+            >
+              REGISTER
+            </Text>
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ForgetPassword")}
+          >
+            <Text style={{ fontSize: 15, color: "red", textAlign: "center" }}>
+              Forget Password
+            </Text>
+          </TouchableOpacity>
+        </>
+      )}
+
     </View>
   );
 };
@@ -93,15 +126,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#36A7E6",
+    // backgroundColor: "#36A7E6",
   },
   pageText: {
     fontSize: 35,
     fontWeight: "bold",
     textAlign: "center",
-    color: "black",
-    // marginBottom: 20,
-    margin:'auto'
+    color: "#fff",
+    margin: "auto",
   },
   textInput: {
     height: 40,
@@ -126,5 +158,36 @@ const styles = StyleSheet.create({
   },
   link: {
     color: "red",
+  },
+  resend: {
+    flexDirection: "row",
+    alignSelf: "center",
+    marginTop: 30,
+    marginBottom: 30,
+  },
+  otpView: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+  input: {
+    height: 50,
+    width: 50,
+    borderWidth: 1,
+    borderColor: "black",
+    borderRadius: 10,
+    marginLeft: 10,
+    marginTop: 10,
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "700",
+  },
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height:'100%'
   },
 });

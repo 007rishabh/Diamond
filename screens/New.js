@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native'
 import React, { useEffect } from 'react'
 import {baseurl} from '../Constant'
+import { LinearGradient } from 'expo-linear-gradient';
 
 const New = () => {
   const [news, setNews] = React.useState([])
@@ -21,7 +22,14 @@ const New = () => {
   }, [])
 
   return (
+    
+    
     <View style={{backgroundColor:"#74b9ff",height:'100%'}}>
+    <LinearGradient
+          // Background Linear Gradient
+          colors={['#36A7E6', '#073854']}
+          style={styles.background}
+        />
       {
         news.map((item)=>(
 
@@ -39,9 +47,19 @@ const New = () => {
         )
         )}
     </View>
+    
+    
   )
 }
 
 export default New
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height:'100%'
+  },
+})

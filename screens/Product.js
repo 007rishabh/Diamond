@@ -16,6 +16,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { baseurl } from "../Constant";
+import { LinearGradient } from 'expo-linear-gradient';
 import {
   LineChart,
   BarChart,
@@ -58,10 +59,10 @@ const Product = ({ route }) => {
     ToastAndroid.show(result.message, ToastAndroid.SHORT);
   };
   const data = {
-    labels: [10,11,12,13,14,15,16],
+    labels: [10, 11, 12, 13, 14, 15, 16],
     datasets: [
       {
-        data: [900,200,350,450,800,700],
+        data: [900, 200, 350, 450, 800, 700],
       },
     ],
   };
@@ -77,8 +78,13 @@ const Product = ({ route }) => {
   };
   return (
     <>
+      <LinearGradient
+        // Background Linear Gradient
+        colors={['#36A7E6', '#073854']}
+        style={styles.background}
+      />
       <ScrollView
-        style={{ backgroundColor: "#74b9ff", flex: 1, padding: 20 }}
+        style={{ flex: 1, padding: 20 }}
       >
         <View style={{ borderColor: "black" }}>
           <View style={{ padding: 10 }}>
@@ -90,18 +96,24 @@ const Product = ({ route }) => {
           <View
             style={{
               borderWidth: 2,
-              padding: 5,
               borderRadius: 15,
-              backgroundColor: "#1e3799",
+              // backgroundColor: "#36A7E6",
             }}
+          >
+          <LinearGradient
+            // Background Linear Gradient
+            colors={['#36A7E6', '#073854']}
+            style={{ width: '100%', borderRadius: 15, }}
+
           >
             <View
               style={{ flexDirection: "row", justifyContent: "space-around" }}
             >
-              <Text style={{ fontSize: 20, fontWeight: "500" }}>
-                Blue Diamond
-              </Text>
-              <Text style={{ fontSize: 20, fontWeight: "500" }}>Per Price</Text>
+                <Text style={{ fontSize: 20, fontWeight: "500", color: '#fff' }}>
+                  Blue Diamond
+                </Text>
+                <Text style={{ fontSize: 20, fontWeight: "500", color: '#fff' }}> Price</Text>
+
             </View>
             <View
               style={{
@@ -118,14 +130,15 @@ const Product = ({ route }) => {
                   width: 60,
                   borderRadius: 8,
                   padding: 10,
+                  color: '#fff'
                 }}
                 placeholder="Qty"
                 value={qty}
                 onChangeText={(text) => setQty(text)}
               />
-              <Text style={{ fontSize: 20, fontWeight: "500" }}>New</Text>
+              <Text style={{ fontSize: 20, fontWeight: "500", color: '#fff' }}>New</Text>
               <Text style={{ fontSize: 20, fontWeight: "500" }}>
-                {product.price}
+                {product.price}/-
               </Text>
             </View>
             <View
@@ -146,21 +159,23 @@ const Product = ({ route }) => {
                 }}
                 onPress={buyDiamonds}
               >
-                <Text style={{ textAlign: "center" }}>Buy</Text>
+                <Text style={{ textAlign: "center",fontSize:20}}>Buy</Text>
               </TouchableOpacity>
-              <Text style={{ fontSize: 20, fontWeight: "500" }}>Old</Text>
-              <Text style={{ fontSize: 20, fontWeight: "500", color: "grey" }}>
-                {product.price}
+              <Text style={{ fontSize: 20, fontWeight: "500", color: '#fff' }}>Old</Text>
+              <Text style={{ fontSize: 20, fontWeight: "500", color: "#636e72" }}>
+                {product.price}/-
               </Text>
             </View>
+            </LinearGradient>
           </View>
         </View>
+
         <BarChart
           data={data}
-          width={Dimensions.get('window').width-50}
+          width={Dimensions.get('window').width - 50}
           height={250}
           chartConfig={chartConfig}
-          style={{alignItems:'center',borderRadius:10,padding:10}}
+          style={{ alignItems: 'center', borderRadius: 10, padding: 10 }}
         />
       </ScrollView>
     </>
@@ -184,5 +199,12 @@ const styles = StyleSheet.create({
   },
   red: {
     backgroundColor: "#ff7675",
+  },
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: '100%'
   },
 });

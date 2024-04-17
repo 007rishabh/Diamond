@@ -7,6 +7,7 @@ import {
   Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
+import { LinearGradient } from 'expo-linear-gradient';
 import { baseurl } from "../Constant";
 import ImagePickerExample from "./Image";
 const AddNews = ({ route, navigation }) => {
@@ -81,6 +82,11 @@ const AddNews = ({ route, navigation }) => {
   };
   return (
     <View style={styles.container}>
+    <LinearGradient
+          // Background Linear Gradient
+          colors={['#36A7E6', '#073854']}
+          style={styles.background}
+        />
       <Text style={styles.pageText}>{id ? "Edit News" : "Add News"}</Text>
       <View style={{ marginHorizontal: 20 }}>
         <Text style={{ fontSize: 20, fontWeight: 700 }}>Title</Text>
@@ -117,7 +123,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#74b9ff",
+    // backgroundColor: "#74b9ff",
   },
   pageText: {
     fontSize: 40,
@@ -149,5 +155,12 @@ const styles = StyleSheet.create({
   },
   link: {
     color: "red",
+  },
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height:'100%'
   },
 });

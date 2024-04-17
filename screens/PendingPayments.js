@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TextInput, View ,TouchableOpacity,ScrollView,ToastAndroid} from 'react-native'
 import React ,{useEffect,useState} from 'react'
 import { baseurl } from '../Constant'
+import { LinearGradient } from 'expo-linear-gradient';
 
 const PendingPayments = () => {
 
@@ -27,7 +28,12 @@ const [pendingPayments,setPendingPayments] = useState([])
   },[])
 
   return (
-    <ScrollView style={{backgroundColor:'#36A7E6',flex:1}}>
+    <><LinearGradient
+    // Background Linear Gradient
+    colors={['#36A7E6', '#073854']}
+    style={styles.background}
+  />
+    <ScrollView style={{flex:1}}>
       {pendingPayments.map((payment, index) => {
         return (
           <View
@@ -73,9 +79,18 @@ const [pendingPayments,setPendingPayments] = useState([])
         );
       })}
     </ScrollView>
+    </>
   )
 }
 
 export default PendingPayments
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height:'100%'
+  },
+})

@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Button, TouchableOpacity, ScrollView } from 're
 import React, { useEffect } from 'react'
 import {baseurl} from '../Constant'
 import {useNavigation,useIsFocused} from '@react-navigation/native'
+import { LinearGradient } from 'expo-linear-gradient';
 const ShowNews = () => {
     const navigation =useNavigation()
     const isfocused =useIsFocused()
@@ -31,7 +32,12 @@ const deleteNews = async (id)=>{
 
 }
     return (
-        <ScrollView style={{backgroundColor:'#74b9ff',flex:1}}>
+        <><LinearGradient
+          // Background Linear Gradient
+          colors={['#36A7E6', '#073854']}
+          style={styles.background}
+        />
+        <ScrollView style={{flex:1}}>
             {
                 news.map((item) => (
                     <ScrollView >
@@ -58,9 +64,18 @@ const deleteNews = async (id)=>{
                 )
                 )}
         </ScrollView>
+        </>
     )
 }
 
 export default ShowNews
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    background: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        height:'100%'
+      },
+})
