@@ -70,7 +70,7 @@ const [pendingPayments,setPendingPayments] = useState([])
             
             
               <TouchableOpacity style={[styles.submitBtn, styles.green]} onPress={()=>approvePayment(payment.id)}>
-                <Text style={{ textAlign: "center", fontSize: 20 , height:40,backgroundColor:'#ff7675',borderRadius:10,}} >
+                <Text style={{ textAlign: "center", fontSize: 20 , height:40,backgroundColor:'#55efc40',borderRadius:10,}} >
                   Approve
                 </Text>
               </TouchableOpacity>

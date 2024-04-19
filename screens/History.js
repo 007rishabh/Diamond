@@ -26,7 +26,7 @@ const History = () => {
 
   return (
     
-    <ScrollView>
+    <ScrollView >
     <LinearGradient
           // Background Linear Gradient
           colors={['#36A7E6', '#073854']}
@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     top: 0,
-    height:'100%'
+    height:'100%',
+    flex:1
   },
 });

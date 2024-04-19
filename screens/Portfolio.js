@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { baseurl } from "../Constant";
+import { LinearGradient } from "expo-linear-gradient";
 
 const Portfolio = () => {
   const [portfolio, setPortfolio] = useState(null);
@@ -66,6 +67,11 @@ const Portfolio = () => {
   if (!portfolio) return null;
   return (
     <ScrollView >
+    <LinearGradient
+        // Background Linear Gradient
+        colors={["#36A7E6", "#073854"]}
+        style={styles.background}
+      />
       {portfolio.products.map((product, index) => (
         <View
           key={index}
@@ -135,5 +141,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 150,
     marginLeft:110
+  },
+  background: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    height: "100%",
   },
 });
