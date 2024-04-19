@@ -7,31 +7,40 @@ import {
   Alert,
   ScrollView,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Carousel from "./Carousel";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { baseurl } from "../Constant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { Marquee } from "@animatereactnative/marquee";
 const Home = () => {
   const isfocused = useIsFocused();
-
-  const [currentamount, setCurrentAmount] = React.useState(0);
+  const [value, setValue] = useState();
+  const getTrends = async () => {
+    console.log("here");
+    const res = await fetch(`${baseurl}/diamond/trends`);
+    const result = await res.json();
+    setValue(result);
+  };
+  const [portfolio, setPortfolio] = React.useState();
   const getPortfolio = async () => {
     const userId = await AsyncStorage.getItem("userId");
     const res = await fetch(`${baseurl}/portfolio/${userId}`);
     const result = await res.json();
-    console.log(result);
-    setCurrentAmount(result.walletAmount);
+    result.products = JSON.parse(result.products)
+    setPortfolio(result);
   };
   useEffect(() => {
     getPortfolio();
+    getTrends();
   }, [isfocused]);
   const Press = () => {
-    Alert.alert("Your Wallet Amount", `Rs ${currentamount}`, [
+    console.log(portfolio)
+    const totalBoughtProducts = portfolio?.products.reduce((acc,curr)=>acc+curr.quantity,0)
+    Alert.alert("Your Wallet Amount", `Rs ${portfolio?.walletAmount} and total diamonds bought are ${totalBoughtProducts}`, [
       {
         text: "Cancel",
         onPress: () => console.log("Cancel Pressed"),
@@ -42,10 +51,10 @@ const Home = () => {
   };
   return (
     <>
-      <ScrollView >
+      <ScrollView>
         <LinearGradient
           // Background Linear Gradient
-          colors={['#36A7E6', '#073854']}
+          colors={["#36A7E6", "#073854"]}
           style={styles.background}
         />
         <View
@@ -54,16 +63,16 @@ const Home = () => {
             // gap: 5,
             // backgroundColor: "black",
             // justifyContent:'space-evenly',
-            borderRadius: 10
+            borderRadius: 10,
           }}
         >
           <View>
             <Image
               source={require("../assets/DI.png")}
-              style={{ height: 50, width: 50, borderRadius: 50 }}
+              style={{ height: 50, width: 50 }}
             />
           </View>
-          <View style={{ width: "55%" }}>
+          <View style={{ width: "58%" }}>
             <Text
               style={{
                 fontSize: 33,
@@ -75,7 +84,10 @@ const Home = () => {
               Diamond Mall
             </Text>
           </View>
-          <TouchableOpacity style={{ marginTop: 8, marginLeft: 80, }} onPress={Press}>
+          <TouchableOpacity
+            style={{ marginTop: 8, marginLeft: 80 }}
+            onPress={Press}
+          >
             <Ionicons name="wallet-sharp" size={40} color="black" />
           </TouchableOpacity>
         </View>
@@ -86,11 +98,11 @@ const Home = () => {
             padding: 2,
             flex: 1,
             borderRadius: 20,
-            gap: 5
+            gap: 5,
           }}
         >
           <View style={{ backgroundColor: "black" }}>
-            <Marquee spacing={20} speed={2} >
+            <Marquee spacing={20} speed={2}>
               <Text
                 style={{ fontSize: 20, color: "#4cd137", fontWeight: "bold" }}
               >
@@ -100,9 +112,7 @@ const Home = () => {
           </View>
           <View style={{ backgroundColor: "black" }}>
             <Marquee spacing={20} speed={2}>
-              <Text
-                style={{ fontSize: 20, color: "red", fontWeight: "bold" }}
-              >
+              <Text style={{ fontSize: 20, color: "red", fontWeight: "bold" }}>
                 Loss
               </Text>
             </Marquee>
@@ -117,22 +127,9 @@ const Home = () => {
           >
             <View style={{ padding: 10, flex: 1 }}>
               <Text style={{ fontSize: 24, fontWeight: 500 }}>Top Gainer</Text>
-
-              <View
-                style={{
-                  backgroundColor: "#fff",
-                  padding: 8,
-                  borderRadius: 15,
-                  margin: 5,
-                  flexDirection: "row",
-                  gap: 20,
-                }}
-              >
-                <Text style={{ fontSize: 20, color: "green" }}>Ruby</Text>
-                <Text style={{ color: "green", fontSize: 20 }}>^1000</Text>
-              </View>
-
-              <View
+              {value?.upTrendDiamonds.map((item, index) => (
+                <View
+                key={index}
                 style={{
                   backgroundColor: "#fff",
                   padding: 8,
@@ -140,90 +137,53 @@ const Home = () => {
                   margin: 5,
                 }}
               >
-                <Text style={{ fontSize: 20 }}>Lucky</Text>
-                <Text>RUBY</Text>
-                <Text style={{ color: "green", fontSize: 20 }}>+789</Text>
+                <Text style={{ fontSize: 20 }}>{item.name}</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{
+                    textDecorationLine:'line-through'
+                  }}>Rs {item.oldPrice}</Text>
+                  <Text>Rs {item.price}</Text>
+                </View>
+                <Text style={{ color: "green", fontSize: 20 }}>
+                  {`+${item.price - item.oldPrice}`}
+                </Text>
               </View>
-
-              <View
-                style={{
-                  backgroundColor: "#fff",
-                  padding: 8,
-                  borderRadius: 15,
-                  margin: 5,
-                }}
-              >
-                <Text style={{ fontSize: 20 }}>Harsh</Text>
-                <Text>RUBY</Text>
-                <Text style={{ color: "green", fontSize: 20 }}>+180</Text>
-              </View>
-
-              <View
-                style={{
-                  backgroundColor: "#fff",
-                  padding: 8,
-                  borderRadius: 15,
-                  margin: 5,
-                }}
-              >
-                <Text style={{ fontSize: 20 }}>Deepanshu</Text>
-                <Text>RUBY</Text>
-                <Text style={{ color: "green", fontSize: 20 }}>+10</Text>
-              </View>
+              ))}
             </View>
             <View style={{ padding: 10, flex: 1 }}>
               <Text style={{ fontSize: 24, fontWeight: 500 }}>Top Losser</Text>
-              <View
-                style={{
-                  backgroundColor: "#fff",
-                  padding: 8,
-                  borderRadius: 15,
-                  margin: 5,
-                }}
-              >
-                <Text style={{ fontSize: 20 }}>Sparsh</Text>
-                <Text>Koniroor</Text>
-                <Text style={{ color: "red", fontSize: 20 }}>-1000</Text>
-              </View>
-
-              <View
-                style={{
-                  backgroundColor: "#fff",
-                  padding: 8,
-                  borderRadius: 15,
-                  margin: 5,
-                }}
-              >
-                <Text style={{ fontSize: 20 }}>Amit</Text>
-                <Text>Koniroor</Text>
-                <Text style={{ color: "red", fontSize: 20 }}>-800</Text>
-              </View>
-
-              <View
-                style={{
-                  backgroundColor: "#fff",
-                  padding: 8,
-                  borderRadius: 15,
-                  margin: 5,
-                }}
-              >
-                <Text style={{ fontSize: 20 }}>Neraj</Text>
-                <Text>Koniroor</Text>
-                <Text style={{ color: "red", fontSize: 20 }}>-450</Text>
-              </View>
-
-              <View
-                style={{
-                  backgroundColor: "#fff",
-                  padding: 8,
-                  borderRadius: 15,
-                  margin: 5,
-                }}
-              >
-                <Text style={{ fontSize: 20 }}>Sajal</Text>
-                <Text>Koniroor</Text>
-                <Text style={{ color: "red", fontSize: 20 }}>-100</Text>
-              </View>
+              {value?.downTrendDiamonds.map((item, index) => (
+                <View
+                  key={index}
+                  style={{
+                    backgroundColor: "#fff",
+                    padding: 8,
+                    borderRadius: 15,
+                    margin: 5,
+                  }}
+                >
+                  <Text style={{ fontSize: 20 }}>{item.name}</Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text style={{
+                      textDecorationLine:'line-through'
+                    }}>Rs {item.oldPrice}</Text>
+                    <Text>Rs {item.price}</Text>
+                  </View>
+                  <Text style={{ color: "red", fontSize: 20 }}>
+                    {item.price - item.oldPrice}
+                  </Text>
+                </View>
+              ))}
             </View>
           </View>
         </SafeAreaView>
@@ -236,10 +196,10 @@ export default Home;
 
 const styles = StyleSheet.create({
   background: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     top: 0,
-    height:'100%'
+    height: "100%",
   },
 });

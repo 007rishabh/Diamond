@@ -17,29 +17,7 @@ import { useNavigation, useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProductCard = ({ product }) => {
-  const [qty, setQty] = useState();
   const navigation = useNavigation();
-
-  const buyDiamonds = async () => {
-    const userId = await AsyncStorage.getItem("userId");
-    const url = `${baseurl}/order`;
-    const res = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        userId,
-        productId: product.id,
-        quantity: qty,
-        type: "buy",
-        totalPrice: product.price * qty,
-      }),
-    });
-    console.log(res);
-    const result = await res.json();
-    ToastAndroid.show(result.message, ToastAndroid.SHORT);
-  };
   return (
     <TouchableOpacity
       key={product.id}
@@ -72,13 +50,13 @@ const ProductCard = ({ product }) => {
         >
 
           <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-            <Text style={{ fontSize: 20, fontWeight: "500", color: '#fff' }}>Blue Diamond</Text>
+            <Text style={{ fontSize: 20, fontWeight: "500", color: '#fff' }}>{product.name}</Text>
             <Text style={{ fontSize: 20, fontWeight: "500", color: '#fff' }}>Price</Text>
           </View>
 
           <View style={{ flexDirection: 'row', gap: 30,marginTop:10, padding:5}}>
             <View>
-              <TouchableOpacity
+              <View
                 style={{
                   height: 50,
                   width: 60,
@@ -86,10 +64,9 @@ const ProductCard = ({ product }) => {
                   justifyContent: "center",
                   borderRadius: 5,
                 }}
-                onPress={buyDiamonds}
               >
                 <Text style={{ textAlign: "center",fontSize:20 }}>Buy</Text>
-              </TouchableOpacity>
+              </View>
             </View>
             <View style={{ flexDirection: 'column' }}>
               <View style={{ flexDirection: 'row', gap: 50 }}>

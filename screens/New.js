@@ -2,6 +2,8 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-nativ
 import React, { useEffect } from 'react'
 import {baseurl} from '../Constant'
 import { LinearGradient } from 'expo-linear-gradient';
+import { LoadingIndicator } from "../components/LoadingIndicator.js";
+const [loading, setLoading] = useState(false);
 
 const New = () => {
   const [news, setNews] = React.useState([])

@@ -9,17 +9,17 @@ import {
   ActivityIndicator,
 } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import { baseurl } from "../Constant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { LoadingIndicator } from "../components/LoadingIndicator.js";
 const Login = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
   const [loading, setLoading] = useState(false);
 
-  const add = async () => {
+  const loginHandler = async () => {
     try {
       setLoading(true);
       const url = `${baseurl}/auth/signin`;
@@ -50,72 +50,58 @@ const Login = ({ navigation }) => {
     }
   };
 
-  // <Image source={require('../assets/ddd.png')} />
-
-  if (loading) return <ActivityIndicator size="large" color="#00ff00" />;
-
   return (
-    
     <View style={styles.container}>
-    <LinearGradient
-    // Background Linear Gradient
-    colors={['#36A7E6', '#073854']}
-    style={styles.background}
-  />
+      <LinearGradient
+        // Background Linear Gradient
+        colors={["#36A7E6", "#073854"]}
+        style={styles.background}
+      />
       <Image
         source={require("../assets/DI.png")}
         style={{
           width: 200,
           height: 200,
           marginLeft: 100,
-          // marginBottom: 0,
           borderRadius: 75,
         }}
       />
-      {loading ? (
-        <ActivityIndicator size="large" color="#00ff00" />
-      ) : (
-        <>
-          <Text style={styles.pageText}> User Login</Text>
-          <View style={{ marginHorizontal: 20, marginVertical: 20 }}>
-            <Text style={{ fontSize: 20, fontWeight: 700 }}>Email</Text>
-            <TextInput
-              value={email}
-              style={styles.textInput}
-              onChangeText={(email) => setEmail(email)}
-            />
-            <Text style={{ fontSize: 20, fontWeight: 700 }}>Password</Text>
-            <TextInput
-              style={styles.textInput}
-              value={password}
-              onChangeText={(password) => setPassword(password)}
-            />
-            
-           
-          </View>
-          <TouchableOpacity style={styles.submitBtn} onPress={add}>
-            <Text style={{ textAlign: "center", fontSize: 20 }}>Login</Text>
-          </TouchableOpacity>
+      <Text style={styles.pageText}> User Login</Text>
+      <View style={{ marginHorizontal: 20, marginVertical: 20 }}>
+        <Text style={{ fontSize: 20, fontWeight: 700 }}>Email</Text>
+        <TextInput
+          value={email}
+          style={styles.textInput}
+          onChangeText={(email) => setEmail(email)}
+        />
+        <Text style={{ fontSize: 20, fontWeight: 700 }}>Password</Text>
+        <TextInput
+          style={styles.textInput}
+          value={password}
+          onChangeText={(password) => setPassword(password)}
+        />
+      </View>
+      <TouchableOpacity style={styles.submitBtn} onPress={loginHandler}>
+        <Text style={{ textAlign: "center", fontSize: 20 }}>Login</Text>
+      </TouchableOpacity>
 
-          <Text style={styles.linkText}>
-            Not A User Please?{" "}
-            <Text
-              onPress={() => navigation.navigate("Register")}
-              style={styles.link}
-            >
-              REGISTER
-            </Text>
-          </Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("ForgetPassword")}
-          >
-            <Text style={{ fontSize: 15, color: "red", textAlign: "center" }}>
-              Forget Password
-            </Text>
-          </TouchableOpacity>
-        </>
-      )}
-
+      <Text style={styles.linkText}>
+        Not A User Please?{" "}
+        <Text
+          onPress={() => navigation.navigate("Register")}
+          style={styles.link}
+        >
+          REGISTER
+        </Text>
+      </Text>
+      <TouchableOpacity
+        disabled={loading}
+        onPress={() => navigation.navigate("ForgetPassword")}
+      >
+        <Text style={{ fontSize: 15, color: "red", textAlign: "center" }}>
+          Forget Password
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -184,10 +170,10 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   background: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     top: 0,
-    height:'100%'
+    height: "100%",
   },
 });

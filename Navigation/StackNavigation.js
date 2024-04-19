@@ -22,6 +22,8 @@ import Pending from '../screens/Pending';
 import Portfolio from '../screens/Portfolio';
 import PendingPayments from '../screens/PendingPayments';
 import ForgetPassword from '../screens/ForgetPassword';
+import TC from '../screens/TC';
+import Profile from '../screens/Profile'
 const StackNavigation = () => {
     const Stack = createNativeStackNavigator();
 
@@ -47,6 +49,8 @@ const StackNavigation = () => {
       <Stack.Screen name ="Portfolio" component={Portfolio} options={{title:'Portfolio',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>      
       <Stack.Screen name ="PendingPayments" component={PendingPayments} options={{title:'Pending Payments',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>      
       <Stack.Screen name ="ForgetPassword" component={ForgetPassword} options={{title:'Forget Password',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>      
+      <Stack.Screen name ="TC" component={TC} options={{title:'Terms & Conditons',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>      
+      <Stack.Screen name ="Profile" component={Profile} options={{title:'Profile',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>      
    
     </Stack.Navigator>
   </NavigationContainer>

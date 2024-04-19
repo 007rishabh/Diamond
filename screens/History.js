@@ -4,6 +4,7 @@ import {
   ScrollView,
   View,
   TouchableOpacity,
+  ActivityIndicator
 } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState, useEffect } from "react";
@@ -12,6 +13,7 @@ import { baseurl } from "../Constant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const History = () => {
   const [history, setHistory] = useState([]);
+  
   const getHistory = async () => {
     const userId = await AsyncStorage.getItem("userId");
     const res = await fetch(`${baseurl}/order/user/${userId}`);

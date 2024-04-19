@@ -17,38 +17,38 @@ export default function Setting() {
   />
     
     <View style={{gap:10,paddingTop:20,paddingHorizontal:10,height:'100%'}}>
-    <Pressable style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} >
+    <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} onPress={()=>navigation.navigate('Profile')}>
     <FontAwesome5 name="user-alt" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>
       <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Edit Profile</Text>
-    </Pressable>
-    <Pressable style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} 
+    </TouchableOpacity>
+    <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} 
       onPress={()=>navigation.navigate('Bank')}>  
     <FontAwesome name="bank" size={24} color="black"  style={{marginLeft:5,marginTop:5}}/>
         <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Bank Details</Text>
-    </Pressable>
+    </TouchableOpacity>
     
-    <Pressable style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} 
+    <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} 
     onPress={()=>navigation.navigate('Portfolio')}
     >
     <FontAwesome name="star" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>      
     <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}> My Porducts</Text>
-    </Pressable>
-    <Pressable style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} onPress={()=>navigation.navigate('UserWallet')}>
+    </TouchableOpacity>
+    <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} onPress={()=>navigation.navigate('UserWallet')}>
     <Entypo name="wallet" size={24} color="black"  style={{marginLeft:5,marginTop:5}}/>
         <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Wallet</Text>
-    </Pressable>
-    <Pressable style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} >
+    </TouchableOpacity>
+    <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} >
     <Octicons name="cross-reference" size={24} color="black"  style={{marginLeft:5,marginTop:5}}/>
         <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Reffral</Text>
-    </Pressable>
-    <Pressable style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} >
+    </TouchableOpacity>
+    <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} >
     <Ionicons name="help-circle-outline" size={24} color="black" style={{marginLeft:5,marginTop:5}} />      
     <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Terms & Conditions</Text>
-    </Pressable>
-    <Pressable style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} onPress={()=>navigation.navigate('Login')} >
+    </TouchableOpacity>
+    <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} onPress={()=>navigation.navigate('Login')} >
     <Ionicons name="log-out" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>      
     <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}} >Logout</Text>
-    </Pressable>
+    </TouchableOpacity>
     
     </View>
     </>

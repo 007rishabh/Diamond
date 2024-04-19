@@ -4,44 +4,60 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation ,useIsFocused} from "@react-navigation/native";
 import { baseurl } from "../Constant";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 const AdminShowProduct = () => {
   const navigation = useNavigation();
   const [products, setProducts] = React.useState([]);
+  const [loading, setLoading] = useState(false);
+  const isfocused = useIsFocused();
+
   const getDiamonds = async () => {
-    const url = `${baseurl}/diamonds`;
-    const res = await fetch(url, {
-      method: "GET",
-    });
-    const result = await res.json();
-    if (res.status === 200) {
-      setProducts(result);
+    try {
+      setLoading(true);
+      const url = `${baseurl}/diamonds`;
+      const res = await fetch(url, {
+        method: "GET",
+      });
+      const result = await res.json();
+      if (res.status === 200) {
+        setProducts(result);
+      }
+    } catch {
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
     getDiamonds();
-  }, []);
+  }, [isfocused]);
   const deleteProduct = async (id) => {
-    console.log('deleting')
-    const url = `${baseurl}/diamond/${id}`;
-    const res = await fetch(url, {
-      method: "DELETE",
-    });
-    getDiamonds();
+    try {
+      setLoading(true);
+      console.log("deleting");
+      const url = `${baseurl}/diamond/${id}`;
+      const res = await fetch(url, {
+        method: "DELETE",
+      });
+      getDiamonds();
+    } catch {
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <ScrollView style={{ flex: 1 }}>
-    <LinearGradient
-          // Background Linear Gradient
-          colors={['#36A7E6', '#073854']}
-          style={styles.background}
-        />
+      <LinearGradient
+        // Background Linear Gradient
+        colors={["#36A7E6", "#073854"]}
+        style={styles.background}
+      />
       {products.map((item) => {
         return (
           <View
@@ -58,11 +74,16 @@ const AdminShowProduct = () => {
               <Text style={{ fontSize: 20 }}>{item.name}</Text>
               <TouchableOpacity
                 style={{ marginLeft: "auto" }}
-                onPress={()=>deleteProduct(item.id)}
+                onPress={() => deleteProduct(item.id)}
               >
                 <AntDesign name="delete" size={24} color="black" />
               </TouchableOpacity>
-              <TouchableOpacity style={{ marginLeft: "10%" }}>
+              <TouchableOpacity
+                style={{ marginLeft: "10%" }}
+                onPress={() =>
+                  navigation.navigate("AddDiamond", { product: item })
+                }
+              >
                 <AntDesign name="edit" size={24} color="black" />
               </TouchableOpacity>
             </View>
@@ -111,10 +132,10 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
   },
   background: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     top: 0,
-    height:'100%'
+    height: "100%",
   },
 });

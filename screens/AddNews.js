@@ -50,6 +50,7 @@ const AddNews = ({ route, navigation }) => {
       },
     ]);
   };
+  
   const edit = async () => {
     const url = `${baseurl}/news/${id}`;
     const res = await fetch(url, {
