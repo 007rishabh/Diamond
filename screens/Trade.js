@@ -26,7 +26,6 @@ const Trade = () => {
     const getDiamonds = async () => {
       try {
         setLoading(true);
-        console.log("start");
         const url = `${baseurl}/diamonds`;
         const res = await fetch(url, {
           method: "GET",
@@ -41,7 +40,6 @@ const Trade = () => {
             acc[item.category] = [...acc[item.category], item];
             return acc;
           }, {});
-          console.log(data);
           setProducts(data);
         }
       } catch {
@@ -55,28 +53,27 @@ const Trade = () => {
   return (
     <>
       <LinearGradient
-        // Background Linear Gradient
         colors={["#36A7E6", "#073854"]}
         style={styles.background}
       />
       {loading ? (
         <LoadingIndicator />
       ) : (
-        <ScrollView style={{ height: "100%" }}>
+        <ScrollView style={{ height: "100%", paddingLeft: 10 }}>
           {Object.entries(products).map(([key, value]) => (
-            <Fragment key={key}>
-              <Text style={styles.headingText}>{`${key} carat`}</Text>
-              <ScrollView horizontal={true} style={styles.container}>
+            <View key={key} style={{ marginBottom: 20, gap: 10 }}>
+              <Text style={styles.headingText}>{`Category : ${key}`}</Text>
+              <ScrollView
+                horizontal={true}
+                contentContainerStyle={{
+                  columnGap: 16,
+                }}
+              >
                 {value.map((product, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    onPress={() => navigation.navigate("Product")}
-                  >
-                    <ProductCard product={product} key={product._id} />
-                  </TouchableOpacity>
+                  <ProductCard product={product} key={product._id} />
                 ))}
               </ScrollView>
-            </Fragment>
+            </View>
           ))}
         </ScrollView>
       )}
@@ -87,20 +84,13 @@ const Trade = () => {
 export default Trade;
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 8,
-    height: 310,
-  },
   headingText: {
     fontSize: 24,
     fontWeight: "bold",
-    paddingHorizontal: 8,
-    marginTop: 20,
     color: "#fff",
   },
   card: {
     flex: 1,
-    // justifyContent:'center',
     alignItems: "center",
     height: 300,
     width: 300,

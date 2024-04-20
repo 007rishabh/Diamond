@@ -7,6 +7,7 @@ import {
   Alert,
   Image,
   ActivityIndicator,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -14,8 +15,8 @@ import { baseurl } from "../Constant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LoadingIndicator } from "../components/LoadingIndicator.js";
 const Login = ({ navigation }) => {
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("12345");
+  const [email, setEmail] = useState("r@gmail.com");
 
   const [loading, setLoading] = useState(false);
 
@@ -31,7 +32,6 @@ const Login = ({ navigation }) => {
         body: JSON.stringify({ email, password }),
       });
       const result = await res.json();
-      console.log(res, result);
 
       await AsyncStorage.setItem("userId", String(result.data.id));
 
@@ -51,7 +51,7 @@ const Login = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <LinearGradient
         // Background Linear Gradient
         colors={["#36A7E6", "#073854"]}
@@ -102,7 +102,7 @@ const Login = ({ navigation }) => {
           Forget Password
         </Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 

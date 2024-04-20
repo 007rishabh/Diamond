@@ -1,30 +1,15 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  Dimensions,
-  ToastAndroid
-} from "react-native";
-import { LinearGradient } from 'expo-linear-gradient';
-import React, { Fragment, useEffect, useState } from "react";
-import Product from "./Product";
-import { baseurl } from "../Constant";
-import { useNavigation, useIsFocused } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const ProductCard = ({ product }) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
-      key={product.id}
       style={[styles.card, styles.cardElevated]}
       onPress={() => navigation.navigate("Product", { product })}
     >
-
       <Image
         source={require("../assets/diamond.jpg")}
         style={{ height: 120, width: 180 }}
@@ -33,28 +18,31 @@ const ProductCard = ({ product }) => {
       <View
         style={{
           borderWidth: 2,
-          padding: 0,
           borderRadius: 15,
-
           width: 250,
           height: 125,
-          marginTop: 15,
-          gap: 20
+          gap: 20,
         }}
       >
         <LinearGradient
           // Background Linear Gradient
-          colors={['#36A7E6', '#073854']}
-          style={{ height: '100%' ,width:'100%',borderRadius: 15,}}
-
+          colors={["#36A7E6", "#073854"]}
+          style={{ height: "100%", width: "100%", borderRadius: 15 }}
         >
-
-          <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-            <Text style={{ fontSize: 20, fontWeight: "500", color: '#fff' }}>{product.name}</Text>
-            <Text style={{ fontSize: 20, fontWeight: "500", color: '#fff' }}>Price</Text>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-around" }}
+          >
+            <Text style={{ fontSize: 20, fontWeight: "500", color: "#fff" }}>
+              {product.name}
+            </Text>
+            <Text style={{ fontSize: 20, fontWeight: "500", color: "#fff" }}>
+              Price
+            </Text>
           </View>
 
-          <View style={{ flexDirection: 'row', gap: 30,marginTop:10, padding:5}}>
+          <View
+            style={{ flexDirection: "row", gap: 30, marginTop: 10, padding: 5 }}
+          >
             <View>
               <View
                 style={{
@@ -65,27 +53,35 @@ const ProductCard = ({ product }) => {
                   borderRadius: 5,
                 }}
               >
-                <Text style={{ textAlign: "center",fontSize:20 }}>Buy</Text>
+                <Text style={{ textAlign: "center", fontSize: 20 }}>Buy</Text>
               </View>
             </View>
-            <View style={{ flexDirection: 'column' }}>
-              <View style={{ flexDirection: 'row', gap: 50 }}>
-                <Text style={{ fontSize: 20, fontWeight: "500", color: '#fff' }}>New</Text>
+            <View style={{ flexDirection: "column" }}>
+              <View style={{ flexDirection: "row", gap: 50 }}>
+                <Text
+                  style={{ fontSize: 20, fontWeight: "500", color: "#fff" }}
+                >
+                  New
+                </Text>
                 <Text style={{ fontSize: 20, fontWeight: "500" }}>
                   {product.price}/-
                 </Text>
               </View>
-              <View style={{ flexDirection: 'row', gap: 50 }}>
-                <Text style={{ fontSize: 20, fontWeight: "500", color: '#fff' }}>Old</Text>
-                <Text style={{ fontSize: 20, fontWeight: "500", color: "grey" }}>
+              <View style={{ flexDirection: "row", gap: 50 }}>
+                <Text
+                  style={{ fontSize: 20, fontWeight: "500", color: "#fff" }}
+                >
+                  Old
+                </Text>
+                <Text
+                  style={{ fontSize: 20, fontWeight: "500", color: "grey" }}
+                >
                   {product.price}/-
                 </Text>
               </View>
             </View>
-
           </View>
-
-                </LinearGradient>
+        </LinearGradient>
       </View>
     </TouchableOpacity>
   );
@@ -105,12 +101,11 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
-    // justifyContent:'center',
     alignItems: "center",
-    height: 250,
+    rowGap: 10,
+    height: 280,
     width: 280,
     borderRadius: 10,
-    margin: 8,
   },
 
   cardElevated: {
@@ -124,6 +119,4 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 2,
   },
-
 });
-

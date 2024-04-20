@@ -1,19 +1,15 @@
-import 'react-native-gesture-handler'
-import { StyleSheet, Text, View } from 'react-native';
-import StackNavigation from './Navigation/StackNavigation';
-import Profile from './screens/Profile';
+import { SafeAreaView, StyleSheet } from "react-native";
+import "react-native-gesture-handler";
+import StackNavigation from "./Navigation/StackNavigation";
 export default function App() {
-  return (
-    <StackNavigation/>
-    // <Profile/>
-  );
+  return <StackNavigation />;
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

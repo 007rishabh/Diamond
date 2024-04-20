@@ -1,21 +1,21 @@
+import { Marquee } from "@animatereactnative/marquee";
+import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+import React, { useEffect, useMemo, useState } from "react";
 import {
+  Alert,
+  Image,
+  SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
-  Image,
   TouchableOpacity,
-  Alert,
-  ScrollView,
+  View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import Carousel from "./Carousel";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { baseurl } from "../Constant";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation, useIsFocused } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons } from "@expo/vector-icons";
-import { Marquee } from "@animatereactnative/marquee";
+import Carousel from "./Carousel";
 const Home = () => {
   const isfocused = useIsFocused();
   const [value, setValue] = useState();
@@ -29,8 +29,6 @@ const Home = () => {
     const userId = await AsyncStorage.getItem("userId");
     const res = await fetch(`${baseurl}/portfolio/${userId}`);
     const result = await res.json();
-    console.log({result})
-    result.products = JSON.parse(result.products)
     setPortfolio(result);
   };
   useEffect(() => {
@@ -38,151 +36,160 @@ const Home = () => {
     getTrends();
   }, [isfocused]);
   const Press = () => {
-    console.log(portfolio)
-    // const totalBoughtProducts = portfolio?.products.reduce((acc,curr)=>acc+curr.quantity,0)
-    Alert.alert("Your Wallet Amount", `Rs ${portfolio?.wallet_amount} and total diamonds bought are ${0}`, [
-      {
-        text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
-        style: "cancel",
-      },
-      { text: "OK", onPress: () => console.log("OK Pressed") },
-    ]);
+    Alert.alert(
+      "Your Wallet Amount",
+      `Rs ${portfolio?.wallet_amount} and total diamonds bought are ${0}`,
+      [{ text: "OK" }]
+    );
   };
+
+  const greenStripText = useMemo(() => {
+    return value?.upTrendDiamonds.reduce(
+      (acc, item) => acc + "   " + item.name,
+      ""
+    );
+  }, [value]);
+  const redStripText = useMemo(() => {
+    return value?.downTrendDiamonds.reduce(
+      (acc, item) => acc + "   " + item.name,
+      ""
+    );
+  }, [value]);
+
   return (
-    <>
-      <ScrollView>
-        <LinearGradient
-          // Background Linear Gradient
-          colors={["#36A7E6", "#073854"]}
-          style={styles.background}
+    <SafeAreaView>
+      <LinearGradient
+        colors={["#36A7E6", "#073854"]}
+        style={styles.background}
+      />
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingHorizontal: 10,
+        }}
+      >
+        <Image
+          source={require("../assets/DI.png")}
+          style={{ height: 50, width: 50 }}
         />
-        <View
+        <Text
           style={{
-            flexDirection: "row",
-            // gap: 5,
-            // backgroundColor: "black",
-            // justifyContent:'space-evenly',
-            borderRadius: 10,
+            fontSize: 30,
+            fontWeight: "bold",
+            textAlign: "center",
+            color: "#fff",
           }}
         >
-          <View>
-            <Image
-              source={require("../assets/DI.png")}
-              style={{ height: 50, width: 50 }}
-            />
-          </View>
-          <View style={{ width: "58%" }}>
-            <Text
+          Diamond Mall
+        </Text>
+
+        <TouchableOpacity onPress={Press}>
+          <Ionicons name="wallet-sharp" size={30} color="black" />
+        </TouchableOpacity>
+      </View>
+
+      <Carousel />
+      <View
+        style={{
+          gap: 4,
+          marginVertical: 4,
+        }}
+      >
+        <View style={{ backgroundColor: "black" }}>
+          <Marquee spacing={5} speed={1}>
+            <Text style={{ color: "#2ecc71", fontSize: 20 }}>
+              {greenStripText}
+            </Text>
+          </Marquee>
+        </View>
+        <View style={{ backgroundColor: "black" }}>
+          <Marquee spacing={5} speed={1}>
+            <Text style={{ color: "#e74c3c", fontSize: 20 }}>
+              {redStripText}
+            </Text>
+          </Marquee>
+        </View>
+      </View>
+
+      <View
+        style={{
+          flexDirection: "row",
+          paddingHorizontal: 10,
+          gap: 10,
+        }}
+      >
+        <ScrollView style={{ flex: 1 }}>
+          <Text style={{ fontSize: 24, fontWeight: 500 }}>Top Gainers</Text>
+          {value?.upTrendDiamonds.map((item, index) => (
+            <View
+              key={index}
               style={{
-                fontSize: 33,
-                fontWeight: "bold",
-                textAlign: "center",
-                color: "#fff",
+                backgroundColor: "#fff",
+                padding: 8,
+                borderRadius: 15,
+                margin: 5,
               }}
             >
-              Diamond Mall
-            </Text>
-          </View>
-          <TouchableOpacity
-            style={{ marginTop: 8, marginLeft: 80 }}
-            onPress={Press}
-          >
-            <Ionicons name="wallet-sharp" size={40} color="black" />
-          </TouchableOpacity>
-        </View>
-
-        <Carousel />
-        <SafeAreaView
-          style={{
-            padding: 2,
-            flex: 1,
-            borderRadius: 20,
-            gap: 5,
-          }}
-        >
-          <View style={{ backgroundColor: "black" }}>
-            <Marquee spacing={5} speed={2}>
-                <Text style={{color:'#2ecc71',fontSize:20}}>{value?.upTrendDiamonds.reduce((acc,item)=>acc+ '   ' + item.name,'')}</Text>  
-            </Marquee>
-          </View>
-          <View style={{ backgroundColor: "black" }}>
-          <Marquee spacing={5} speed={2}>
-                <Text style={{color:'#e74c3c',fontSize:20}}>{value?.downTrendDiamonds.reduce((acc,item)=>acc+ '   ' + item.name,'')}</Text>  
-            </Marquee>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              flex: 2,
-              padding: 10,
-              borderRadius: 10,
-            }}
-          >
-            <View style={{ padding: 10, flex: 1 }}>
-              <Text style={{ fontSize: 24, fontWeight: 500 }}>Top Gainer</Text>
-              {value?.upTrendDiamonds.map((item, index) => (
-                <View
-                key={index}
+              <Text style={{ fontSize: 20 }}>{item.name}</Text>
+              <View
                 style={{
-                  backgroundColor: "#fff",
-                  padding: 8,
-                  borderRadius: 15,
-                  margin: 5,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
                 }}
               >
-                <Text style={{ fontSize: 20 }}>{item.name}</Text>
-                <View
+                <Text
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
+                    textDecorationLine: "line-through",
                   }}
                 >
-                  <Text style={{
-                    textDecorationLine:'line-through'
-                  }}>Rs {item.oldPrice}</Text>
-                  <Text>Rs {item.price}</Text>
-                </View>
-                <Text style={{ color: "green", fontSize: 20 }}>
-                  {`+${item.price - item.oldPrice}`}
+                  Rs {item.old_price}
                 </Text>
+                <Text>Rs {item.price}</Text>
               </View>
-              ))}
+              <Text style={{ color: "green", fontSize: 20 }}>
+                {`+${item.price - item.old_price}`}
+              </Text>
             </View>
-            <View style={{ padding: 10, flex: 1 }}>
-              <Text style={{ fontSize: 24, fontWeight: 500 }}>Top Losser</Text>
-              {value?.downTrendDiamonds.map((item, index) => (
-                <View
-                  key={index}
+          ))}
+        </ScrollView>
+        <ScrollView style={{ flex: 1 }}>
+          <Text style={{ fontSize: 24, fontWeight: 500 }}>Top Losers</Text>
+          {value?.downTrendDiamonds.map((item, index) => (
+            <View
+              key={index}
+              style={{
+                backgroundColor: "#fff",
+                padding: 8,
+                borderRadius: 15,
+                margin: 5,
+              }}
+            >
+              <Text style={{ fontSize: 20 }}>{item.name}</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text
                   style={{
-                    backgroundColor: "#fff",
-                    padding: 8,
-                    borderRadius: 15,
-                    margin: 5,
+                    textDecorationLine: "line-through",
                   }}
                 >
-                  <Text style={{ fontSize: 20 }}>{item.name}</Text>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Text style={{
-                      textDecorationLine:'line-through'
-                    }}>Rs {item.oldPrice}</Text>
-                    <Text>Rs {item.price}</Text>
-                  </View>
-                  <Text style={{ color: "red", fontSize: 20 }}>
-                    {item.price - item.oldPrice}
-                  </Text>
-                </View>
-              ))}
+                  Rs {item.old_price}
+                </Text>
+                <Text>Rs {item.price}</Text>
+              </View>
+              <Text style={{ color: "red", fontSize: 20 }}>
+                {item.price - item.old_price}
+              </Text>
             </View>
-          </View>
-        </SafeAreaView>
-      </ScrollView>
-    </>
+          ))}
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 
