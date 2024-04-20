@@ -57,7 +57,7 @@ const Home = () => {
   }, [value]);
 
   return (
-    <SafeAreaView  style={{flex:1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient
         colors={["#36A7E6", "#073854"]}
         style={styles.background}
@@ -112,83 +112,84 @@ const Home = () => {
           </Marquee>
         </View>
       </View>
-
-      <View
-        style={{
-          flexDirection: "row",
-          paddingHorizontal: 10,
-          gap: 10,
-        }}
-      >
-        <ScrollView style={{ flex: 1 }}>
-          <Text style={{ fontSize: 24, fontWeight: 500 }}>Top Gainers</Text>
-          {value?.upTrendDiamonds.map((item, index) => (
-            <View
-              key={index}
-              style={{
-                backgroundColor: "#fff",
-                padding: 8,
-                borderRadius: 15,
-                margin: 5,
-              }}
-            >
-              <Text style={{ fontSize: 20 }}>{item.name}</Text>
+      <ScrollView style={{ flex: 1 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            paddingHorizontal: 10,
+            gap: 10,
+          }}
+        >
+          <ScrollView style={{ flex: 1 }}>
+            <Text style={{ fontSize: 24, fontWeight: 500 }}>Top Gainers</Text>
+            {value?.upTrendDiamonds.map((item, index) => (
               <View
+                key={index}
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
+                  backgroundColor: "#fff",
+                  padding: 8,
+                  borderRadius: 15,
+                  margin: 5,
                 }}
               >
-                <Text
+                <Text style={{ fontSize: 20 }}>{item.name}</Text>
+                <View
                   style={{
-                    textDecorationLine: "line-through",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
                   }}
                 >
-                  Rs {item.old_price}
+                  <Text
+                    style={{
+                      textDecorationLine: "line-through",
+                    }}
+                  >
+                    Rs {item.old_price}
+                  </Text>
+                  <Text>Rs {item.price}</Text>
+                </View>
+                <Text style={{ color: "green", fontSize: 20 }}>
+                  {`+${item.price - item.old_price}`}
                 </Text>
-                <Text>Rs {item.price}</Text>
               </View>
-              <Text style={{ color: "green", fontSize: 20 }}>
-                {`+${item.price - item.old_price}`}
-              </Text>
-            </View>
-          ))}
-        </ScrollView>
-        <ScrollView style={{ flex: 1 }}>
-          <Text style={{ fontSize: 24, fontWeight: 500 }}>Top Losers</Text>
-          {value?.downTrendDiamonds.map((item, index) => (
-            <View
-              key={index}
-              style={{
-                backgroundColor: "#fff",
-                padding: 8,
-                borderRadius: 15,
-                margin: 5,
-              }}
-            >
-              <Text style={{ fontSize: 20 }}>{item.name}</Text>
+            ))}
+          </ScrollView>
+          <ScrollView style={{ flex: 1 }}>
+            <Text style={{ fontSize: 24, fontWeight: 500 }}>Top Losers</Text>
+            {value?.downTrendDiamonds.map((item, index) => (
               <View
+                key={index}
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
+                  backgroundColor: "#fff",
+                  padding: 8,
+                  borderRadius: 15,
+                  margin: 5,
                 }}
               >
-                <Text
+                <Text style={{ fontSize: 20 }}>{item.name}</Text>
+                <View
                   style={{
-                    textDecorationLine: "line-through",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
                   }}
                 >
-                  Rs {item.old_price}
+                  <Text
+                    style={{
+                      textDecorationLine: "line-through",
+                    }}
+                  >
+                    Rs {item.old_price}
+                  </Text>
+                  <Text>Rs {item.price}</Text>
+                </View>
+                <Text style={{ color: "red", fontSize: 20 }}>
+                  {item.price - item.old_price}
                 </Text>
-                <Text>Rs {item.price}</Text>
               </View>
-              <Text style={{ color: "red", fontSize: 20 }}>
-                {item.price - item.old_price}
-              </Text>
-            </View>
-          ))}
-        </ScrollView>
-      </View>
+            ))}
+          </ScrollView>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
