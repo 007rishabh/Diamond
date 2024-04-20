@@ -12,8 +12,8 @@ import {
 } from "react-native";
 import { baseurl } from "../Constant";
 const Login = ({ navigation }) => {
-  const [password, setPassword] = useState("12345");
-  const [email, setEmail] = useState("r@gmail.com");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
 
   const [loading, setLoading] = useState(false);
 

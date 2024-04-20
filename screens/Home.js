@@ -36,9 +36,13 @@ const Home = () => {
     getTrends();
   }, [isfocused]);
   const Press = () => {
+    const totalDiamondsBought = portfolio.products.reduce(
+      (acc, item) => acc + item.quantity,
+      0
+    );
     Alert.alert(
       "Your Wallet Amount",
-      `Rs ${portfolio?.wallet_amount} and total diamonds bought are ${0}`,
+      `Rs ${portfolio?.wallet_amount} and total diamonds bought are ${totalDiamondsBought}`,
       [{ text: "OK" }]
     );
   };

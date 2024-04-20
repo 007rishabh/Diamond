@@ -30,10 +30,10 @@ const Portfolio = () => {
     const userId = await AsyncStorage.getItem("userId");
     const reqBody = JSON.stringify({
       userId,
-      productId: diamondId,
+      product_id: diamondId,
       quantity: qty,
       type: "sell",
-      totalPrice: currentPrice * qty,
+      total_price: currentPrice * qty,
     });
     console.log({ diamondId, qty, currentPrice }, reqBody);
     const url = `${baseurl}/order`;

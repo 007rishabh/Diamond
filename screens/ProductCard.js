@@ -43,9 +43,12 @@ const ProductCard = ({ product }) => {
             style={{ flexDirection: "row", gap: 30, marginTop: 10, padding: 5 }}
           >
             <View>
+              <Text
+                style={{ fontSize: 20, fontWeight: "500", color: "#fff" }}
+              >{`size: ${product.size}`}</Text>
               <View
                 style={{
-                  height: 50,
+                  height: 30,
                   width: 60,
                   backgroundColor: "#81ecec",
                   justifyContent: "center",
@@ -75,7 +78,7 @@ const ProductCard = ({ product }) => {
                 <Text
                   style={{ fontSize: 20, fontWeight: "500", color: "grey" }}
                 >
-                  {product.price}/-
+                  {product.old_price}/-
                 </Text>
               </View>
             </View>
