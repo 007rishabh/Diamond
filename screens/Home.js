@@ -30,6 +30,7 @@ const Home = () => {
     const res = await fetch(`${baseurl}/portfolio/${userId}`);
     const result = await res.json();
     console.log({result})
+    result.products = JSON.parse(result.products)
     setPortfolio(result);
   };
   useEffect(() => {
@@ -100,7 +101,16 @@ const Home = () => {
             gap: 5,
           }}
         >
-          
+          <View style={{ backgroundColor: "black" }}>
+            <Marquee spacing={5} speed={2}>
+                <Text style={{color:'#2ecc71',fontSize:20}}>{value?.upTrendDiamonds.reduce((acc,item)=>acc+ '   ' + item.name,'')}</Text>  
+            </Marquee>
+          </View>
+          <View style={{ backgroundColor: "black" }}>
+          <Marquee spacing={5} speed={2}>
+                <Text style={{color:'#e74c3c',fontSize:20}}>{value?.downTrendDiamonds.reduce((acc,item)=>acc+ '   ' + item.name,'')}</Text>  
+            </Marquee>
+          </View>
           <View
             style={{
               flexDirection: "row",
