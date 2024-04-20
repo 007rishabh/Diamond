@@ -15,7 +15,7 @@ import ShowUsers from '../screens/ShowUser';
 import ShowProducts from '../screens/ShowProducts';
 import Trade from '../screens/Trade';
 import AdminShowProducts from '../screens/AdminShowProduct';
-import New from '../screens/New';
+import News from '../screens/News';
 import Bank from '../screens/Bank';
 import UserWallet from '../screens/UserWallet';
 import Pending from '../screens/Pending';
@@ -42,16 +42,15 @@ const StackNavigation = () => {
       <Stack.Screen name ="ShowUsers" component={ShowUsers} options={{title:'Users'}}/>      
       <Stack.Screen name ="ShowProducts" component={ShowProducts} options={{title:'ShowProducts',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>      
       <Stack.Screen name ="AdminShowProduct" component={AdminShowProducts} options={{title:'Products',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>      
-      <Stack.Screen name ="News" component={New} options={{title:'News'}}/>      
+      <Stack.Screen name ="News" component={News} options={{title:'News'}}/>      
       <Stack.Screen name ="Bank" component={Bank} options={{title:'Bank',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>      
       <Stack.Screen name ="UserWallet" component={UserWallet} options={{title:'User Wallet',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>   
       <Stack.Screen name ="Pending" component={Pending} options={{title:'Pending Request',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>      
-      <Stack.Screen name ="Portfolio" component={Portfolio} options={{title:'Portfolio',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>      
+      <Stack.Screen name ="Portfolio" component={Portfolio} options={{title:'My Products',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>      
       <Stack.Screen name ="PendingPayments" component={PendingPayments} options={{title:'Pending Payments',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>      
       <Stack.Screen name ="ForgetPassword" component={ForgetPassword} options={{title:'Forget Password',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>      
       <Stack.Screen name ="TC" component={TC} options={{title:'Terms & Conditons',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>      
       <Stack.Screen name ="Profile" component={Profile} options={{title:'Profile',headerTintColor:'#fff',headerStyle:{backgroundColor:'black'}}}/>      
-   
     </Stack.Navigator>
   </NavigationContainer>
   )

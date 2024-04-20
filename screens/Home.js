@@ -20,7 +20,6 @@ const Home = () => {
   const isfocused = useIsFocused();
   const [value, setValue] = useState();
   const getTrends = async () => {
-    console.log("here");
     const res = await fetch(`${baseurl}/diamond/trends`);
     const result = await res.json();
     setValue(result);
@@ -30,7 +29,7 @@ const Home = () => {
     const userId = await AsyncStorage.getItem("userId");
     const res = await fetch(`${baseurl}/portfolio/${userId}`);
     const result = await res.json();
-    result.products = JSON.parse(result.products)
+    console.log({result})
     setPortfolio(result);
   };
   useEffect(() => {
@@ -39,8 +38,8 @@ const Home = () => {
   }, [isfocused]);
   const Press = () => {
     console.log(portfolio)
-    const totalBoughtProducts = portfolio?.products.reduce((acc,curr)=>acc+curr.quantity,0)
-    Alert.alert("Your Wallet Amount", `Rs ${portfolio?.walletAmount} and total diamonds bought are ${totalBoughtProducts}`, [
+    // const totalBoughtProducts = portfolio?.products.reduce((acc,curr)=>acc+curr.quantity,0)
+    Alert.alert("Your Wallet Amount", `Rs ${portfolio?.wallet_amount} and total diamonds bought are ${0}`, [
       {
         text: "Cancel",
         onPress: () => console.log("Cancel Pressed"),
@@ -101,22 +100,7 @@ const Home = () => {
             gap: 5,
           }}
         >
-          <View style={{ backgroundColor: "black" }}>
-            <Marquee spacing={20} speed={2}>
-              <Text
-                style={{ fontSize: 20, color: "#4cd137", fontWeight: "bold" }}
-              >
-                Profit
-              </Text>
-            </Marquee>
-          </View>
-          <View style={{ backgroundColor: "black" }}>
-            <Marquee spacing={20} speed={2}>
-              <Text style={{ fontSize: 20, color: "red", fontWeight: "bold" }}>
-                Loss
-              </Text>
-            </Marquee>
-          </View>
+          
           <View
             style={{
               flexDirection: "row",
