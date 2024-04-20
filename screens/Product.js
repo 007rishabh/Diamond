@@ -18,6 +18,17 @@ import { baseurl } from "../Constant";
 const Product = ({ route }) => {
   const { product } = route.params;
   const [qty, setQty] = useState();
+
+  useEffect(() => {
+    const getDiamondHistory = async () => {
+      const url = `${baseurl}/diamond/price-history/${product.id}`;
+      const res = await fetch(url, {
+        method: "GET",
+      });
+      const result = await res.json();
+      console.log(result);
+    };
+  }, []);
   const buyDiamonds = async () => {
     const userId = await AsyncStorage.getItem("userId");
 
