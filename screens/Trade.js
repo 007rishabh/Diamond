@@ -70,7 +70,7 @@ const Trade = () => {
                 }}
               >
                 {value.map((product, index) => (
-                  <ProductCard product={product} key={product._id} />
+                  <ProductCard product={product} key={product.id} />
                 ))}
               </ScrollView>
             </View>

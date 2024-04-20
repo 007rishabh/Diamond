@@ -25,7 +25,6 @@ const ProductCard = ({ product }) => {
         }}
       >
         <LinearGradient
-          // Background Linear Gradient
           colors={["#36A7E6", "#073854"]}
           style={{ height: "100%", width: "100%", borderRadius: 15 }}
         >

@@ -1,19 +1,16 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from "expo-linear-gradient";
+import React, { useState } from "react";
 import {
+  Image,
+  SafeAreaView,
   StyleSheet,
   Text,
-  View,
   TextInput,
   TouchableOpacity,
-  Alert,
-  Image,
-  ActivityIndicator,
-  SafeAreaView,
+  View,
 } from "react-native";
-import React, { useState, useRef, useEffect } from "react";
-import { LinearGradient } from "expo-linear-gradient";
 import { baseurl } from "../Constant";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { LoadingIndicator } from "../components/LoadingIndicator.js";
 const Login = ({ navigation }) => {
   const [password, setPassword] = useState("12345");
   const [email, setEmail] = useState("r@gmail.com");

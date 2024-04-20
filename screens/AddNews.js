@@ -7,9 +7,10 @@ import {
   Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { LinearGradient } from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import { baseurl } from "../Constant";
 import ImagePickerExample from "./Image";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const AddNews = ({ route, navigation }) => {
   const [image, setImage] = useState(null);
 
@@ -29,12 +30,13 @@ const AddNews = ({ route, navigation }) => {
 
   const add = async () => {
     const url = `${baseurl}/news`;
+    const userId = await AsyncStorage.getItem("userId");
     const res = await fetch(url, {
       headers: {
         "Content-Type": "application/json",
       },
       method: "POST",
-      body: JSON.stringify({ title, content }),
+      body: JSON.stringify({ title, content, userId }),
     });
     const result = await res.json();
     console.log(res, result);
@@ -50,7 +52,7 @@ const AddNews = ({ route, navigation }) => {
       },
     ]);
   };
-  
+
   const edit = async () => {
     const url = `${baseurl}/news/${id}`;
     const res = await fetch(url, {
@@ -83,11 +85,11 @@ const AddNews = ({ route, navigation }) => {
   };
   return (
     <View style={styles.container}>
-    <LinearGradient
-          // Background Linear Gradient
-          colors={['#36A7E6', '#073854']}
-          style={styles.background}
-        />
+      <LinearGradient
+        // Background Linear Gradient
+        colors={["#36A7E6", "#073854"]}
+        style={styles.background}
+      />
       <Text style={styles.pageText}>{id ? "Edit News" : "Add News"}</Text>
       <View style={{ marginHorizontal: 20 }}>
         <Text style={{ fontSize: 20, fontWeight: 700 }}>Title</Text>
@@ -158,10 +160,10 @@ const styles = StyleSheet.create({
     color: "red",
   },
   background: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     top: 0,
-    height:'100%'
+    height: "100%",
   },
 });

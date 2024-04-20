@@ -1,34 +1,22 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
+import React, { useState } from "react";
 import {
+  Dimensions,
+  Image,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
-  TouchableOpacity,
-  Image,
   TextInput,
-  SafeAreaView,
   ToastAndroid,
-  Dimensions,
-  ScrollView,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import React, { useState } from "react";
-import { FontAwesome } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { BarChart } from "react-native-chart-kit";
 import { baseurl } from "../Constant";
-import { LinearGradient } from "expo-linear-gradient";
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from "react-native-chart-kit";
 const Product = ({ route }) => {
-  const navigation = useNavigation();
   const { product } = route.params;
-  const { id, name, price, category, subcategory } = product;
   const [qty, setQty] = useState();
   const buyDiamonds = async () => {
     const userId = await AsyncStorage.getItem("userId");
@@ -41,10 +29,10 @@ const Product = ({ route }) => {
       method: "POST",
       body: JSON.stringify({
         userId,
-        productId: product.id,
+        product_id: product.id,
         quantity: qty,
         type: "buy",
-        totalPrice: product.price * qty,
+        total_price: product.price * qty,
       }),
     });
     console.log(res);
@@ -127,7 +115,6 @@ const Product = ({ route }) => {
                     width: 60,
                     borderRadius: 8,
                     padding: 10,
-                    
                   }}
                   placeholder="Qty"
                   value={qty}

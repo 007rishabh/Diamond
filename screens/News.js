@@ -1,15 +1,8 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { baseurl } from "../Constant";
 import { LinearGradient } from "expo-linear-gradient";
+import React, { useEffect, useState } from "react";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { LoadingIndicator } from "../components/LoadingIndicator.js";
+import { baseurl } from "../Constant";
 
 const New = () => {
   const [news, setNews] = React.useState([]);
@@ -17,7 +10,6 @@ const New = () => {
 
   const getNews = async () => {
     try {
-      console.log('hereee')
       setLoading(true);
       const url = `${baseurl}/news`;
       const res = await fetch(url, {
@@ -29,47 +21,56 @@ const New = () => {
       }
     } catch (error) {
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
   useEffect(() => {
     getNews();
   }, []);
-  console.log({loading})
 
   return (
     <>
       <LinearGradient
-        // Background Linear Gradient
         colors={["#36A7E6", "#073854"]}
         style={styles.background}
       />
       {loading ? (
         <LoadingIndicator />
       ) : (
-        <ScrollView style={{ backgroundColor: "#74b9ff", height: "100%" }}>
+        <ScrollView
+          style={{
+            height: "100%",
+            padding: 10,
+          }}
+          contentContainerStyle={{
+            rowGap: 16,
+          }}
+        >
           {news.map((item) => (
-            <TouchableOpacity
+            <View
               key={item.id}
               style={{
-                height: 150,
+                minHeight: 100,
                 backgroundColor: "#dfe6e9",
                 borderRadius: 8,
                 gap: 10,
-                margin: 5,
                 flexDirection: "row",
               }}
             >
-              <View style={{ flex: 1 }}>
-                <Text>Image</Text>
-              </View>
+              <Image
+                source={require("../assets/DI.png")}
+                style={{
+                  height: 80,
+                  width: 80,
+                }}
+              />
               <View style={{ flex: 2, padding: 20 }}>
                 <Text style={{ fontSize: 20, fontWeight: "500" }}>
                   {item.title}
                 </Text>
                 <Text>{item.content}</Text>
               </View>
-            </TouchableOpacity>
+            </View>
           ))}
         </ScrollView>
       )}
