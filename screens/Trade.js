@@ -34,10 +34,10 @@ const Trade = () => {
         console.log({ result });
         if (res.status === 200) {
           const data = result.reduce((acc, item) => {
-            if (!acc[item.category]) {
-              acc[item.category] = [];
+            if (!acc[item.carat]) {
+              acc[item.carat] = [];
             }
-            acc[item.category] = [...acc[item.category], item];
+            acc[item.carat] = [...acc[item.carat], item];
             return acc;
           }, {});
           setProducts(data);
@@ -62,7 +62,7 @@ const Trade = () => {
         <ScrollView style={{ height: "100%", paddingLeft: 10 }}>
           {Object.entries(products).map(([key, value]) => (
             <View key={key} style={{ marginBottom: 20, gap: 10 }}>
-              <Text style={styles.headingText}>{`Category : ${key}`}</Text>
+              <Text style={styles.headingText}>{`carat : ${key}`}</Text>
               <ScrollView
                 horizontal={true}
                 contentContainerStyle={{

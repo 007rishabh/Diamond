@@ -52,10 +52,7 @@ export default function Admin() {
     <FontAwesome name="eye" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>
     <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Show All Users</Text>
     </TouchableOpacity>
-    <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} >
-    <FontAwesome name="eye" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>
-    <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Show All Admins</Text>
-    </TouchableOpacity>
+   
     <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} 
     onPress={()=>navigation.navigate('Pending')}>
     <FontAwesome name="eye" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>

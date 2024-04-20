@@ -57,7 +57,7 @@ const Home = () => {
   }, [value]);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView  style={{flex:1}}>
       <LinearGradient
         colors={["#36A7E6", "#073854"]}
         style={styles.background}

@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  ScrollView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -13,24 +14,34 @@ import ImagePickerExample from "./Image";
 const initialValue = {
   product: {
     name: "",
-    category: "",
-    subcategory: "",
+    size:'',
+    shape:'',
+    color:'',
+    carat:'',
     price: 0,
+    manufacturing:'',
   },
 };
 const AddDiamond = ({ route }) => {
   const { product } = route.params || initialValue;
 
   const [name, setName] = useState();
-  const [category, setCategory] = useState();
-  const [subcategory, setSubCategory] = useState();
+  const [size, setSize] = useState();
+  const [shape, setShape] = useState();
+  const [carat, setCarat] = useState();
+  const [manufacturing, setManufacturing] = useState();
+  const [color, setColor] = useState();
+ 
   const [price, setPrice] = useState();
   useEffect(() => {
     if (product) {
       setName(product.name);
-      setCategory(product.category);
-      setSubCategory(product.subcategory);
+      setSize(product.size);
+      setCarat(product.carat);
+      setColor(product.color);
+      setManufacturing(product.manufacturing);
       setPrice(String(product.price));
+      setShape(product.shape);
     }
   }, []);
   const addDiamond = async () => {
@@ -40,7 +51,7 @@ const AddDiamond = ({ route }) => {
         "Content-Type": "application/json",
       },
       method: "POST",
-      body: JSON.stringify({ name, category, subcategory, price }),
+      body: JSON.stringify({ name, size, shape,color,carat,manufacturing, price }),
     });
     const result = await res.json();
     console.log(res, result);
@@ -53,9 +64,12 @@ const AddDiamond = ({ route }) => {
             // navigation.navigate('Home')
           } else {
             setName("");
-            setCategory("");
             setPrice("");
-            setSubCategory("");
+            setCarat('');
+            setColor('');
+            setManufacturing('');
+            setShape('')
+            setSize('')
           }
         },
       },
@@ -69,7 +83,7 @@ const AddDiamond = ({ route }) => {
         "Content-Type": "application/json",
       },
       method: "PUT",
-      body: JSON.stringify({ name, category, subcategory, price }),
+      body: JSON.stringify({ name, size, shape,color,carat,manufacturing, price}),
     });
     const result = await res.json();
     console.log(res, result);
@@ -82,9 +96,13 @@ const AddDiamond = ({ route }) => {
             // navigation.navigate('Home')
           } else {
             setName("");
-            setCategory("");
             setPrice("");
-            setSubCategory("");
+            setCarat('');
+            setColor('');
+            setManufacturing('');
+            setShape('')
+            setSize('')
+          
           }
         },
       },
@@ -96,34 +114,54 @@ const AddDiamond = ({ route }) => {
     else addDiamond();
   };
   return (
-    <View style={styles.container}>
-      <LinearGradient
-        // Background Linear Gradient
-        colors={["#36A7E6", "#073854"]}
-        style={styles.background}
-      />
+    <>
+    <LinearGradient
+      // Background Linear Gradient
+      colors={["#36A7E6", "#073854"]}
+      style={styles.background}
+    />
+    <ScrollView style={styles.container}>
       <Text style={styles.pageText}>
         {product.id ? "Edit Diamond" : "Add Diamond"}
       </Text>
-      <View style={{ marginHorizontal: 20 }}>
+      <View style={{ marginHorizontal: 20}}>
         <Text style={{ fontSize: 20, fontWeight: 700 }}>Name</Text>
         <TextInput
           value={name}
           style={styles.textInput}
           onChangeText={(value) => setName(value)}
         />
-        <Text style={{ fontSize: 20, fontWeight: 700 }}>Category</Text>
+        <Text style={{ fontSize: 20, fontWeight: 700 }}>Size</Text>
         <TextInput
-          value={category}
+          value={size}
           style={styles.textInput}
-          onChangeText={(value) => setCategory(value)}
+          onChangeText={(value) => setSize(value)}
         />
-        <Text style={{ fontSize: 20, fontWeight: 700 }}>Sub-Category</Text>
+        <Text style={{ fontSize: 20, fontWeight: 700 }}>Shape</Text>
         <TextInput
-          value={subcategory}
+          value={shape}
           style={styles.textInput}
-          onChangeText={(value) => setSubCategory(value)}
+          onChangeText={(value) => setShape(value)}
         />
+        <Text style={{ fontSize: 20, fontWeight: 700 }}>Carat</Text>
+        <TextInput
+          value={carat}
+          style={styles.textInput}
+          onChangeText={(value) => setCarat(value)}
+        />
+        <Text style={{ fontSize: 20, fontWeight: 700 }}>Color</Text>
+        <TextInput
+          value={color}
+          style={styles.textInput}
+          onChangeText={(value) => setColor(value)}
+        />
+        <Text style={{ fontSize: 20, fontWeight: 700 }}>Manufacturing</Text>
+        <TextInput
+          value={manufacturing}
+          style={styles.textInput}
+          onChangeText={(value) => setManufacturing(value)}
+        />
+      
         <Text style={{ fontSize: 20, fontWeight: 700 }}>Price</Text>
         <TextInput
           value={price}
@@ -139,7 +177,8 @@ const AddDiamond = ({ route }) => {
       <TouchableOpacity style={styles.submitBtn} onPress={submitHandler}>
         <Text style={{ marginLeft: 160, fontSize: 20 }}>{product.id ? 'Edit':'Add'}</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
+    </>
   );
 };
 
@@ -148,7 +187,6 @@ export default AddDiamond;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     // backgroundColor:'#74b9ff'
   },
   pageText: {

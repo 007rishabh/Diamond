@@ -19,7 +19,7 @@ const ProductCard = ({ product }) => {
         style={{
           borderWidth: 2,
           borderRadius: 15,
-          width: 250,
+          width: 280,
           height: 125,
           gap: 20,
         }}
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     rowGap: 10,
     height: 280,
-    width: 280,
+    width: 300,
     borderRadius: 10,
   },
 

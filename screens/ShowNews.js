@@ -56,7 +56,7 @@ const ShowNews = () => {
       ) : (
         <ScrollView style={{ flex: 1 }}>
           {news.map((item) => (
-            <ScrollView>
+           
               <View
                 key={item.id}
                 style={{
@@ -120,7 +120,7 @@ const ShowNews = () => {
                   </TouchableOpacity>
                 </View>
               </View>
-            </ScrollView>
+            
           ))}
         </ScrollView>
       )}

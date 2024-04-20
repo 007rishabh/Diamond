@@ -41,7 +41,7 @@ export default function Setting() {
     <Octicons name="cross-reference" size={24} color="black"  style={{marginLeft:5,marginTop:5}}/>
         <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Reffral</Text>
     </TouchableOpacity>
-    <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} >
+    <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}}  onPress={()=>navigation.navigate('TC')} >
     <Ionicons name="help-circle-outline" size={24} color="black" style={{marginLeft:5,marginTop:5}} />      
     <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Terms & Conditions</Text>
     </TouchableOpacity>

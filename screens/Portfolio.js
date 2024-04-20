@@ -5,7 +5,8 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ToastAndroid,
-  ScrollView
+  ScrollView,
+  TextInput
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
@@ -16,24 +17,12 @@ import { LinearGradient } from "expo-linear-gradient";
 const Portfolio = () => {
   const [portfolio, setPortfolio] = useState(null);
   const isfocused = useIsFocused();
-
+  const [quantity,setQuantity]=  useState()
   const getPortfolio = async () => {
     const userId = await AsyncStorage.getItem("userId");
     const res = await fetch(`${baseurl}/portfolio/${userId}`);
     const result = await res.json();
     console.log("portfolio", result);
-    result.products = await JSON.parse(result.products);
-    result.products = result.products.map((product) => {
-      const diamond = result.diamonds.find(
-        (item) => item.id == product.productId
-      );
-      console.log({ diamond });
-      if (!diamond) {
-        return product;
-      }
-      return { ...product, ...diamond };
-    });
-
     setPortfolio(result);
   };
 
@@ -66,13 +55,14 @@ const Portfolio = () => {
 
   if (!portfolio) return null;
   return (
-    <ScrollView >
+    <>
     <LinearGradient
         // Background Linear Gradient
         colors={["#36A7E6", "#073854"]}
         style={styles.background}
       />
-      {portfolio.products.map((product, index) => (
+    <ScrollView style={{flex:1}}>
+      {portfolio?.products?.map((product, index) => (
         <View
           key={index}
           style={{
@@ -103,7 +93,7 @@ const Portfolio = () => {
               {"current price: " + product.buyPrice}
             </Text>
           
-        
+            <TextInput style={{backgroundColor:'#fff',height:40,width:50,marginLeft:150,padding:10,borderRadius:5,fontWeight:'bold'}} placeholder="Qty" value={quantity} onChangeText={setQuantity} keyboardType="number-pad"/>
             <TouchableOpacity
               style={[styles.submitBtn, styles.red]}
               onPress={() =>
@@ -120,6 +110,7 @@ const Portfolio = () => {
         </View>
       ))}
     </ScrollView>
+    </>
   );
 };
 

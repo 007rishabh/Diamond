@@ -68,6 +68,7 @@ const AdminShowProduct = () => {
               marginTop: 20,
               borderRadius: 8,
               padding: 20,
+              
             }}
           >
             <View style={{ flexDirection: "row" }}>

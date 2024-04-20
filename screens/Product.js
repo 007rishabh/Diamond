@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import {
   Dimensions,
   Image,
@@ -96,80 +96,45 @@ const Product = ({ route }) => {
               colors={["#36A7E6", "#073854"]}
               style={{ width: "100%", borderRadius: 15 }}
             >
-              <View
-                style={{ flexDirection: "row", justifyContent: "space-around" }}
-              >
-                <Text
-                  style={{ fontSize: 20, fontWeight: "500", color: "#fff" }}
-                >
-                  {product.name}
-                </Text>
-                <Text
-                  style={{ fontSize: 20, fontWeight: "500", color: "#fff" }}
-                >
-                  {" "}
-                  Price
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  // marginTop: 10,
-                  padding: 10,
-                }}
-              >
-                <TextInput
-                  style={{
-                    backgroundColor: "#dfe6e9",
-                    height: 40,
-                    width: 60,
-                    borderRadius: 8,
-                    padding: 10,
-                  }}
-                  placeholder="Qty"
-                  value={qty}
-                  onChangeText={(text) => setQty(text)}
-                />
-                <Text
-                  style={{ fontSize: 20, fontWeight: "500", color: "#fff" }}
-                >
-                  New
-                </Text>
-                <Text style={{ fontSize: 20, fontWeight: "500" }}>
-                  {product.price}/-
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  // marginTop: 10,
-                  padding: 10,
-                }}
-              >
-                <TouchableOpacity
-                  style={{
-                    height: 40,
-                    width: 60,
-                    backgroundColor: "#81ecec",
-                    justifyContent: "center",
-                    borderRadius: 8,
-                  }}
-                  onPress={buyDiamonds}
-                >
-                  <Text style={{ textAlign: "center", fontSize: 20 }}>Buy</Text>
+              <View style={{ flexDirection: "column" ,padding:10,gap:5}}>
+              <View style={{flexDirection:'row',justifyContent:'space-around'}}>
+              <Text style={{fontSize:15,color:'#fff'}}>Name:</Text>
+              <Text style={{fontSize:15,color:'#fff'}}>{product.name}</Text>
+            </View>
+                <View style={{flexDirection:'row',justifyContent:'space-around'}}>
+                  <Text style={{fontSize:15,color:'#fff'}}>Size:</Text>
+                  <Text style={{fontSize:15,color:'#fff'}}>{product.size}</Text>
+                </View>
+                <View style={{flexDirection:'row',justifyContent:'space-around'}}>
+                  <Text style={{fontSize:15,color:'#fff'}}>Shape:</Text>
+                  <Text style={{fontSize:15,color:'#fff'}}>{product.shape}</Text>
+                </View>
+                <View style={{flexDirection:'row',justifyContent:'space-around'}}>
+                  <Text style={{fontSize:15,color:'#fff'}}>Colour:</Text>
+                  <Text style={{fontSize:15,color:'#fff'}}>{product.color}</Text>
+                </View>
+                <View style={{flexDirection:'row',justifyContent:'space-around'}}>
+                  <Text style={{fontSize:15,color:'#fff'}}>Carat:</Text>
+                  <Text style={{fontSize:15,color:'#fff'}}>{product.carat}</Text>
+                </View>
+                <View style={{flexDirection:'row',justifyContent:'space-around'}}>
+                  <Text style={{fontSize:15,color:'#fff'}}>Manufacturing:</Text>
+                  <Text style={{fontSize:15,color:'#fff'}}>{product.manufacturing}</Text>
+                </View>
+                <View style={{flexDirection:'row',justifyContent:'space-around'}}>
+                  <Text style={{fontSize:15,color:'#fff'}}>Old Price:</Text>
+                  <Text style={{fontSize:15,color:'#fff'}}>{product.old_price}</Text>
+                </View>
+                <View style={{flexDirection:'row',justifyContent:'space-around'}}>
+                  <Text style={{fontSize:15,color:'#fff'}}>New Price:</Text>
+                  <Text style={{fontSize:15,color:'#fff'}}>{product.price}</Text>
+                </View>
+                <View style={{flexDirection:'row',justifyContent:"space-around"}}>
+                <TextInput style={{backgroundColor:'#fff',height:40,width:40,borderRadius:5,padding:10} } placeholder="Qty" value={qty} onChangeText={setQty}/>
+                <TouchableOpacity style={{height:40,width:100,backgroundColor:'#78e08f',borderRadius:5}} onPress={buyDiamonds} keyboardType="number-pad">
+                  <Text style={{textAlign:'center',fontSize:20}}>Buy</Text>
                 </TouchableOpacity>
-                <Text
-                  style={{ fontSize: 20, fontWeight: "500", color: "#fff" }}
-                >
-                  Old
-                </Text>
-                <Text
-                  style={{ fontSize: 20, fontWeight: "500", color: "#636e72" }}
-                >
-                  {product.price}/-
-                </Text>
+                </View>
               </View>
             </LinearGradient>
           </View>
