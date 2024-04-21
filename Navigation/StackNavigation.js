@@ -24,6 +24,7 @@ import PendingPayments from "../screens/PendingPayments";
 import ForgetPassword from "../screens/ForgetPassword";
 import TC from "../screens/TC";
 import Profile from "../screens/Profile";
+import NewsDetails from "../screens/NewsDetails";
 const StackNavigation = () => {
   const Stack = createNativeStackNavigator();
 
@@ -88,6 +89,15 @@ const StackNavigation = () => {
           component={ShowNews}
           options={{
             title: "News",
+            headerTintColor: "#fff",
+            headerStyle: { backgroundColor: "black" },
+          }}
+        />
+        <Stack.Screen
+          name="NewsDetails"
+          component={NewsDetails}
+          options={{
+            title: "News Details",
             headerTintColor: "#fff",
             headerStyle: { backgroundColor: "black" },
           }}

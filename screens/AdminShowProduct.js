@@ -5,10 +5,11 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import React, { Fragment, useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
-import { useNavigation ,useIsFocused} from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { baseurl } from "../Constant";
 import { LinearGradient } from "expo-linear-gradient";
 const AdminShowProduct = () => {
@@ -52,7 +53,13 @@ const AdminShowProduct = () => {
   };
 
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView
+      style={{ flex: 1 }}
+      contentContainerStyle={{
+        rowGap: 10,
+        padding: 10,
+      }}
+    >
       <LinearGradient
         // Background Linear Gradient
         colors={["#36A7E6", "#073854"]}
@@ -65,22 +72,42 @@ const AdminShowProduct = () => {
             style={{
               height: "auto",
               backgroundColor: "#dfe6e9",
-              marginTop: 20,
               borderRadius: 8,
               padding: 20,
-              
+              flexDirection: "row",
             }}
           >
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ width: 110 }}>
+              {item.image?.url ? (
+                <Image
+                  source={{
+                    uri: item.image?.url,
+                  }}
+                  style={{
+                    borderRadius: 10,
+                    width: 100,
+                    height: 100,
+                  }}
+                  alt="image"
+                />
+              ) : (
+                <Text>No Image</Text>
+              )}
+            </View>
+            <View style={{ flex: 1 }}>
               <Text style={{ fontSize: 20 }}>{item.name}</Text>
-              <TouchableOpacity
-                style={{ marginLeft: "auto" }}
-                onPress={() => deleteProduct(item.id)}
-              >
+              <Text>{"\u20B9" + item.price}</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                gap: 10,
+              }}
+            >
+              <TouchableOpacity onPress={() => deleteProduct(item.id)}>
                 <AntDesign name="delete" size={24} color="black" />
               </TouchableOpacity>
               <TouchableOpacity
-                style={{ marginLeft: "10%" }}
                 onPress={() =>
                   navigation.navigate("AddDiamond", { product: item })
                 }
@@ -88,11 +115,6 @@ const AdminShowProduct = () => {
                 <AntDesign name="edit" size={24} color="black" />
               </TouchableOpacity>
             </View>
-            <View style={{ flexDirection: "row", gap: 20 }}>
-              <Text>{item.category}</Text>
-              <Text>{item.subcategory}</Text>
-            </View>
-            <Text>{"\u20B9" + item.price}</Text>
           </View>
         );
       })}

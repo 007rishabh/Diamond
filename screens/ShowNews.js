@@ -6,12 +6,14 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { baseurl } from "../Constant";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import {LoadingIndicator} from '../components/LoadingIndicator.js'
+import { LoadingIndicator } from "../components/LoadingIndicator.js";
+import axios from "axios";
 const ShowNews = () => {
   const [loading, setLoading] = useState(false);
 
@@ -22,28 +24,17 @@ const ShowNews = () => {
     try {
       setLoading(true);
       const url = `${baseurl}/news`;
-      const res = await fetch(url, {
-        method: "GET",
-      });
-      const result = await res.json();
-      if (res.status === 200) {
-        setNews(result);
-      }
+      const result = await axios.get(url);
+      setNews(result.data);
     } catch {
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
   useEffect(() => {
     getNews();
   }, [isfocused]);
-  const deleteNews = async (id) => {
-    const url = `${baseurl}/news/${id}`;
-    const res = await fetch(url, {
-      method: "DELETE",
-    });
-    getNews();
-  };
+
   return (
     <>
       <LinearGradient
@@ -52,76 +43,53 @@ const ShowNews = () => {
         style={styles.background}
       />
       {loading ? (
-       <LoadingIndicator/>
+        <LoadingIndicator />
       ) : (
         <ScrollView style={{ flex: 1 }}>
-          {news.map((item) => (
-           
-              <View
+          {news?.map((item) => {
+            return (
+              <TouchableOpacity
                 key={item.id}
                 style={{
-                  height: 200,
                   backgroundColor: "#b2bec3",
                   borderRadius: 8,
-                  gap: 10,
                   margin: 5,
+                  gap: 10,
                   flexDirection: "row",
+                  justifyContent: "space-between",
+                  padding: 10,
                 }}
+                onPress={() =>
+                  navigation.navigate("NewsDetails", { news: item })
+                }
               >
-                <View style={{ flex: 1 }}>
-                  <Text>Image</Text>
+                <View>
+                  {item.image?.url ? (
+                    <Image
+                      source={{
+                        uri: item.image.url,
+                      }}
+                      style={{
+                        borderRadius: 10,
+                        width: 100,
+                        height: 100,
+                      }}
+                      alt="image"
+                    />
+                  ) : (
+                    <Text>No Image</Text>
+                  )}
                 </View>
-                <View style={{ flex: 2, padding: 20 }}>
+
+                <View style={{ flex: 1 }}>
                   <Text style={{ fontSize: 20, fontWeight: "500" }}>
                     {item.title}
                   </Text>
                   <Text>{item.content}</Text>
                 </View>
-                <View style={{ flexDirection: "row" }}>
-                  <TouchableOpacity
-                    style={{ borderRadius: 8 }}
-                    onPress={() =>
-                      navigation.navigate("AddNews", {
-                        id: item.id,
-                        newstitle: item.title,
-                        newscontent: item.content,
-                      })
-                    }
-                  >
-                    <Text
-                      style={{
-                        padding: 10,
-                        backgroundColor: "#55efc4",
-                        fontWeight: "900",
-                        marginTop: 100,
-                        marginRight: 10,
-                        borderRadius: 8,
-                      }}
-                    >
-                      Edit
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{ borderRadius: 8 }}
-                    onPress={() => deleteNews(item.id)}
-                  >
-                    <Text
-                      style={{
-                        padding: 10,
-                        backgroundColor: "#fab1a0",
-                        fontWeight: "900",
-                        marginTop: 100,
-                        marginRight: 10,
-                        borderRadius: 8,
-                      }}
-                    >
-                      Delete
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            
-          ))}
+              </TouchableOpacity>
+            );
+          })}
         </ScrollView>
       )}
     </>

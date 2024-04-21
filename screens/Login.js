@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -29,8 +30,8 @@ const Login = ({ navigation }) => {
         body: JSON.stringify({ email, password }),
       });
       const result = await res.json();
-
       await AsyncStorage.setItem("userId", String(result.data.id));
+      ToastAndroid.show(result.message, ToastAndroid.SHORT);
 
       if (res.status === 200) {
         if (result.data.role === "admin") {

@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import "react-native-gesture-handler";
 import StackNavigation from "./Navigation/StackNavigation";
 export default function App() {

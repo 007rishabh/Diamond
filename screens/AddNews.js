@@ -11,6 +11,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { baseurl } from "../Constant";
 import ImagePickerExample from "./Image";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ImagePicker2 } from "../components/ImagePicker2";
+import axios from "axios";
 const AddNews = ({ route, navigation }) => {
   const [image, setImage] = useState(null);
 
@@ -30,16 +32,22 @@ const AddNews = ({ route, navigation }) => {
 
   const add = async () => {
     const url = `${baseurl}/news`;
-    const userId = await AsyncStorage.getItem("userId");
-    const res = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({ title, content, userId }),
+    const formData = new FormData();
+    formData.append("image", {
+      uri: image.uri,
+      name: image.fileName,
+      type: "image/jpg",
     });
-    const result = await res.json();
-    console.log(res, result);
+    const userId = await AsyncStorage.getItem("userId");
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("userId", userId);
+    const result = await axios.post(url, formData, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
     Alert.alert("Alert Title", result.message, [
       {
@@ -55,15 +63,16 @@ const AddNews = ({ route, navigation }) => {
 
   const edit = async () => {
     const url = `${baseurl}/news/${id}`;
+    const userId = await AsyncStorage.getItem("userId");
+
     const res = await fetch(url, {
       headers: {
         "Content-Type": "application/json",
       },
       method: "PUT",
-      body: JSON.stringify({ title, content }),
+      body: JSON.stringify({ title, content, userId }),
     });
     const result = await res.json();
-    console.log(res, result);
 
     Alert.alert("Alert Title", result.message, [
       {
@@ -106,10 +115,7 @@ const AddNews = ({ route, navigation }) => {
           style={styles.textInput}
           onChangeText={(value) => setContent(value)}
         />
-        <Text style={{ fontSize: 20, fontWeight: 700 }}>Image</Text>
-        <View style={{ padding: 10 }}>
-          <ImagePickerExample image={image} setImage={setImage} />
-        </View>
+        {!id && <ImagePicker2 image={image} setImage={setImage} />}
       </View>
       <TouchableOpacity style={styles.submitBtn} onPress={submitHandler}>
         <Text style={{ marginLeft: 160, fontSize: 20 }}>
