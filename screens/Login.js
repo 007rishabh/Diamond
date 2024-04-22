@@ -12,9 +12,10 @@ import {
   View,
 } from "react-native";
 import { baseurl } from "../Constant";
+import axios from "axios";
 const Login = ({ navigation }) => {
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("admin");
+  const [email, setEmail] = useState("admin@gmail.com");
 
   const [loading, setLoading] = useState(false);
 
@@ -22,18 +23,14 @@ const Login = ({ navigation }) => {
     try {
       setLoading(true);
       const url = `${baseurl}/auth/signin`;
-      const res = await fetch(url, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-      });
-      const result = await res.json();
-      await AsyncStorage.setItem("userId", String(result.data.id));
-      ToastAndroid.show(result.message, ToastAndroid.SHORT);
+      const result = await axios.post(url, { email, password });
 
-      if (res.status === 200) {
+      ToastAndroid.show(
+        result?.data?.message ?? "Login Successfull",
+        ToastAndroid.SHORT
+      );
+      if (result.status === 200) {
+        await AsyncStorage.setItem("userId", result.data?.data?.id);
         if (result.data.role === "admin") {
           navigation.navigate("Admin");
         } else {
@@ -42,7 +39,12 @@ const Login = ({ navigation }) => {
       } else {
         setPassword("");
       }
-    } catch {
+    } catch (err) {
+      ToastAndroid.show(
+        err?.response?.data?.message ?? "some error occurred",
+        ToastAndroid.SHORT
+      );
+      console.error(err?.response?.data?.message ?? err);
     } finally {
       setLoading(false);
     }
@@ -80,7 +82,11 @@ const Login = ({ navigation }) => {
         />
       </View>
       <TouchableOpacity style={styles.submitBtn} onPress={loginHandler}>
-        <Text style={{ textAlign: "center", fontSize: 20 }}>Login</Text>
+        {loading ? (
+          <Text style={{ textAlign: "center", fontSize: 20 }}>Loading...</Text>
+        ) : (
+          <Text style={{ textAlign: "center", fontSize: 20 }}>Login</Text>
+        )}
       </TouchableOpacity>
 
       <Text style={styles.linkText}>

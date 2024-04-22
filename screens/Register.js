@@ -5,14 +5,15 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  ToastAndroid,
 } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
-import { LinearGradient } from 'expo-linear-gradient';
-// import { useNavigation } from '@react-navigation/native';
-// import Home from './Home';
+import { LinearGradient } from "expo-linear-gradient";
 import { baseurl } from "../Constant";
+import { ImagePicker2 } from "../components/ImagePicker2";
+import axios from "axios";
 const Register = ({ navigation }) => {
-  // const navigation = useNavigation()
+  const [image, setImage] = useState(null);
   const [username, setName] = useState();
   const [password, setPassword] = useState();
   const [email, setEmail] = useState();
@@ -30,57 +31,48 @@ const Register = ({ navigation }) => {
   const [f5, setF5] = useState("");
   const [f6, setF6] = useState("");
   const [count, setCount] = useState(60);
-  const add = async () => {
+  const [loading, setLoading] = useState(false);
+  const addUser = async () => {
     if (password !== confirmpassword) {
       Alert.alert("passwords doesn't match");
       return;
     }
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append("image", {
+        uri: image.uri,
+        name: image.fileName,
+        type: image.mimeType,
+      });
+      formData.append("username", username);
+      formData.append("email", email);
+      formData.append("password", password);
 
-    // const url = "http://192.168.1.46:8080/api/auth/signup";
-    const url = `${baseurl}/auth/signup`;
-    const res = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({ username, email, password, walletAmount: 0 }),
-    });
-    const result = await res.json();
-    console.log(res, result);
-
-    Alert.alert("Alert Title", result.message, [
-      {
-        text: "OK",
-        onPress: () => {
-          if (res.status === 201) {
-            navigation.navigate("Login");
-          } else {
-            setPassword("");
-          }
+      const url = `${baseurl}/auth/signup`;
+      const result = await axios.post(url, formData, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
         },
-      },
-    ]);
-
-    useEffect(() => {
-      const Interval = setInterval(() => {
-        if (count == 0) {
-          clearInterval(Interval);
-        } else {
-          setCount(count - 1);
-        }
-      }, 1000);
-      return () => {
-        clearInterval(Interval);
-      };
-    }, [count]);
+      });
+      ToastAndroid.show(result.data.message, ToastAndroid.SHORT);
+      navigation.navigate("Login");
+    } catch (error) {
+      ToastAndroid.show("Please fill all fields", ToastAndroid.SHORT);
+      console.error("error", error);
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
     <View style={styles.container}>
-    <LinearGradient
-          // Background Linear Gradient
-          colors={['#36A7E6', '#073854']}
-          style={styles.background}
-        />
+      <LinearGradient
+        colors={["#36A7E6", "#073854"]}
+        style={styles.background}
+      />
+
       <Text style={styles.pageText}>Register</Text>
       <View style={{ marginHorizontal: 20 }}>
         <Text style={{ fontSize: 20, fontWeight: 700 }}>Name</Text>
@@ -97,7 +89,7 @@ const Register = ({ navigation }) => {
         />
 
         <View style={styles.otpView}>
-          <Text style={{ fontSize: 20, fontWeight: "700" }}>OTP Verify</Text>
+          <Text style={{ fontSize: 20, fontWeight: "700" }}>Verify OTP</Text>
           <TextInput
             ref={et1}
             style={[
@@ -201,9 +193,14 @@ const Register = ({ navigation }) => {
             setConfirmPassword(confirmpassword)
           }
         />
+        <ImagePicker2 image={image} setImage={setImage} />
       </View>
-      <TouchableOpacity style={styles.submitBtn} onPress={add}>
-        <Text style={{ marginLeft: 130, fontSize: 20 }}>Register</Text>
+      <TouchableOpacity style={styles.submitBtn} onPress={addUser}>
+        {loading ? (
+          <Text style={{ textAlign: "center", fontSize: 20 }}>Loading...</Text>
+        ) : (
+          <Text style={{ textAlign: "center", fontSize: 20 }}>Register</Text>
+        )}
       </TouchableOpacity>
       <Text style={styles.linkText}>
         For Login to Application{" "}
@@ -250,7 +247,7 @@ const styles = StyleSheet.create({
   },
   linkText: {
     textAlign: "center",
-    fontSize:15
+    fontSize: 15,
   },
   link: {
     color: "red",
@@ -281,10 +278,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   background: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     top: 0,
-    height:'100%'
+    height: "100%",
   },
 });
