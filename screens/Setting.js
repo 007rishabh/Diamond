@@ -19,7 +19,7 @@ export default function Setting() {
     <View style={{gap:10,paddingTop:20,paddingHorizontal:10,height:'100%'}}>
     <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} onPress={()=>navigation.navigate('Profile')}>
     <FontAwesome5 name="user-alt" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>
-      <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Edit Profile</Text>
+      <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}> Profile</Text>
     </TouchableOpacity>
     <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} 
       onPress={()=>navigation.navigate('Bank')}>  

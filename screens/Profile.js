@@ -43,19 +43,20 @@ const Profile = () => {
     <View
       style={{
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 20,
+        
       }}
     >
       <LinearGradient
         colors={["#36A7E6", "#073854"]}
         style={styles.background}
       />
-      <Text style={{ fontSize: 30, fontWeight: "bold", color: "#fff" }}>
+      
+      <View style={{height:500,width:350,backgroundColor:'#dfe6e9',borderRadius:10,alignItems:'center',justifyContent:'center',marginTop:100,marginLeft:30}}>
+     
+      <Text style={{ fontSize: 30, fontWeight: "bold" }}>
         Profile
       </Text>
-      <View>
+      <View style={{padding:10}}>
         {userInfo.profile_image?.url ? (
           <Image
             source={{
@@ -72,45 +73,28 @@ const Profile = () => {
           <EvilIcons name="user" size={200} color="white" />
         )}
       </View>
-      <TextInput
-        placeholder="Name"
-        style={{
-          backgroundColor: "#fff",
-          height: 40,
-          width: "80%",
-          borderRadius: 10,
-          padding: 10,
-        }}
-      />
-      <TextInput
-        placeholder="Email"
-        style={{
-          backgroundColor: "#fff",
-          height: 40,
-          width: "80%",
-          borderRadius: 10,
-          padding: 10,
-        }}
-      />
-      <Text style={{ fontSize: 30, fontWeight: "bold", color: "#fff" }}>
-        Balance & Products
-      </Text>
-      <View style={{ flexDirection: "row", gap: 10 }}>
-        <Text>{portfolio?.wallet_amount ?? 0}</Text>
-        <Text>{countOfProducts ?? 0}</Text>
-
-        <TextInput
-          placeholder="Produce"
-          style={{
-            backgroundColor: "#fff",
-            height: 80,
-            width: "40%",
-            borderRadius: 10,
-            textAlign: "center",
-          }}
-        />
+      <View style={{flexDirection:'row',gap:10}}>
+      <Text style={{fontSize:20,fontWeight:'bold'}}>Name:</Text>
+      <Text style={{fontSize:20,fontWeight:'bold'}}>{userInfo.username}</Text>
       </View>
-    </View>
+      <View style={{flexDirection:'row',padding:20,gap:10}}>
+      <Text style={{fontSize:20,fontWeight:'bold'}}>Email:</Text>
+      <Text style={{fontSize:20,fontWeight:'bold'}}>{userInfo.email}</Text>
+      </View>
+      <View style={{flexDirection:'row',padding:20,gap:10}}>
+      <Text style={{ fontSize: 20, fontWeight: "bold"}}>
+        Balance :
+      </Text>
+        <Text style={{fontSize:20,fontWeight:'bold'}}>{portfolio?.wallet_amount ?? 0}</Text>
+        </View>
+        <View style={{flexDirection:'row',padding:20,gap:10}}>
+        <Text style={{fontSize:20,fontWeight:'bold'}}>Products:</Text>
+        <Text style={{fontSize:20,fontWeight:'bold'}}>{countOfProducts ?? 0}</Text>
+        </View>
+        </View>
+      
+      </View>
+   
   );
 };
 

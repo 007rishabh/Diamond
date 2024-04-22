@@ -36,7 +36,7 @@ const Home = () => {
     getTrends();
   }, [isfocused]);
   const Press = () => {
-    const totalDiamondsBought = portfolio.products.reduce(
+    const totalDiamondsBought = portfolio.products?.reduce(
       (acc, item) => acc + item.quantity,
       0
     );

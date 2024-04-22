@@ -15,6 +15,7 @@ import {
 } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 import { baseurl } from "../Constant";
+import axios from 'axios'
 const Product = ({ route }) => {
   const { product } = route.params;
   const [qty, setQty] = useState();
@@ -24,24 +25,26 @@ const Product = ({ route }) => {
     const userId = await AsyncStorage.getItem("userId");
 
     const url = `${baseurl}/order`;
-    const res = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        userId,
-        product_id: product.id,
-        quantity: qty,
-        type: "buy",
-        total_price: product.price * qty,
-      }),
-    });
-    console.log(res);
-    const result = await res.json();
+    const reqBody = {
+      userId,
+      product_id: product.id,
+      quantity: qty,
+      type: "buy",
+      total_price: product.price * qty,
+    }
+    console.info({reqBody})
+    try{
 
-    ToastAndroid.show(result.message, ToastAndroid.SHORT);
+      const result = await axios.post(url, reqBody);
+      console.log({result});
+      
+      ToastAndroid.show(result.data?.message ?? 'product bought', ToastAndroid.SHORT);
+    }catch(err){
+      console.error(err.response?.data)
+    }
   };
+
+
   const data = {
     labels: [10, 11, 12, 13, 14, 15, 16],
     datasets: [

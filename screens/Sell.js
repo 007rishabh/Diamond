@@ -17,16 +17,17 @@ import axios from "axios";
 
 const Sell = ({ product }) => {
   const [quantity, setQuantity] = useState();
+  console.log("product",product)
 
-  const sellDiamonds = async ({ diamondId, qty, currentPrice }) => {
+  const sellDiamonds = async () => {
     try {
       const userId = await AsyncStorage.getItem("userId");
       const reqBody = {
         userId,
-        product_id: diamondId,
-        quantity: qty,
+        product_id: product.product_id,
+        quantity: quantity,
         type: "sell",
-        total_price: currentPrice * qty,
+        total_price: product.diamond_info?.price * quantity,
       }
       console.log( reqBody);
       const url = `${baseurl}/order`;
@@ -64,13 +65,13 @@ const Sell = ({ product }) => {
             fontWeight: "bold",
           }}
         >
-          {"Diamond name: " + product.name ?? "product name it is"}
+          {"Diamond name: " + product.diamond_info?.name }
         </Text>
         <Text style={{ textAlign: "center", fontSize: 20 }}>
           {"Quantity: " + product.quantity}
         </Text>
         <Text style={{ textAlign: "center", fontSize: 20 }}>
-          {"current price: " + product.buyPrice}
+          {"current price: " + product.diamond_info?.price}
         </Text>
 
         <TextInput
@@ -91,11 +92,7 @@ const Sell = ({ product }) => {
         <TouchableOpacity
           style={[styles.submitBtn, styles.red]}
           onPress={() =>
-            sellDiamonds({
-              diamondId: product.id,
-              qty: product.quantity,
-              currentPrice: product.buy_price,
-            })
+            sellDiamonds()
           }
         >
           <Text style={{ textAlign: "center", fontSize: 20 }}>sell</Text>
