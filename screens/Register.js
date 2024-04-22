@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Alert,
   ToastAndroid,
+  ScrollView,
 } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -56,18 +57,18 @@ const Register = ({ navigation }) => {
           "Content-Type": "multipart/form-data",
         },
       });
-      ToastAndroid.show(result.data.message, ToastAndroid.SHORT);
+      ToastAndroid.show(result?.data?.message, ToastAndroid.SHORT);
       navigation.navigate("Login");
     } catch (error) {
-      ToastAndroid.show("Please fill all fields", ToastAndroid.SHORT);
-      console.error("error", error);
+      ToastAndroid.show(error.response?.data?.message ?? "Please fill all fields", ToastAndroid.SHORT);
+      console.error("error", error.response.data);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <View style={styles.container}>
+    <View  style={styles.container}>
       <LinearGradient
         colors={["#36A7E6", "#073854"]}
         style={styles.background}

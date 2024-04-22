@@ -4,18 +4,25 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, ScrollView, View, Text } from "react-native";
 import { baseurl } from "../Constant";
+import axios from 'axios'
 const History = () => {
   const [orders, setOrders] = useState([]);
   const [payments, setPayments] = useState([]);
   const isfocused = useIsFocused();
 
   const getUserOrders = async () => {
-    const userId = await AsyncStorage.getItem("userId");
-    const res = await fetch(`${baseurl}/order/user/${userId}`);
-    const result = await res.json();
-    setOrders(result);
+    try {
+      
+      const userId = await AsyncStorage.getItem("userId");
+      const result = await axios.get(`${baseurl}/order/user/${userId}`);
+      console.log("hello",result.data)
+      setOrders(result.data);
+    } catch (error) {
+      console.error(error)
+    }
   };
   const getUserPayments = async () => {
+    
     const userId = await AsyncStorage.getItem("userId");
     const res = await fetch(`${baseurl}/payment/${userId}`);
     const result = await res.json();
@@ -39,7 +46,7 @@ const History = () => {
           rowGap: 10,
         }}
       >
-        {orders?.map((order, index) => {
+        { orders?.map((order, index) => {
           return (
             <View
               key={order.id}

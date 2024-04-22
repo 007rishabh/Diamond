@@ -71,13 +71,13 @@ const AddDiamond = ({ route }) => {
         },
       });
 
-      ToastAndroid.show(result.message, ToastAndroid.SHORT);
+      ToastAndroid.show(result.data.message ?? 'added successfullly', ToastAndroid.SHORT);
 
       Alert.alert("Alert Title", result.message, [
         {
           text: "OK",
           onPress: () => {
-            if (res.status === 201) {
+            if (result.status === 201) {
               // navigation.navigate('Home')
             } else {
               setName("");

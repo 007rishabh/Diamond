@@ -53,7 +53,7 @@ const AddNews = ({ route, navigation }) => {
       {
         text: "OK",
         onPress: () => {
-          if (res.status === 201) {
+          if (result.status === 201) {
             navigation.navigate("ShowNews");
           }
         },

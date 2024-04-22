@@ -31,7 +31,7 @@ const Login = ({ navigation }) => {
       );
       if (result.status === 200) {
         await AsyncStorage.setItem("userId", result.data?.data?.id);
-        if (result.data.role === "admin") {
+        if (result.data.data.role === "admin") {
           navigation.navigate("Admin");
         } else {
           navigation.navigate("HomeScreen");

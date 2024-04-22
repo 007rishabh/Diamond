@@ -18,6 +18,7 @@ import { baseurl } from "../Constant";
 const Product = ({ route }) => {
   const { product } = route.params;
   const [qty, setQty] = useState();
+  console.info(product)
 
   const buyDiamonds = async () => {
     const userId = await AsyncStorage.getItem("userId");
@@ -68,11 +69,24 @@ const Product = ({ route }) => {
       />
       <ScrollView style={{ flex: 1, padding: 20 }}>
         <View style={{ borderColor: "black" }}>
-          <View style={{ padding: 10 }}>
+          <View style={{ padding: 10 ,marginLeft:35}}>
+          <View style={{ width: 110 }}>
+          {product.image?.url ? (
             <Image
-              source={require("../assets/diamond.jpg")}
-              style={{ height: 240, width: "100%" }}
+              source={{
+                uri: product.image?.url,
+              }}
+              style={{
+                borderRadius: 10,
+                width: 300,
+                height: 300,
+              }}
+              alt="image"
             />
+          ) : (
+            <Text>No Image</Text>
+          )}
+        </View>
           </View>
           <View
             style={{

@@ -10,10 +10,23 @@ const ProductCard = ({ product }) => {
       style={[styles.card, styles.cardElevated]}
       onPress={() => navigation.navigate("Product", { product })}
     >
+    <View style={{ marginTop:10}}>
+    {product.image?.url ? (
       <Image
-        source={require("../assets/diamond.jpg")}
-        style={{ height: 120, width: 180 }}
+        source={{
+          uri: product.image?.url,
+        }}
+        style={{
+          borderRadius: 10,
+          width: 200,
+          height: 100,
+        }}
+        alt="image"
       />
+    ) : (
+      <Text>No Image</Text>
+    )}
+  </View>
 
       <View
         style={{

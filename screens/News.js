@@ -57,13 +57,23 @@ const New = () => {
                 flexDirection: "row",
               }}
             >
+            <View style={{ padding:20}}>
+            {item.image?.url ? (
               <Image
-                source={require("../assets/DI.png")}
-                style={{
-                  height: 80,
-                  width: 80,
+                source={{
+                  uri: item.image?.url,
                 }}
+                style={{
+                  borderRadius: 10,
+                  width: 80,
+                  height: 80,
+                }}
+                alt="image"
               />
+            ) : (
+              <Text>No Image</Text>
+            )}
+          </View>
               <View style={{ flex: 2, padding: 20 }}>
                 <Text style={{ fontSize: 20, fontWeight: "500" }}>
                   {item.title}
