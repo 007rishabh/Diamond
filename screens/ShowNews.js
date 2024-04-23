@@ -26,6 +26,7 @@ const ShowNews = () => {
       const url = `${baseurl}/news`;
       const result = await axios.get(url);
       setNews(result.data);
+      console.log(result.data[0])
     } catch {
     } finally {
       setLoading(false);
@@ -34,7 +35,7 @@ const ShowNews = () => {
   useEffect(() => {
     getNews();
   }, [isfocused]);
-
+  
   return (
     <>
       <LinearGradient
@@ -64,6 +65,8 @@ const ShowNews = () => {
                 }
               >
                 <View>
+                
+
                   {item.image?.url ? (
                     <Image
                       source={{

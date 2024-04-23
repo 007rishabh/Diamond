@@ -74,7 +74,7 @@ const AddNews = ({ route, navigation }) => {
     });
     const result = await res.json();
 
-    Alert.alert("Alert Title", result.message, [
+    Alert.alert("Alert Title", result.data.message, [
       {
         text: "OK",
         onPress: () => {
