@@ -53,6 +53,12 @@ const AdminShowProduct = () => {
   };
 
   return (
+    <>
+    <LinearGradient
+        // Background Linear Gradient
+        colors={["#36A7E6", "#073854"]}
+        style={styles.background}
+      />
     <ScrollView
       style={{ flex: 1 }}
       contentContainerStyle={{
@@ -60,11 +66,6 @@ const AdminShowProduct = () => {
         padding: 10,
       }}
     >
-      <LinearGradient
-        // Background Linear Gradient
-        colors={["#36A7E6", "#073854"]}
-        style={styles.background}
-      />
       {products.map((item) => {
         return (
           <View
@@ -119,6 +120,7 @@ const AdminShowProduct = () => {
         );
       })}
     </ScrollView>
+    </>
   );
 };
 

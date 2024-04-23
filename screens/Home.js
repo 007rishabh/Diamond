@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useMemo, useState } from "react";
+import axios from 'axios'
 import {
   Alert,
   Image,
@@ -20,16 +21,15 @@ const Home = () => {
   const isfocused = useIsFocused();
   const [value, setValue] = useState();
   const getTrends = async () => {
-    const res = await fetch(`${baseurl}/diamond/trends`);
-    const result = await res.json();
-    setValue(result);
+    const result = await axios.get(`${baseurl}/diamond/trends`);
+    setValue(result.data);
   };
   const [portfolio, setPortfolio] = React.useState();
   const getPortfolio = async () => {
     const userId = await AsyncStorage.getItem("userId");
-    const res = await fetch(`${baseurl}/portfolio/${userId}`);
-    const result = await res.json();
-    setPortfolio(result);
+    const {data} = await axios.get(`${baseurl}/portfolio/${userId}`);
+    console.log('portfolio',data)
+    setPortfolio(data);
   };
   useEffect(() => {
     getPortfolio();
@@ -40,6 +40,7 @@ const Home = () => {
       (acc, item) => acc + item.quantity,
       0
     );
+    console.log(portfolio)
     Alert.alert(
       "Your Wallet Amount",
       `Rs ${portfolio?.wallet_amount} and total diamonds bought are ${totalDiamondsBought}`,

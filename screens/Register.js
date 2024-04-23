@@ -68,7 +68,8 @@ const Register = ({ navigation }) => {
   };
 
   return (
-    <View  style={styles.container}>
+    <ScrollView style={{ flex: 1 }}>
+    
       <LinearGradient
         colors={["#36A7E6", "#073854"]}
         style={styles.background}
@@ -209,7 +210,8 @@ const Register = ({ navigation }) => {
           Login
         </Text>
       </Text>
-    </View>
+    
+    </ScrollView>
   );
 };
 

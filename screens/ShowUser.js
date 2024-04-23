@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Button, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useEffect } from 'react'
 import {baseurl} from '../Constant'
 import {useNavigation,useIsFocused} from '@react-navigation/native'
@@ -34,6 +34,7 @@ const deleteUser = async (id)=>{
 
 }
     return (
+        <ScrollView>
         <View style={{height:'100%'}}>
         <LinearGradient
           // Background Linear Gradient
@@ -61,6 +62,7 @@ const deleteUser = async (id)=>{
                 )
                 )}
         </View>
+        </ScrollView>
     )
 }
 

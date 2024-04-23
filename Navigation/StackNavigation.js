@@ -25,6 +25,7 @@ import ForgetPassword from "../screens/ForgetPassword";
 import TC from "../screens/TC";
 import Profile from "../screens/Profile";
 import NewsDetails from "../screens/NewsDetails";
+import QR from "../screens/QR";
 const StackNavigation = () => {
   const Stack = createNativeStackNavigator();
 
@@ -196,6 +197,15 @@ const StackNavigation = () => {
         <Stack.Screen
           name="Profile"
           component={Profile}
+          options={{
+            title: "Profile",
+            headerTintColor: "#fff",
+            headerStyle: { backgroundColor: "black" },
+          }}
+        />
+        <Stack.Screen
+          name="Upload QR"
+          component={QR}
           options={{
             title: "Profile",
             headerTintColor: "#fff",

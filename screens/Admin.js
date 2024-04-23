@@ -64,6 +64,12 @@ export default function Admin() {
     <FontAwesome name="history" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>      
     <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Pending  Payment</Text>
     </TouchableOpacity>
+    <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} 
+      onPress={()=>navigation.navigate('Upload QR')}
+    >
+    <FontAwesome name="qrcode" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>      
+    <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}}>Upload QR</Text>
+    </TouchableOpacity>
     <TouchableOpacity style={{display:'flex',flexDirection:'row',height:40,backgroundColor:'#dfe6e9',borderRadius:5,marginLeft:5}} onPress={()=>navigation.navigate('TC')} >
     <Ionicons name="newspaper-outline" size={24} color="black" style={{marginLeft:5,marginTop:5}}/>      
     <Text style={{marginLeft:50,marginTop:5,fontSize:15,fontWeight:'bold'}} >Terms & Conditon</Text>

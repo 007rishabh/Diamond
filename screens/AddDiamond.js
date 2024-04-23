@@ -73,7 +73,7 @@ const AddDiamond = ({ route }) => {
 
       ToastAndroid.show(result.data.message ?? 'added successfullly', ToastAndroid.SHORT);
 
-      Alert.alert("Alert Title", result.message, [
+      Alert.alert("Alert Title", result.data.message, [
         {
           text: "OK",
           onPress: () => {
@@ -142,12 +142,12 @@ const AddDiamond = ({ route }) => {
   };
   return (
     <>
-      <LinearGradient
-        // Background Linear Gradient
-        colors={["#36A7E6", "#073854"]}
-        style={styles.background}
-      />
-      <ScrollView style={styles.container}>
+    <ScrollView style={styles.container}>
+    <LinearGradient
+      // Background Linear Gradient
+      colors={["#36A7E6", "#073854"]}
+      style={styles.background}
+    />
         <Text style={styles.pageText}>
           {product.id ? "Edit Diamond" : "Add Diamond"}
         </Text>

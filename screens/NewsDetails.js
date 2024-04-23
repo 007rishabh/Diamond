@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{useState} from "react";
 import {
   View,
   Text,
@@ -6,12 +6,26 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  ToastAndroid,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { baseurl } from "../Constant";
 
 const NewsDetails = ({ navigation, route }) => {
-  const { news } = route.params;
+  const [loading, setLoading] = useState(false);
 
+  const { news } = route.params;
+  const getNews = async () => {
+    try {
+      setLoading(true);
+      const url = `${baseurl}/news`;
+      const result = await axios.get(url);
+      setNews(result.data);
+    } catch {
+    } finally {
+      setLoading(false);
+    }
+  };
   const deleteNews = async (id) => {
     const url = `${baseurl}/news/${id}`;
     const res = await fetch(url, {
@@ -19,6 +33,7 @@ const NewsDetails = ({ navigation, route }) => {
     });
     getNews();
   };
+  ToastAndroid.show('News Deleted', ToastAndroid.SHORT);
 
   return (
     <>
@@ -73,7 +88,7 @@ const NewsDetails = ({ navigation, route }) => {
               Edit
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => deleteNews(item.id)}>
+          <TouchableOpacity onPress={() => deleteNews(news.id)}>
             <Text
               style={{
                 backgroundColor: "#fab1a0",
