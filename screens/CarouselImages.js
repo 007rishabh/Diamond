@@ -1,6 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import {
+  Dimensions,
   StyleSheet,
   Text,
   TextInput,
@@ -54,12 +55,14 @@ const CarouselImages = () => {
     }
   };
   return (
-    <View style={{ alignItems: "center", justifyContent: "center" }}>
+    <View style={{ alignItems: "center", justifyContent: "center",flex:1 }}>
       <LinearGradient
         colors={["#36A7E6", "#073854"]}
         style={styles.background}
       />
+      <View style={{height:200,width:Dimensions.get('screen').width}}>
       <Carousel />
+      </View>
       <View>
         <ImagePicker2 image={image} setImage={setImage} aspect={[4, 2]} />
         <TouchableOpacity style={styles.submitBtn} onPress={submitHandler}>
