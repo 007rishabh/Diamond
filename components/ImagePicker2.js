@@ -1,16 +1,12 @@
 import * as ImagePicker from "expo-image-picker";
-import { useState } from "react";
 import { Button, Image, StyleSheet, View } from "react-native";
-import { baseurl } from "../Constant";
-import axios from "axios";
 
-export const ImagePicker2 = ({ image, setImage }) => {
+export const ImagePicker2 = ({ image, setImage, aspect = [1, 1] }) => {
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-
-      allowsEditing: false,
-      aspect: [4, 3],
+      allowsEditing: true,
+      aspect,
       quality: 1,
     });
 
@@ -28,40 +24,15 @@ export const ImagePicker2 = ({ image, setImage }) => {
     }
   };
 
-  const handleUploadPhoto = async () => {
-    try {
-      const formData = new FormData();
-
-      formData.append("image", {
-        uri: image.uri,
-        name: image.fileName,
-        type: "image/jpg",
-      });
-
-      const uploadUrl = `${baseurl}/upload`;
-      const res = await axios.post(uploadUrl, formData, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "multipart/form-data",
-        },
-      });
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
-
   return (
-    <View>
+    <View style={{ alignItems: "center" }}>
       <Button title="Pick an image from camera roll" onPress={pickImage} />
       {image && (
-        <>
-          <Image
-            source={{ uri: image.uri }}
-            style={styles.image}
-            alt="image here"
-          />
-          {/* <Button title="Upload Photo" onPress={handleUploadPhoto} /> */}
-        </>
+        <Image
+          source={{ uri: image.uri }}
+          style={{ width: 200, aspectRatio: aspect[0] / aspect[1] }}
+          alt="image here"
+        />
       )}
     </View>
   );
@@ -72,9 +43,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  image: {
-    width: 200,
-    height: 200,
   },
 });

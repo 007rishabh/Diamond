@@ -26,6 +26,7 @@ import TC from "../screens/TC";
 import Profile from "../screens/Profile";
 import NewsDetails from "../screens/NewsDetails";
 import QR from "../screens/QR";
+import CarouselImages from "../screens/CarouselImages";
 const StackNavigation = () => {
   const Stack = createNativeStackNavigator();
 
@@ -208,6 +209,15 @@ const StackNavigation = () => {
           component={QR}
           options={{
             title: "Profile",
+            headerTintColor: "#fff",
+            headerStyle: { backgroundColor: "black" },
+          }}
+        />
+        <Stack.Screen
+          name="CarouselImages"
+          component={CarouselImages}
+          options={{
+            title: "Carousel Images",
             headerTintColor: "#fff",
             headerStyle: { backgroundColor: "black" },
           }}

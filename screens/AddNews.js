@@ -36,7 +36,7 @@ const AddNews = ({ route, navigation }) => {
     formData.append("image", {
       uri: image.uri,
       name: image.fileName,
-      type: "image/jpg",
+      type: image.mimeType,
     });
     const userId = await AsyncStorage.getItem("userId");
     formData.append("title", title);
