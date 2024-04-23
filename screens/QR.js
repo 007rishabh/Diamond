@@ -1,5 +1,5 @@
-import { StyleSheet, Text, ToastAndroid, View } from "react-native";
-import React, { useEffect } from "react";
+import { StyleSheet, Text, ToastAndroid, View,Image,TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
 import { ImagePicker2 } from "../components/ImagePicker2";
 import { LinearGradient } from "expo-linear-gradient";
 import { baseurl } from "../Constant";
@@ -8,36 +8,43 @@ import axios from "axios";
 export default function QR() {
   const [image, setImage] = useState(null);
   const [qrImage, setQrImage] = useState(null);
-
-  useEffect(() => {
-    const getCurrentQR = async () => {
-      try {
-        const result = await axios.get(`${baseurl}/media/payment-image`);
-        setQrImage(result.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getCurrentQR();
-  }, []);
+  const [loading, setLoading] = useState(false);
+  // useEffect(() => {
+  //   const getCurrentQR = async () => {
+  //     try {
+  //       const result = await axios.get(`${baseurl}/media/payment-image`);
+  //       setQrImage(result.data);
+  //     } catch (error) {
+  //       console.error(error,error.response.data);
+  //     }
+      
+  //   };
+  //   getCurrentQR();
+  // }, []);
 
   const updateQR = async () => {
     try {
+      setLoading(true)
       const formData = new FormData();
       formData.append("image", {
         uri: image.uri,
-        name: image.fileName,
-        type: image.mimeType,
+        name: "paymentimage.jpeg",
+        type: "image/jpeg",
       });
-      const { data } = axios.post(`${baseurl}/media/payment-image`, formData, {
+      console.log(image)
+      const result = axios.post(`${baseurl}/media/payment-image`, formData, {
         headers: {
           Accept: "application/json",
           "Content-Type": "multipart/form-data",
         },
       });
-      ToastAndroid.show(data?.message, ToastAndroid.SHORT);
+      console.log(result)
+      // ToastAndroid.show(data?.message ?? "Updated QR", ToastAndroid.SHORT);
     } catch (error) {
       console.error(error);
+    }
+    finally{
+      setLoading(false)
     }
   };
 
@@ -47,22 +54,7 @@ export default function QR() {
         colors={["#36A7E6", "#073854"]}
         style={styles.background}
       />
-      <View style={{}}>
-        {!image && qrImage ? (
-          <Image
-            source={{ uri: qrImage }}
-            style={{ width: 200, aspectRatio: aspect[0] / aspect[1] }}
-            alt="image here"
-          />
-        ) : (
-          <Text>QR Image not found</Text>
-        )}
-        <Image
-          source={{ uri: image.uri }}
-          style={{ width: 200, aspectRatio: aspect[0] / aspect[1] }}
-          alt="image here"
-        />
-      </View>
+    
 
       <ImagePicker2 image={image} setImage={setImage} />
 

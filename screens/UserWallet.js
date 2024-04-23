@@ -5,17 +5,31 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  ToastAndroid
+  ToastAndroid,Image
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect,useState} from "react";
 import { baseurl } from "../Constant";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ionicons } from '@expo/vector-icons';
+import axios from "axios";
 const UserWallet = () => {
   const [amount, setAmount] = React.useState(0);
   const [utf, setutf] = React.useState();
   
   const [currentamount, setCurrentAmount] = React.useState(0);
+  const [qrImage, setQrImage] = useState(null);
+
+  useEffect(() => {
+    const getCurrentQR = async () => {
+      try {
+        const result = await axios.get(`${baseurl}/media/payment-image`);
+        setQrImage(result.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getCurrentQR();
+  }, []);
   const getPortfolio = async () => {
     const userId = await AsyncStorage.getItem("userId");
     const res = await fetch(`${baseurl}/portfolio/${userId}`);
@@ -61,8 +75,17 @@ const UserWallet = () => {
           backgroundColor: "#74b9ff",
         }}
       >
-      <View style={{marginHorizontal:60}}>
-      <Ionicons name="qr-code-sharp" size={250} color="black" />
+      <View style={{alignItems:'center'}}>
+        { qrImage ? (
+          <Image
+            source={{ uri: qrImage }}
+            style={{ width: 200,height:200 }}
+            alt="image here"
+          />
+        ) : (
+          <Text>QR Image not found</Text>
+        )}
+        
       </View>
         <Text style={{ fontSize: 20, fontWeight: "600" }}>Enter Amount</Text>
         <TextInput

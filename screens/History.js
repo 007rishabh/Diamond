@@ -35,7 +35,7 @@ const History = () => {
   }, [isfocused]);
 
   return (
-    <SafeAreaView>
+    <>
       <LinearGradient
         colors={["#36A7E6", "#073854"]}
         style={styles.background}
@@ -132,7 +132,7 @@ const History = () => {
           );
         })}
       </ScrollView>
-    </SafeAreaView>
+    </>
   );
 };
 
