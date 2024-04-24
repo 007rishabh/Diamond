@@ -1,8 +1,12 @@
 import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
+import * as ImagePicker from "expo-image-picker";
+
 import {
   Alert,
+  Button,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -27,7 +31,7 @@ const initialValue = {
 const AddDiamond = ({ route }) => {
   const { product } = route.params || initialValue;
   const [image, setImage] = useState();
-
+  const [currentImage, setCurrentImage] = useState();
   const [name, setName] = useState();
   const [size, setSize] = useState();
   const [shape, setShape] = useState();
@@ -35,6 +39,7 @@ const AddDiamond = ({ route }) => {
   const [manufacturing, setManufacturing] = useState();
   const [color, setColor] = useState();
   const [price, setPrice] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (product) {
@@ -45,10 +50,12 @@ const AddDiamond = ({ route }) => {
       setManufacturing(product.manufacturing);
       setPrice(String(product.price));
       setShape(product.shape);
+      setCurrentImage({ uri: product.image.url });
     }
   }, []);
   const addDiamond = async () => {
     try {
+      setLoading(true);
       const url = `${baseurl}/diamond`;
       const formData = new FormData();
       console.log(image);
@@ -71,7 +78,10 @@ const AddDiamond = ({ route }) => {
         },
       });
 
-      ToastAndroid.show(result.data.message ?? 'added successfullly', ToastAndroid.SHORT);
+      ToastAndroid.show(
+        result.data.message ?? "added successfullly",
+        ToastAndroid.SHORT
+      );
 
       Alert.alert("Alert Title", result.data.message, [
         {
@@ -93,61 +103,83 @@ const AddDiamond = ({ route }) => {
       ]);
     } catch (error) {
       console.error({ error });
+    } finally {
+      setLoading(false);
     }
   };
 
   const editDiamond = async () => {
-    const url = `${baseurl}/diamond/${product.id}`;
-    const res = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "PUT",
-      body: JSON.stringify({
-        name,
-        size,
-        shape,
-        color,
-        carat,
-        manufacturing,
-        price,
-      }),
-    });
-    const result = await res.json();
-    console.log(res, result);
+    try {
+      setLoading(true);
+      const url = `${baseurl}/diamond/${product.id}`;
+      const formData = new FormData();
+      if (image) {
+        formData.append("image", {
+          uri: image.uri,
+          name: image.fileName,
+          type: image.mimeType,
+        });
+      }
+      formData.append("name", name);
+      formData.append("size", size);
+      formData.append("shape", shape);
+      formData.append("color", color);
+      formData.append("carat", carat);
+      formData.append("manufacturing", manufacturing);
+      formData.append("price", price);
 
-    Alert.alert("Alert Title", result.message, [
-      {
-        text: "OK",
-        onPress: () => {
-          if (res.status === 201) {
-            // navigation.navigate('Home')
-          } else {
-            setName("");
-            setPrice("");
-            setCarat("");
-            setColor("");
-            setManufacturing("");
-            setShape("");
-            setSize("");
-          }
+      const result = await axios.put(url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
-      },
-    ]);
+      });
+      ToastAndroid.show(
+        result?.data?.message ?? "edited successfullly",
+        ToastAndroid.SHORT
+      );
+      console.log(result.data);
+    } catch (error) {
+      console.error({ error });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const submitHandler = () => {
     if (product.id) editDiamond();
     else addDiamond();
   };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const image = result.assets[0];
+
+      if (image.fileSize > 40000) {
+        ToastAndroid.show(
+          "Image size must be less than 4MB",
+          ToastAndroid.SHORT
+        );
+        return;
+      }
+      setImage(image);
+      setCurrentImage({ uri: image.uri });
+    }
+  };
   return (
     <>
-    <ScrollView style={styles.container}>
-    <LinearGradient
-      // Background Linear Gradient
-      colors={["#36A7E6", "#073854"]}
-      style={styles.background}
-    />
+      <ScrollView style={styles.container}>
+        <LinearGradient
+          // Background Linear Gradient
+          colors={["#36A7E6", "#073854"]}
+          style={styles.background}
+        />
         <Text style={styles.pageText}>
           {product.id ? "Edit Diamond" : "Add Diamond"}
         </Text>
@@ -197,15 +229,32 @@ const AddDiamond = ({ route }) => {
             onChangeText={(value) => setPrice(value)}
           />
           <Text style={{ fontSize: 20, fontWeight: 700 }}>Image</Text>
-          <View style={{ padding: 10 }}>
-            {!product.id && <ImagePicker2 image={image} setImage={setImage} />}
-          </View>
+          <TouchableOpacity onPress={pickImage}>
+            {currentImage?.uri ? (
+              <Image
+                source={{ uri: currentImage.uri }}
+                style={{ width: 200, aspectRatio: 1 / 1 }}
+                alt="image here"
+              />
+            ) : (
+              <Button
+                title="Pick an image from camera roll"
+                onPress={pickImage}
+              />
+            )}
+          </TouchableOpacity>
         </View>
 
         <TouchableOpacity style={styles.submitBtn} onPress={submitHandler}>
-          <Text style={{ marginLeft: 160, fontSize: 20 }}>
-            {product.id ? "Edit" : "Add"}
-          </Text>
+          {loading ? (
+            <Text style={{ textAlign: "center", fontSize: 20 }}>
+              Loading...
+            </Text>
+          ) : (
+            <Text style={{ textAlign: "center", fontSize: 20 }}>
+              {product.id ? "Edit" : "Add"}
+            </Text>
+          )}
         </TouchableOpacity>
       </ScrollView>
     </>

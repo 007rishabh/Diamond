@@ -1,4 +1,4 @@
-import React ,{useState} from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -33,7 +33,6 @@ const NewsDetails = ({ navigation, route }) => {
     });
     getNews();
   };
-  ToastAndroid.show('News Deleted', ToastAndroid.SHORT);
 
   return (
     <>
@@ -74,6 +73,7 @@ const NewsDetails = ({ navigation, route }) => {
                 id: news.id,
                 newstitle: news.title,
                 newscontent: news.content,
+                news_image: news.image,
               })
             }
           >

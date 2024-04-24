@@ -1,89 +1,120 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ImagePicker from "expo-image-picker";
+import { LinearGradient } from "expo-linear-gradient";
+import React, { useEffect, useState } from "react";
 import {
+  Alert,
+  Button,
+  Image,
   StyleSheet,
   Text,
-  View,
   TextInput,
   TouchableOpacity,
-  Alert,
+  View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { LinearGradient } from "expo-linear-gradient";
 import { baseurl } from "../Constant";
-import ImagePickerExample from "./Image";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ImagePicker2 } from "../components/ImagePicker2";
+
 import axios from "axios";
 const AddNews = ({ route, navigation }) => {
   const [image, setImage] = useState(null);
+  const [newsImage, setNewsImage] = useState(null);
 
-  const { id, newstitle, newscontent } = route.params || {
+  const { id, newstitle, newscontent, news_image } = route.params || {
     id: null,
     newstitle: "",
     newscontent: "",
+    news_image: null,
   };
   const [title, setTitle] = useState();
   const [content, setContent] = useState();
+  const [isUpdating, setIsUpdating] = useState(false);
+
   useEffect(() => {
     if (id) {
       setContent(newscontent);
       setTitle(newstitle);
+      setNewsImage({ uri: news_image.url });
     }
   }, []);
 
   const add = async () => {
     const url = `${baseurl}/news`;
-    const formData = new FormData();
-    formData.append("image", {
-      uri: image.uri,
-      name: image.fileName,
-      type: image.mimeType,
-    });
-    const userId = await AsyncStorage.getItem("userId");
-    formData.append("title", title);
-    formData.append("content", content);
-    formData.append("userId", userId);
-    const result = await axios.post(url, formData, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    try {
+      setIsUpdating(true);
+      const userId = await AsyncStorage.getItem("userId");
+      const formData = new FormData();
 
-    Alert.alert("Alert Title", result.message, [
-      {
-        text: "OK",
-        onPress: () => {
-          if (result.status === 201) {
-            navigation.navigate("ShowNews");
-          }
+      if (image) {
+        formData.append("image", {
+          uri: image.uri,
+          name: image.fileName,
+          type: image.mimeType,
+        });
+      }
+      formData.append("title", title);
+      formData.append("content", content);
+      formData.append("userId", userId);
+      const result = await axios.post(url, formData, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
         },
-      },
-    ]);
-  };
+      });
 
+      Alert.alert("Alert Title", result?.data?.message, [
+        {
+          text: "OK",
+          onPress: () => {
+            if (result.status === 201) {
+              navigation.navigate("ShowNews");
+            }
+          },
+        },
+      ]);
+    } catch (error) {
+      console.error({ error });
+    } finally {
+      setIsUpdating(false);
+    }
+  };
   const edit = async () => {
     const url = `${baseurl}/news/${id}`;
-    const userId = await AsyncStorage.getItem("userId");
-
-    const res = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "PUT",
-      body: JSON.stringify({ title, content, userId }),
-    });
-    const result = await res.json();
-
-    Alert.alert("Alert Title", result.data.message, [
-      {
-        text: "OK",
-        onPress: () => {
-          if (res.status === 200) {
-            navigation.navigate("ShowNews");
-          }
+    try {
+      setIsUpdating(true);
+      const userId = await AsyncStorage.getItem("userId");
+      const formData = new FormData();
+      if (image) {
+        formData.append("image", {
+          uri: image.uri,
+          name: image.fileName,
+          type: image.mimeType,
+        });
+      }
+      formData.append("title", title);
+      formData.append("content", content);
+      formData.append("userId", userId);
+      const result = await axios.put(url, formData, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
         },
-      },
-    ]);
+      });
+
+      Alert.alert("Alert Title", result?.data?.message, [
+        {
+          text: "OK",
+          onPress: () => {
+            if (result.status === 200) {
+              navigation.navigate("ShowNews");
+            }
+          },
+        },
+      ]);
+    } catch (error) {
+      console.error({ error });
+    } finally {
+      setIsUpdating(false);
+    }
   };
   const submitHandler = () => {
     if (id) {
@@ -92,10 +123,32 @@ const AddNews = ({ route, navigation }) => {
       add();
     }
   };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const image = result.assets[0];
+
+      if (image.fileSize > 40000) {
+        ToastAndroid.show(
+          "Image size must be less than 4MB",
+          ToastAndroid.SHORT
+        );
+        return;
+      }
+      setImage(image);
+      setNewsImage({ uri: image.uri });
+    }
+  };
   return (
     <View style={styles.container}>
       <LinearGradient
-        // Background Linear Gradient
         colors={["#36A7E6", "#073854"]}
         style={styles.background}
       />
@@ -115,12 +168,29 @@ const AddNews = ({ route, navigation }) => {
           style={styles.textInput}
           onChangeText={(value) => setContent(value)}
         />
-        {!id && <ImagePicker2 image={image} setImage={setImage} />}
+        <TouchableOpacity onPress={pickImage}>
+          {newsImage?.uri ? (
+            <Image
+              source={{ uri: newsImage.uri }}
+              style={{ width: 200, aspectRatio: 1 / 1 }}
+              alt="image here"
+            />
+          ) : (
+            <Button
+              title="Pick an image from camera roll"
+              onPress={pickImage}
+            />
+          )}
+        </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.submitBtn} onPress={submitHandler}>
-        <Text style={{ marginLeft: 160, fontSize: 20 }}>
-          {id ? "Edit" : "Add"}
-        </Text>
+        {isUpdating ? (
+          <Text style={{ textAlign: "center", fontSize: 20 }}>Loading...</Text>
+        ) : (
+          <Text style={{ textAlign: "center", fontSize: 20 }}>
+            {id ? "Edit" : "Add"}
+          </Text>
+        )}
       </TouchableOpacity>
     </View>
   );
