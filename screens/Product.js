@@ -46,6 +46,8 @@ const Product = ({ route }) => {
       ToastAndroid.show(result.data?.message ?? 'product bought', ToastAndroid.SHORT);
     }catch(err){
       console.error(err.response?.data)
+      ToastAndroid.show(err?.response?.data?.message ?? 'Insufficient Balance', ToastAndroid.SHORT);
+
     }
     }catch{
     }
@@ -225,6 +227,7 @@ const Product = ({ route }) => {
                     placeholder="Qty"
                     value={qty}
                     onChangeText={setQty}
+                    keyboardType="number-pad"
                   />
                   <TouchableOpacity
                     style={{

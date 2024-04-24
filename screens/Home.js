@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useMemo, useState } from "react";
-import axios from 'axios'
+import axios from "axios";
 import {
   Alert,
   Image,
@@ -27,8 +27,8 @@ const Home = () => {
   const [portfolio, setPortfolio] = React.useState();
   const getPortfolio = async () => {
     const userId = await AsyncStorage.getItem("userId");
-    const {data} = await axios.get(`${baseurl}/portfolio/${userId}`);
-    console.log('portfolio',data)
+    const { data } = await axios.get(`${baseurl}/portfolio/${userId}`);
+    console.log("portfolio", data);
     setPortfolio(data);
   };
   useEffect(() => {
@@ -40,23 +40,24 @@ const Home = () => {
       (acc, item) => acc + item.quantity,
       0
     );
-    console.log(portfolio)
+    console.log(portfolio);
     Alert.alert(
       "Your Wallet Amount",
-      `Rs ${portfolio?.wallet_amount} & Diamonds ${totalDiamondsBought}`,
+      `Rs ${portfolio?.wallet_amount} & 
+  Diamonds: ${totalDiamondsBought}`,
       [{ text: "OK" }]
     );
   };
 
   const greenStripText = useMemo(() => {
     return value?.upTrendDiamonds.reduce(
-      (acc, item) =>` ${acc}  ${item.name}  +${item.price - item.old_price}`,
+      (acc, item) => ` ${acc}  ${item.name}  +${item.price - item.old_price}`,
       ""
     );
   }, [value]);
   const redStripText = useMemo(() => {
     return value?.downTrendDiamonds.reduce(
-      (acc, item) =>` ${acc}  ${item.name}  ${item.price - item.old_price}`,
+      (acc, item) => ` ${acc}  ${item.name}  ${item.price - item.old_price}`,
       ""
     );
   }, [value]);

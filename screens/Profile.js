@@ -180,6 +180,8 @@ const Profile = () => {
                 style={{
                   backgroundColor: "#fff",
                   color: "grey",
+                  fontSize:20,
+                  marginRight:20
                 }}
                 onChangeText={(value) => setUserName(value)}
               />
