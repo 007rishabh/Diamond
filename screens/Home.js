@@ -43,20 +43,20 @@ const Home = () => {
     console.log(portfolio)
     Alert.alert(
       "Your Wallet Amount",
-      `Rs ${portfolio?.wallet_amount} and total diamonds bought are ${totalDiamondsBought}`,
+      `Rs ${portfolio?.wallet_amount} & Diamonds ${totalDiamondsBought}`,
       [{ text: "OK" }]
     );
   };
 
   const greenStripText = useMemo(() => {
     return value?.upTrendDiamonds.reduce(
-      (acc, item) => acc + "   " + item.name,
+      (acc, item) =>` ${acc}  ${item.name}  +${item.price - item.old_price}`,
       ""
     );
   }, [value]);
   const redStripText = useMemo(() => {
     return value?.downTrendDiamonds.reduce(
-      (acc, item) => acc + "   " + item.name,
+      (acc, item) =>` ${acc}  ${item.name}  ${item.price - item.old_price}`,
       ""
     );
   }, [value]);

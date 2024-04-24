@@ -1,24 +1,52 @@
 import { Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { baseurl } from '../Constant'
+import axios from "axios";
+
 const Bank = () => {
   const [name, setName] = useState()
   const [accountNumber, setAccountNumber] = useState()
   const [reaccountNumber, setReAccountNumber] = useState()
   const [ifsc, setIfsc] = useState()
+  const [bank,setBank] = useState()
+
   const addBankDetails = async () => {
+    try{
     const userId = await  AsyncStorage.getItem('userId')
     const url = `${baseurl}/bank/${userId}`;
-    const res = await fetch(url, {
-      method: "POST",
-      
+    const formData = new FormData();
+    formData.append("name",name)
+    formData.append("account_number", accountNumber)
+    formData.append( "ifsc", ifsc)
+    formData.append("reaccountNumber",reaccountNumber)
+    const result = await axios.post(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
-    const result = await res.json()
-    console.log(result)
-    
-    if (res.status === 200) {
-    }
+
+    ToastAndroid.show(result.data.message ?? 'added successfullly', ToastAndroid.SHORT);
+    Alert.alert("Alert Title", result.data.message, [
+      {
+        text: "OK",
+        onPress: () => {
+          if (result.status === 201) {
+            // navigation.navigate('Home')
+          } else {
+            setAccountNumber(""),
+            setBank(""),
+            setIfsc(""),
+            setName("")
+          }
+        },
+      },
+    ]);
+  }catch(error){
+    console.error(error.response.data)
   }
-  const [bank,setBank] = useState()
+  } 
+
   return (
     <View  style={{padding:10,gap:5,flex:1,backgroundColor:'#74b9ff'}}>
     <Text style={{fontSize:30,fontWeight:'bold',alignItems:'center'}}>Bank Details</Text>
@@ -30,12 +58,12 @@ const Bank = () => {
       <TextInput style={{backgroundColor:'#fff',borderRadius:10,height:40,padding:10}} placeholder="Enter Account Number" value={reaccountNumber} onChangeText={setReAccountNumber}/>
       <Text style={{fontSize:20,fontWeight:'600'}}>IFSC code</Text>
       <TextInput style={{backgroundColor:'#fff',borderRadius:10,height:40,padding:10}} placeholder="Enter IFSC COde" value={ifsc} onChangeText={setIfsc}/>
-      <TouchableOpacity style={styles.submitBtn}>
+      <TouchableOpacity style={styles.submitBtn} onPress={addBankDetails}>
         <Text style={{textAlign:'center'}}> Submit</Text>
       </TouchableOpacity>
     </View>
   )
-}
+};
 
 export default Bank
 

@@ -51,7 +51,7 @@ const Profile = () => {
         style={styles.background}
       />
       
-      <View style={{height:500,width:350,backgroundColor:'#dfe6e9',borderRadius:10,alignItems:'center',justifyContent:'center',marginTop:100,marginLeft:30}}>
+      <View style={{height:550,width:350,backgroundColor:'#dfe6e9',borderRadius:10,alignItems:'center',justifyContent:'center',marginTop:100,marginLeft:30}}>
      
       <Text style={{ fontSize: 30, fontWeight: "bold" }}>
         Profile
@@ -73,29 +73,30 @@ const Profile = () => {
           <EvilIcons name="user" size={200} color="white" />
         )}
       </View>
-      <View style={{flexDirection:'row',gap:10}}>
+      <View style={{gap:10,width:'80%'}}>
+      <View style={{flexDirection:'row',gap:10,backgroundColor:'#fff',width:'100%',padding:20,borderRadius:10}}>
       <Text style={{fontSize:20,fontWeight:'bold'}}>Name:</Text>
-      <Text style={{fontSize:20,fontWeight:'bold'}}>{userInfo.username}</Text>
+      <Text style={{fontSize:20,fontWeight:'bold'}}>{userInfo.username }</Text>
       </View>
-      <View style={{flexDirection:'row',padding:20,gap:10}}>
+      <View style={{flexDirection:'row',padding:20,gap:10,backgroundColor:'#fff',borderRadius:10}}>
       <Text style={{fontSize:20,fontWeight:'bold'}}>Email:</Text>
       <Text style={{fontSize:20,fontWeight:'bold'}}>{userInfo.email}</Text>
       </View>
-      <View style={{flexDirection:'row',padding:20,gap:10}}>
-      <Text style={{ fontSize: 20, fontWeight: "bold"}}>
-        Balance :
-      </Text>
-        <Text style={{fontSize:20,fontWeight:'bold'}}>{portfolio?.wallet_amount ?? 0}</Text>
-        </View>
-        <View style={{flexDirection:'row',padding:20,gap:10}}>
-        <Text style={{fontSize:20,fontWeight:'bold'}}>Products:</Text>
-        <Text style={{fontSize:20,fontWeight:'bold'}}>{countOfProducts ?? 0}</Text>
-        </View>
-        </View>
-      
       </View>
-   
-  );
+      <Text style={{fontSize:20,fontWeight:'bold'}}>Balance & Products</Text>
+      <View style={{flexDirection:'row',gap:10,padding:10}}>
+      <View style={{height:100,width:140,backgroundColor:'#fff',borderRadius:10,alignItems:'center',justifyContent:'center'}}>
+      <Text style={{fontSize:20,fontWeight:'bold'}}>{portfolio?.wallet_amount ?? 0}</Text>
+      </View>
+      <View style={{height:100,width:140,backgroundColor:'#fff',borderRadius:10,alignItems:'center',justifyContent:'center'}}>
+      <Text style={{fontSize:20,fontWeight:'bold'}}>{countOfProducts ?? 0}</Text>
+      </View>
+      </View>
+      </View>
+      </View>
+      
+    );
+    
 };
 
 export default Profile;

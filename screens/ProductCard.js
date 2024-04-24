@@ -72,7 +72,7 @@ const ProductCard = ({ product }) => {
               </View>
             </View>
             <View style={{ flexDirection: "column" }}>
-              <View style={{ flexDirection: "row", gap: 50 }}>
+              <View style={{ flexDirection: "row", gap: 40 }}>
                 <Text
                   style={{ fontSize: 20, fontWeight: "500", color: "#fff" }}
                 >
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     rowGap: 10,
-    height: 280,
+    height: 260,
     width: 300,
     borderRadius: 10,
   },

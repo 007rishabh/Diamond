@@ -19,9 +19,13 @@ import axios from 'axios'
 const Product = ({ route }) => {
   const { product } = route.params;
   const [qty, setQty] = useState();
+  const [loading, setLoading] = useState(false);
+
   console.info(product)
 
   const buyDiamonds = async () => {
+    try{
+      setLoading(true)
     const userId = await AsyncStorage.getItem("userId");
 
     const url = `${baseurl}/order`;
@@ -32,6 +36,7 @@ const Product = ({ route }) => {
       type: "buy",
       total_price: product.price * qty,
     }
+  
     console.info({reqBody})
     try{
 
@@ -41,6 +46,11 @@ const Product = ({ route }) => {
       ToastAndroid.show(result.data?.message ?? 'product bought', ToastAndroid.SHORT);
     }catch(err){
       console.error(err.response?.data)
+    }
+    }catch{
+    }
+    finally{
+      setLoading(false)
     }
   };
 
@@ -225,6 +235,7 @@ const Product = ({ route }) => {
                     }}
                     onPress={buyDiamonds}
                     keyboardType="number-pad"
+                    disabled={loading}
                   >
                     <Text style={{ textAlign: "center", fontSize: 20 }}>
                       Buy
