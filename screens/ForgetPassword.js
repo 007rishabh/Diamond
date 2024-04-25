@@ -1,159 +1,181 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
-import { useNavigation } from '@react-navigation/native';
-const ForgetPassword = () => {
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+  ToastAndroid,
+} from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { baseurl } from "../Constant";
+import axios from "axios";
+import { OTPInput } from "../components/OTPInput";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LoadingIndicator } from "../components/LoadingIndicator";
+const ForgetPassword = ({ route }) => {
+  const { email } = route.params || { email: "" };
   const navigation = useNavigation();
-  const et1 = useRef();
-  const et2 = useRef();
-  const et3 = useRef();
-  const et4 = useRef();
-  const et5 = useRef();
-  const et6 = useRef();
-  const [f1, setF1] = useState('');
-  const [f2, setF2] = useState('');
-  const [f3, setF3] = useState('');
-  const [f4, setF4] = useState('');
-  const [f5, setF5] = useState('');
-  const [f6, setF6] = useState('');
-  const [count, setCount] = useState(60)
-  useEffect(() => {
-    const Interval = setInterval(() => {
-      if (count == 0) {
-        clearInterval(Interval)
-      }
-      else {
-        setCount(count - 1)
-      }
-    }, 1000)
-    return () => {
-      clearInterval(Interval)
-    }
-  }, [count])
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', backgroundColor: '#36A7E6' }}>
-    
-      <Text style={styles.pageText}>Forget Password</Text>
-      <View style={styles.otpView}>
-      <Text style={{ fontSize: 20, fontWeight: '500' }}>Enter OTP</Text>
-        <TextInput ref={et1} style={[styles.input, { borderColor: f1.length >= 1 ? 'blue' : 'black' }]} keyboardType='number-pad' maxLength={1} value={f1} onChangeText={txt => {
-          setF1(txt)
-          if (txt.length >= 1) {
-            et2.current.focus()
-          }
-        }} />
-        <TextInput ref={et2} style={[styles.input, { borderColor: f2.length >= 1 ? 'blue' : 'black' }]} keyboardType='number-pad' maxLength={1} value={f2} onChangeText={txt => {
-          setF2(txt)
-          if (txt.length >= 1) {
-            et3.current.focus()
-          } else if (txt.length < 1) {
-            et1.current.focus()
-          }
-        }} />
-        <TextInput ref={et3} style={[styles.input, { borderColor: f3.length >= 1 ? 'blue' : 'black' }]} keyboardType='number-pad' maxLength={1} value={f3} onChangeText={txt => {
-          setF3(txt)
-          if (txt.length >= 1) {
-            et4.current.focus()
-          } else if (txt.length < 1) {
-            et2.current.focus()
-          }
-        }} />
-        <TextInput ref={et4} style={[styles.input, { borderColor: f4.length >= 1 ? 'blue' : 'black' }]} keyboardType='number-pad' maxLength={1} value={f4} onChangeText={txt => {
-          setF4(txt)
-          if (txt.length >= 1) {
-            et5.current.focus()
-          } else if (txt.length < 1) {
-            et3.current.focus()
-          }
-        }} />
-       
-      
-      </View>
-    
-      <View>
-        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 8 }}>Password</Text>
-        <TextInput style={styles.textInput} />
-      </View>
-      <View>
-        <Text style={{ fontSize: 20, fontWeight: '500', marginLeft: 8 }}>Confirm Password</Text>
-        <TextInput style={styles.textInput} />
-      </View>
-      <View style={styles.resend}>
-      <Text style={{fontSize:20,fontWeight:'700',color:count==0 ? 'blue': 'grey'}} onPress={()=>{
-        setCount(60)
-      }}>Resend Otp?</Text>
-      {count !==0 && (<Text style={{marginLeft:20,fontSize:20}}>{count+ ' Seconds'}</Text>)}
-    </View>
-      <TouchableOpacity
-        disabled={f1 != '' && f2 != '' && f3 != '' && f4 != '' && f5 != '' && f6 != '' ? false : true}
-        style={[styles.submitBtn, { backgroundColor: f1 != '' && f2 != '' && f3 != '' && f4 != '' && f5 != '' && f6 != '' ? 'blue' : 'grey' }]} >
-        <Text style={{ marginLeft: 130, fontSize: 20 }} onPress={()=>navigation.navigate('Home')}>Verify Otp</Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
+  const [password, setPassword] = useState("");
+  const [confirm_password, setConfirmPassword] = useState("");
+  const [otp_input, set_otp_input] = useState("");
+  const [sent_otp, set_sent_otp] = useState("");
+  const [is_otp_sent, set_is_otp_sent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-export default ForgetPassword
+  useEffect(() => {
+    const sendOTP = async () => {
+      try {
+        if (!email) {
+          ToastAndroid.show("Email is required", ToastAndroid.SHORT);
+          return;
+        }
+        set_otp_input("");
+        setLoading(true);
+        const { data } = await axios.post(`${baseurl}/send-email`, { email });
+        ToastAndroid.show(data?.message, ToastAndroid.SHORT);
+        set_is_otp_sent(true);
+        set_sent_otp(data?.otp);
+      } catch (error) {
+        console.error("error", error.response?.data);
+      } finally {
+        setLoading(false);
+      }
+    };
+    sendOTP();
+  }, []);
+
+  const updatePassword = async () => {
+    try {
+      if (password !== confirm_password) {
+        ToastAndroid.show("Password does not match", ToastAndroid.SHORT);
+        return;
+      }
+      if (otp_input !== sent_otp) {
+        ToastAndroid.show("OTP does not match", ToastAndroid.SHORT);
+        return;
+      }
+      setLoading(true);
+      const userId = await AsyncStorage.getItem("userId");
+      await axios.put(`${baseurl}/user/update-password/${userId}`, {
+        password,
+      });
+      ToastAndroid.show("Password Updated", ToastAndroid.SHORT);
+      navigation.navigate("Login");
+    } catch (error) {
+      console.error("error", error.response?.data);
+    } finally {
+      setLoading(false);
+    }
+  };
+  return (
+    <View
+      style={{ flex: 1, justifyContent: "center", backgroundColor: "#36A7E6" }}
+    >
+      <Text style={styles.pageText}>Forget Password</Text>
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+        <>
+          {is_otp_sent && (
+            <OTPInput input={otp_input} setInput={set_otp_input} />
+          )}
+          <View>
+            <Text style={{ fontSize: 20, fontWeight: "500", marginLeft: 8 }}>
+              Password
+            </Text>
+            <TextInput
+              style={styles.textInput}
+              value={password}
+              onChangeText={setPassword}
+            />
+          </View>
+          <View>
+            <Text style={{ fontSize: 20, fontWeight: "500", marginLeft: 8 }}>
+              Confirm Password
+            </Text>
+            <TextInput
+              style={styles.textInput}
+              value={confirm_password}
+              onChangeText={setConfirmPassword}
+            />
+          </View>
+          <TouchableOpacity
+            disabled={loading}
+            style={[styles.submitBtn]}
+            onPress={updatePassword}
+          >
+            <Text style={{ textAlign: "center", fontSize: 20 }}>
+              Verify Otp
+            </Text>
+          </TouchableOpacity>
+        </>
+      )}
+    </View>
+  );
+};
+
+export default ForgetPassword;
 
 const styles = StyleSheet.create({
   pageText: {
     fontSize: 40,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     textAlign: "center",
-    color: '#fff',
+    color: "#fff",
     marginBottom: 20,
   },
   textInput: {
     height: 40,
     marginBottom: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 10,
     marginTop: 10,
     paddingLeft: 10,
-    width: '95%',
+    width: "95%",
     marginLeft: 8,
-    borderColor: 'red',
+    borderColor: "red",
     fontSize: 18,
-    fontWeight: '700'
+    fontWeight: "700",
   },
   otpView: {
-    width: '100%',
-    alignItems: 'center',
-    flexDirection: 'row',
-    marginLeft:10,
-    gap:10
+    width: "100%",
+    alignItems: "center",
+    flexDirection: "row",
+    marginLeft: 10,
+    gap: 10,
   },
   input: {
     height: 50,
     width: 50,
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: "black",
     borderRadius: 10,
     marginLeft: 10,
     marginTop: 10,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 18,
-    fontWeight: '700',
-    backgroundColor:'#fff'
+    fontWeight: "700",
+    backgroundColor: "#fff",
   },
   submitBtn: {
-    // backgroundColor:'#6AD4DD',
-    height: 50,
+    backgroundColor: "#6AD4DD",
     marginHorizontal: 25,
     borderRadius: 80,
-    justifyContent: 'center',
-    marginBottom: 20,
-    marginTop: 20
+    justifyContent: "center",
+    marginTop: 20,
+    padding: 10,
   },
   btnText: {
-    color: '#fff',
-    textAlign: 'center',
+    color: "#fff",
+    textAlign: "center",
     fontSize: 24,
-    fontWeight: '500'
+    fontWeight: "500",
   },
-  resend:{
-    flexDirection:'row',
-    alignSelf:'center',
-    marginTop:30,
-    marginBottom:30
-  }
-})
+  resend: {
+    flexDirection: "row",
+    alignSelf: "center",
+    marginTop: 30,
+    marginBottom: 30,
+  },
+});
