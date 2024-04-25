@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -18,6 +19,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { baseurl } from "../Constant";
 import { LoadingIndicator } from "../components/LoadingIndicator";
+import { OTPInput } from "../components/OTPInput";
 const Profile = () => {
   const isFocused = useIsFocused();
   const [userInfo, setUserInfo] = useState({});
@@ -26,11 +28,15 @@ const Profile = () => {
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [fetchingUserInfo, setFetchingUserInfo] = useState(false);
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [sent_otp, set_sent_otp] = useState("");
+  const [otp_input, setOtpInput] = useState("");
+  const [otpSent, setOTPSent] = useState(false);
 
   const getPortfolio = async () => {
     const userId = await AsyncStorage.getItem("userId");
     const result = await axios.get(`${baseurl}/portfolio/${userId}`);
-    console.log("portfolio", result.data);
     setPortfolio(result.data);
   };
   const getUserInfo = async () => {
@@ -44,10 +50,11 @@ const Profile = () => {
         return;
       }
       const url = `${baseurl}/users/info/${userId}`;
-      const result = await axios.get(url);
-      console.info(result.data);
-      setUserInfo(result.data);
-      setUserName(result.data.username);
+      const { data } = await axios.get(url);
+      setUserInfo(data);
+      setUserName(data.username);
+      setEmail(data.email);
+      setPhone(data.phone);
     } catch (error) {
       console.error(error);
     } finally {
@@ -59,8 +66,31 @@ const Profile = () => {
     getPortfolio();
   }, [isFocused]);
 
+  const sendOTP = async () => {
+    try {
+      if (!email) {
+        ToastAndroid.show("Email is required", ToastAndroid.SHORT);
+        return;
+      }
+      setOtpInput("");
+      setLoading(true);
+      const { data } = await axios.post(`${baseurl}/send-email`, { email });
+      ToastAndroid.show(data?.message, ToastAndroid.SHORT);
+      setOTPSent(true);
+      set_sent_otp(data?.otp);
+    } catch (error) {
+      console.error("error", error.response?.data);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const editProfileHandler = async () => {
     try {
+      if (sent_otp !== otp_input) {
+        ToastAndroid.show("OTP doesn't match", ToastAndroid.SHORT);
+        return;
+      }
       setLoading(true);
       const userId = await AsyncStorage.getItem("userId");
       const url = `${baseurl}/users/info/${userId}`;
@@ -73,7 +103,8 @@ const Profile = () => {
         });
       }
       formData.append("username", userName);
-      console.log("formData", formData);
+      formData.append("email", email);
+      formData.append("phone", phone);
       const result = await axios.put(url, formData, {
         headers: {
           Accept: "application/json",
@@ -119,12 +150,13 @@ const Profile = () => {
     (acc, curr) => acc + curr.quantity,
     0
   );
+
+  const isEditingEmail = email !== userInfo.email;
   return (
-    
-    <View
+    <ScrollView
       style={{
         flex: 1,
-        paddingHorizontal: 20,
+        // paddingHorizontal: 20,
       }}
     >
       <LinearGradient
@@ -139,13 +171,21 @@ const Profile = () => {
           style={{
             backgroundColor: "#dfe6e9",
             borderRadius: 10,
-            marginTop: 50,
-            height:Dimensions.get('window').height-100,
-            gap:20
+            marginVertical: 50,
+            marginHorizontal: 20,
+            padding: 20,
+            gap: 20,
           }}
         >
-          <Text style={{ fontSize: 30, fontWeight: "bold" ,textAlign:'center'}}>Profile</Text>
-          <TouchableOpacity style={{ padding: 10 ,alignItems:'center'}} onPress={pickImage}>
+          <Text
+            style={{ fontSize: 30, fontWeight: "bold", textAlign: "center" }}
+          >
+            Profile
+          </Text>
+          <TouchableOpacity
+            style={{ padding: 10, alignItems: "center" }}
+            onPress={pickImage}
+          >
             {userInfo.profile_image?.url ? (
               <Image
                 source={{
@@ -162,28 +202,24 @@ const Profile = () => {
               <EvilIcons name="user" size={150} color="white" />
             )}
           </TouchableOpacity>
-          <View style={{ gap: 10, width: "80%" }}>
+          <View style={{ gap: 10, width: "100%" }}>
             <View
               style={{
                 flexDirection: "row",
                 gap: 10,
                 backgroundColor: "#fff",
-                width: Dimensions.get('window').width-40,
                 padding: 20,
                 borderRadius: 10,
-                height:100
               }}
             >
               <Text style={{ fontSize: 20, fontWeight: "bold" }}>Name:</Text>
               <TextInput
-                multiline={true}
-                numberOfLines={5}
                 value={userName}
                 style={{
+                  flex: 1,
                   backgroundColor: "#fff",
                   color: "grey",
-                  fontSize:20,
-                  marginRight:20
+                  fontSize: 20,
                 }}
                 onChangeText={(value) => setUserName(value)}
               />
@@ -195,13 +231,22 @@ const Profile = () => {
                 gap: 10,
                 backgroundColor: "#fff",
                 borderRadius: 10,
-                width:Dimensions.get('window').width-40,
               }}
             >
               <Text style={{ fontSize: 20, fontWeight: "bold" }}>Email:</Text>
-              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                {userInfo.email}
-              </Text>
+              <TextInput
+                value={email}
+                style={{
+                  flex: 1,
+                  backgroundColor: "#fff",
+                  color: "grey",
+                  fontSize: 20,
+                }}
+                onChangeText={(value) => {
+                  setEmail(value);
+                  setOTPSent(false);
+                }}
+              />
             </View>
             <View
               style={{
@@ -210,19 +255,37 @@ const Profile = () => {
                 gap: 10,
                 backgroundColor: "#fff",
                 borderRadius: 10,
-                width:Dimensions.get('window').width-40,
               }}
             >
               <Text style={{ fontSize: 20, fontWeight: "bold" }}>Phone:</Text>
+              <TextInput
+                value={phone}
+                style={{
+                  flex: 1,
+                  backgroundColor: "#fff",
+                  color: "grey",
+                  fontSize: 20,
+                }}
+                onChangeText={(value) => setPhone(value)}
+              />
               <Text style={{ fontSize: 20, fontWeight: "bold" }}>
                 {userInfo.phone}
               </Text>
             </View>
           </View>
-          <Text style={{ fontSize: 20, fontWeight: "bold" ,textAlign:'center'}}>
+          <Text
+            style={{ fontSize: 20, fontWeight: "bold", textAlign: "center" }}
+          >
             Balance & Products
           </Text>
-          <View style={{ flexDirection: "row", gap: 10, padding: 10,justifyContent:'space-around' }}>
+          <View
+            style={{
+              flexDirection: "row",
+              gap: 10,
+              padding: 10,
+              justifyContent: "space-around",
+            }}
+          >
             <View
               style={{
                 height: 100,
@@ -252,6 +315,7 @@ const Profile = () => {
               </Text>
             </View>
           </View>
+          {otpSent && <OTPInput input={otp_input} setInput={setOtpInput} />}
           <TouchableOpacity
             style={{
               backgroundColor: "#00b894",
@@ -259,15 +323,25 @@ const Profile = () => {
               paddingHorizontal: 30,
               paddingVertical: 10,
             }}
-            onPress={editProfileHandler}
+            onPress={() => {
+              if (isEditingEmail && !otpSent) {
+                sendOTP();
+                return;
+              }
+              editProfileHandler();
+            }}
           >
             <Text style={{ fontSize: 20, textAlign: "center" }}>
-              {loading ? "Updating..." : "Edit Profile"}
+              {loading
+                ? "Loading..."
+                : isEditingEmail && !otpSent
+                ? "Send OTP"
+                : "Edit Profile"}
             </Text>
           </TouchableOpacity>
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 

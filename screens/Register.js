@@ -14,26 +14,20 @@ import { LinearGradient } from "expo-linear-gradient";
 import { baseurl } from "../Constant";
 import { ImagePicker2 } from "../components/ImagePicker2";
 import axios from "axios";
+import { OTPInput } from "../components/OTPInput";
 const Register = ({ navigation }) => {
   const [image, setImage] = useState(null);
   const [username, setName] = useState("");
-  const [password, setPassword] = useState();
+  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [ phone,setPhone] = useState('')
+  const [phone, setPhone] = useState("");
   const [confirmpassword, setConfirmPassword] = useState("");
-  const [otp, setOtp] = useState();
-  const et1 = useRef();
-  const et2 = useRef();
-  const et3 = useRef();
-  const et4 = useRef();
-  const [f1, setF1] = useState("");
-  const [f2, setF2] = useState("");
-  const [f3, setF3] = useState("");
-  const [f4, setF4] = useState("");
+  const [otp_input, setOtpInput] = useState("");
+  const [sent_otp, setSent_Otp] = useState();
   const [loading, setLoading] = useState(false);
   const [otpSent, setOTPSent] = useState(false);
   const addUser = async () => {
-    if (f1 + f2 + f3 + f4 !== otp) {
+    if (otp_input !== sent_otp) {
       ToastAndroid.show("OTP doesn't match", ToastAndroid.SHORT);
       return;
     }
@@ -93,14 +87,12 @@ const Register = ({ navigation }) => {
         return;
       }
       setLoading(true);
-      const url = `${baseurl}/send-email`;
-      const result = await axios.post(url, { email });
-      console.log(result);
+      const result = await axios.post(`${baseurl}/send-email`, { email });
       ToastAndroid.show(result?.data?.message, ToastAndroid.SHORT);
       setOTPSent(true);
-      setOtp(result?.data?.otp);
+      setSent_Otp(result?.data?.otp);
     } catch (error) {
-      console.error("error", error.response.data);
+      console.error("error", error.response?.data);
     } finally {
       setLoading(false);
     }
@@ -150,77 +142,7 @@ const Register = ({ navigation }) => {
         />
         <ImagePicker2 image={image} setImage={setImage} />
       </View>
-      <View style={styles.otpView}>
-        <Text style={{ fontSize: 20, fontWeight: "700" }}>Verify OTP</Text>
-        <TextInput
-          ref={et1}
-          style={[
-            styles.input,
-            { borderColor: f1.length >= 1 ? "blue" : "black" },
-          ]}
-          keyboardType="number-pad"
-          maxLength={1}
-          value={f1}
-          onChangeText={(txt) => {
-            setF1(txt);
-            if (txt.length >= 1) {
-              et2.current.focus();
-            }
-          }}
-        />
-        <TextInput
-          ref={et2}
-          style={[
-            styles.input,
-            { borderColor: f2.length >= 1 ? "blue" : "black" },
-          ]}
-          keyboardType="number-pad"
-          maxLength={1}
-          value={f2}
-          onChangeText={(txt) => {
-            setF2(txt);
-            if (txt.length >= 1) {
-              et3.current.focus();
-            } else if (txt.length < 1) {
-              et1.current.focus();
-            }
-          }}
-        />
-        <TextInput
-          ref={et3}
-          style={[
-            styles.input,
-            { borderColor: f3.length >= 1 ? "blue" : "black" },
-          ]}
-          keyboardType="number-pad"
-          maxLength={1}
-          value={f3}
-          onChangeText={(txt) => {
-            setF3(txt);
-            if (txt.length >= 1) {
-              et4.current.focus();
-            } else if (txt.length < 1) {
-              et2.current.focus();
-            }
-          }}
-        />
-        <TextInput
-          ref={et4}
-          style={[
-            styles.input,
-            { borderColor: f4.length >= 1 ? "blue" : "black" },
-          ]}
-          keyboardType="number-pad"
-          maxLength={1}
-          value={f4}
-          onChangeText={(txt) => {
-            setF4(txt);
-            if (txt.length < 1) {
-              et3.current.focus();
-            }
-          }}
-        />
-      </View>
+      <OTPInput input={otp_input} setInput={setOtpInput} />
       <TouchableOpacity
         style={styles.submitBtn}
         disabled={loading}
