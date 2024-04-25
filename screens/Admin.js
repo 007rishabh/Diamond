@@ -21,7 +21,6 @@ export default function Admin() {
         style={styles.background}
       />
       <View style={{ marginTop: 10, padding: 5, gap: 8 }}>
-        
         <TouchableOpacity
           style={{
             display: "flex",
@@ -260,7 +259,7 @@ export default function Admin() {
           onPress={() => navigation.navigate("CarouselImages")}
         >
           <Ionicons
-            name="imagea"
+            name="images"
             size={24}
             color="black"
             style={{ marginLeft: 5, marginTop: 5 }}
