@@ -7,6 +7,7 @@ import {
   Alert,
   ToastAndroid,
   ScrollView,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -15,37 +16,43 @@ import { ImagePicker2 } from "../components/ImagePicker2";
 import axios from "axios";
 const Register = ({ navigation }) => {
   const [image, setImage] = useState(null);
-  const [username, setName] = useState();
+  const [username, setName] = useState("");
   const [password, setPassword] = useState();
-  const [email, setEmail] = useState();
-  const [confirmpassword, setConfirmPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [confirmpassword, setConfirmPassword] = useState("");
+  const [otp, setOtp] = useState();
   const et1 = useRef();
   const et2 = useRef();
   const et3 = useRef();
   const et4 = useRef();
-  const et5 = useRef();
-  const et6 = useRef();
   const [f1, setF1] = useState("");
   const [f2, setF2] = useState("");
   const [f3, setF3] = useState("");
   const [f4, setF4] = useState("");
-  const [f5, setF5] = useState("");
-  const [f6, setF6] = useState("");
-  const [count, setCount] = useState(60);
   const [loading, setLoading] = useState(false);
+  const [otpSent, setOTPSent] = useState(false);
   const addUser = async () => {
-    if (password !== confirmpassword) {
-      Alert.alert("passwords doesn't match");
+    if (f1 + f2 + f3 + f4 !== otp) {
+      ToastAndroid.show("OTP doesn't match", ToastAndroid.SHORT);
+      return;
+    }
+    if (password !== confirmpassword || !password || !confirmpassword) {
+      ToastAndroid.show(
+        "passwords doesn't match or are empty",
+        ToastAndroid.SHORT
+      );
       return;
     }
     try {
       setLoading(true);
       const formData = new FormData();
-      formData.append("image", {
-        uri: image.uri,
-        name: image.fileName,
-        type: image.mimeType,
-      });
+      if (image) {
+        formData.append("image", {
+          uri: image.uri,
+          name: image.fileName,
+          type: image.mimeType,
+        });
+      }
       formData.append("username", username);
       formData.append("email", email);
       formData.append("password", password);
@@ -60,7 +67,37 @@ const Register = ({ navigation }) => {
       ToastAndroid.show(result?.data?.message, ToastAndroid.SHORT);
       navigation.navigate("Login");
     } catch (error) {
-      ToastAndroid.show(error.response?.data?.message ?? "Please fill all fields", ToastAndroid.SHORT);
+      ToastAndroid.show(
+        error.response?.data?.message ?? "Please fill all fields",
+        ToastAndroid.SHORT
+      );
+      console.error("error", error, error.response?.data);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const sendEmailVerificationOTP = async () => {
+    try {
+      if (password !== confirmpassword || !password || !confirmpassword) {
+        ToastAndroid.show(
+          "passwords doesn't match or are empty",
+          ToastAndroid.SHORT
+        );
+        return;
+      }
+      if (!email) {
+        ToastAndroid.show("Email is required", ToastAndroid.SHORT);
+        return;
+      }
+      setLoading(true);
+      const url = `${baseurl}/send-email`;
+      const result = await axios.post(url, { email });
+      console.log(result);
+      ToastAndroid.show(result?.data?.message, ToastAndroid.SHORT);
+      setOTPSent(true);
+      setOtp(result?.data?.otp);
+    } catch (error) {
       console.error("error", error.response.data);
     } finally {
       setLoading(false);
@@ -69,7 +106,6 @@ const Register = ({ navigation }) => {
 
   return (
     <ScrollView style={{ flex: 1 }}>
-    
       <LinearGradient
         colors={["#36A7E6", "#073854"]}
         style={styles.background}
@@ -90,98 +126,6 @@ const Register = ({ navigation }) => {
           onChangeText={(email) => setEmail(email)}
         />
 
-        <View style={styles.otpView}>
-          <Text style={{ fontSize: 20, fontWeight: "700" }}>Verify OTP</Text>
-          <TextInput
-            ref={et1}
-            style={[
-              styles.input,
-              { borderColor: f1.length >= 1 ? "blue" : "black" },
-            ]}
-            keyboardType="number-pad"
-            maxLength={1}
-            value={f1}
-            onChangeText={(txt) => {
-              setF1(txt);
-              if (txt.length >= 1) {
-                et2.current.focus();
-              }
-            }}
-          />
-          <TextInput
-            ref={et2}
-            style={[
-              styles.input,
-              { borderColor: f2.length >= 1 ? "blue" : "black" },
-            ]}
-            keyboardType="number-pad"
-            maxLength={1}
-            value={f2}
-            onChangeText={(txt) => {
-              setF2(txt);
-              if (txt.length >= 1) {
-                et3.current.focus();
-              } else if (txt.length < 1) {
-                et1.current.focus();
-              }
-            }}
-          />
-          <TextInput
-            ref={et3}
-            style={[
-              styles.input,
-              { borderColor: f3.length >= 1 ? "blue" : "black" },
-            ]}
-            keyboardType="number-pad"
-            maxLength={1}
-            value={f3}
-            onChangeText={(txt) => {
-              setF3(txt);
-              if (txt.length >= 1) {
-                et4.current.focus();
-              } else if (txt.length < 1) {
-                et2.current.focus();
-              }
-            }}
-          />
-          <TextInput
-            ref={et4}
-            style={[
-              styles.input,
-              { borderColor: f4.length >= 1 ? "blue" : "black" },
-            ]}
-            keyboardType="number-pad"
-            maxLength={1}
-            value={f4}
-            onChangeText={(txt) => {
-              setF4(txt);
-              if (txt.length >= 1) {
-                et5.current.focus();
-              } else if (txt.length < 1) {
-                et3.current.focus();
-              }
-            }}
-          />
-        </View>
-        <View style={styles.resend}>
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: "700",
-              color: count == 0 ? "blue" : "grey",
-            }}
-            onPress={() => {
-              setCount(60);
-            }}
-          >
-            Resend Otp?
-          </Text>
-          {count !== 0 && (
-            <Text style={{ marginLeft: 20, fontSize: 20 }}>
-              {count + " Seconds"}
-            </Text>
-          )}
-        </View>
         <Text style={{ fontSize: 20, fontWeight: 700 }}>Password</Text>
         <TextInput
           value={password}
@@ -197,11 +141,90 @@ const Register = ({ navigation }) => {
         />
         <ImagePicker2 image={image} setImage={setImage} />
       </View>
-      <TouchableOpacity style={styles.submitBtn} onPress={addUser}>
+      <View style={styles.otpView}>
+        <Text style={{ fontSize: 20, fontWeight: "700" }}>Verify OTP</Text>
+        <TextInput
+          ref={et1}
+          style={[
+            styles.input,
+            { borderColor: f1.length >= 1 ? "blue" : "black" },
+          ]}
+          keyboardType="number-pad"
+          maxLength={1}
+          value={f1}
+          onChangeText={(txt) => {
+            setF1(txt);
+            if (txt.length >= 1) {
+              et2.current.focus();
+            }
+          }}
+        />
+        <TextInput
+          ref={et2}
+          style={[
+            styles.input,
+            { borderColor: f2.length >= 1 ? "blue" : "black" },
+          ]}
+          keyboardType="number-pad"
+          maxLength={1}
+          value={f2}
+          onChangeText={(txt) => {
+            setF2(txt);
+            if (txt.length >= 1) {
+              et3.current.focus();
+            } else if (txt.length < 1) {
+              et1.current.focus();
+            }
+          }}
+        />
+        <TextInput
+          ref={et3}
+          style={[
+            styles.input,
+            { borderColor: f3.length >= 1 ? "blue" : "black" },
+          ]}
+          keyboardType="number-pad"
+          maxLength={1}
+          value={f3}
+          onChangeText={(txt) => {
+            setF3(txt);
+            if (txt.length >= 1) {
+              et4.current.focus();
+            } else if (txt.length < 1) {
+              et2.current.focus();
+            }
+          }}
+        />
+        <TextInput
+          ref={et4}
+          style={[
+            styles.input,
+            { borderColor: f4.length >= 1 ? "blue" : "black" },
+          ]}
+          keyboardType="number-pad"
+          maxLength={1}
+          value={f4}
+          onChangeText={(txt) => {
+            setF4(txt);
+            if (txt.length < 1) {
+              et3.current.focus();
+            }
+          }}
+        />
+      </View>
+      <TouchableOpacity
+        style={styles.submitBtn}
+        disabled={loading}
+        onPress={() => {
+          otpSent ? addUser() : sendEmailVerificationOTP();
+        }}
+      >
         {loading ? (
           <Text style={{ textAlign: "center", fontSize: 20 }}>Loading...</Text>
         ) : (
-          <Text style={{ textAlign: "center", fontSize: 20 }}>Register</Text>
+          <Text style={{ textAlign: "center", fontSize: 20 }}>
+            {otpSent ? "Register" : "Send OTP"}
+          </Text>
         )}
       </TouchableOpacity>
       <Text style={styles.linkText}>
@@ -210,7 +233,6 @@ const Register = ({ navigation }) => {
           Login
         </Text>
       </Text>
-    
     </ScrollView>
   );
 };
