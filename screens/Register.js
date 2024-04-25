@@ -19,6 +19,7 @@ const Register = ({ navigation }) => {
   const [username, setName] = useState("");
   const [password, setPassword] = useState();
   const [email, setEmail] = useState("");
+  const [ phone,setPhone] = useState('')
   const [confirmpassword, setConfirmPassword] = useState("");
   const [otp, setOtp] = useState();
   const et1 = useRef();
@@ -56,6 +57,7 @@ const Register = ({ navigation }) => {
       formData.append("username", username);
       formData.append("email", email);
       formData.append("password", password);
+      formData.append("phone", phone);
 
       const url = `${baseurl}/auth/signup`;
       const result = await axios.post(url, formData, {
@@ -124,6 +126,13 @@ const Register = ({ navigation }) => {
           value={email}
           style={styles.textInput}
           onChangeText={(email) => setEmail(email)}
+        />
+        <Text style={{ fontSize: 20, fontWeight: 700 }}>Phone Number</Text>
+        <TextInput
+          value={phone}
+          style={styles.textInput}
+          onChangeText={(phone) => setPhone(phone)}
+          keyboardType="number-pad"
         />
 
         <Text style={{ fontSize: 20, fontWeight: 700 }}>Password</Text>

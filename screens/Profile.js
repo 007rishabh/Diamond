@@ -1,5 +1,7 @@
 import {
+  Dimensions,
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -118,6 +120,7 @@ const Profile = () => {
     0
   );
   return (
+    
     <View
       style={{
         flex: 1,
@@ -136,15 +139,13 @@ const Profile = () => {
           style={{
             backgroundColor: "#dfe6e9",
             borderRadius: 10,
-            alignItems: "center",
-            justifyContent: "center",
             marginTop: 50,
-            paddingVertical: 20,
-            paddingHorizontal: 10,
+            height:Dimensions.get('window').height-100,
+            gap:20
           }}
         >
-          <Text style={{ fontSize: 30, fontWeight: "bold" }}>Profile</Text>
-          <TouchableOpacity style={{ padding: 10 }} onPress={pickImage}>
+          <Text style={{ fontSize: 30, fontWeight: "bold" ,textAlign:'center'}}>Profile</Text>
+          <TouchableOpacity style={{ padding: 10 ,alignItems:'center'}} onPress={pickImage}>
             {userInfo.profile_image?.url ? (
               <Image
                 source={{
@@ -167,9 +168,10 @@ const Profile = () => {
                 flexDirection: "row",
                 gap: 10,
                 backgroundColor: "#fff",
-                width: "100%",
+                width: Dimensions.get('window').width-40,
                 padding: 20,
                 borderRadius: 10,
+                height:100
               }}
             >
               <Text style={{ fontSize: 20, fontWeight: "bold" }}>Name:</Text>
@@ -193,6 +195,7 @@ const Profile = () => {
                 gap: 10,
                 backgroundColor: "#fff",
                 borderRadius: 10,
+                width:Dimensions.get('window').width-40,
               }}
             >
               <Text style={{ fontSize: 20, fontWeight: "bold" }}>Email:</Text>
@@ -200,11 +203,26 @@ const Profile = () => {
                 {userInfo.email}
               </Text>
             </View>
+            <View
+              style={{
+                flexDirection: "row",
+                padding: 20,
+                gap: 10,
+                backgroundColor: "#fff",
+                borderRadius: 10,
+                width:Dimensions.get('window').width-40,
+              }}
+            >
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>Phone:</Text>
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                {userInfo.phone}
+              </Text>
+            </View>
           </View>
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+          <Text style={{ fontSize: 20, fontWeight: "bold" ,textAlign:'center'}}>
             Balance & Products
           </Text>
-          <View style={{ flexDirection: "row", gap: 10, padding: 10 }}>
+          <View style={{ flexDirection: "row", gap: 10, padding: 10,justifyContent:'space-around' }}>
             <View
               style={{
                 height: 100,

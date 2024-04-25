@@ -267,12 +267,7 @@ const Product = ({ route }) => {
             </LinearGradient>
           </View>
         </View>
-        <LineChart
-        data={data}
-        width={screenWidth}
-        height={200}    
-        chartConfig={chartConfig}
-      />
+     
       </ScrollView>
     </>
   );
