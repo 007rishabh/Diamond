@@ -1,24 +1,12 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  Dimensions,
-} from "react-native";
-import React, { Fragment, useEffect, useState } from "react";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import Product from "./Product";
-import { baseurl } from "../Constant";
-import { useNavigation, useIsFocused } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import ProductCard from "./ProductCard";
+import React, { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { LoadingIndicator } from "../components/LoadingIndicator.js";
+import { baseurl } from "../Constant";
+import ProductCard from "./ProductCard";
 
 const Trade = () => {
-  const navigation = useNavigation();
   const isfocused = useIsFocused();
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = React.useState([]);
@@ -31,7 +19,6 @@ const Trade = () => {
           method: "GET",
         });
         const result = await res.json();
-        console.log({ result });
         if (res.status === 200) {
           const data = result.reduce((acc, item) => {
             if (!acc[item.carat]) {

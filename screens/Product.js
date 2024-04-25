@@ -13,9 +13,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { BarChart ,LineChart} from "react-native-chart-kit";
+import { BarChart, LineChart } from "react-native-chart-kit";
 import { baseurl } from "../Constant";
-import axios from 'axios'
+import axios from "axios";
 const Product = ({ route }) => {
   const { product } = route.params;
   const [qty, setQty] = useState();
@@ -23,113 +23,131 @@ const Product = ({ route }) => {
   const [history, setHistory] = useState([]);
 
   const screenWidth = Dimensions.get("window").width;
-  console.info(product)
-  
-  useEffect(()=>{
-    const getHistory = async()=>{
-        try {
-          const result = await axios.get(`${baseurl}/diamond/price-history/${product.id}`)
-        
-          console.log(result.data,'Result');
-          setHistory(result.data)
-        } catch (error) {
-          console.error(error);
+
+  useEffect(() => {
+    const getHistory = async () => {
+      try {
+        const result = await axios.get(
+          `${baseurl}/diamond/price-history/${product.id}`
+        );
+        if (result.data?.length === 0) {
+          console.log("came here");
+          setHistory([
+            {
+              createdAt: new Date(product.createdAt).toISOString(),
+              new_price: product.price,
+            },
+          ]);
+          return;
         }
-    }
-    getHistory()
-  },[])
+        if (result.data.length === 1) {
+          setHistory([
+            {
+              createdAt: new Date(product.createdAt).toISOString(),
+              new_price: product.old_price,
+            },
+            ...result.data,
+          ]);
+          return;
+        }
+        setHistory(result.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getHistory();
+  }, []);
   const buyDiamonds = async () => {
-    try{
-      setLoading(true)
-    const userId = await AsyncStorage.getItem("userId");
+    try {
+      setLoading(true);
+      const userId = await AsyncStorage.getItem("userId");
 
-    const url = `${baseurl}/order`;
-    const reqBody = {
-      userId,
-      product_id: product.id,
-      quantity: qty,
-      type: "buy",
-      total_price: product.price * qty,
-    }
-  
-    console.info({reqBody})
-    try{
+      const url = `${baseurl}/order`;
+      const reqBody = {
+        userId,
+        product_id: product.id,
+        quantity: qty,
+        type: "buy",
+        total_price: product.price * qty,
+      };
 
-      const result = await axios.post(url, reqBody);
-      console.log({result});
-      
-      ToastAndroid.show(result.data?.message ?? 'product bought', ToastAndroid.SHORT);
-    }catch(err){
-      console.error(err.response?.data)
-      ToastAndroid.show(err?.response?.data?.message ?? 'Insufficient Balance', ToastAndroid.SHORT);
+      try {
+        const result = await axios.post(url, reqBody);
 
-    }
-    }catch{
-    }
-    finally{
-      setLoading(false)
+        ToastAndroid.show(
+          result.data?.message ?? "product bought",
+          ToastAndroid.SHORT
+        );
+      } catch (err) {
+        console.error(err.response?.data);
+        ToastAndroid.show(
+          err?.response?.data?.message ?? "Insufficient Balance",
+          ToastAndroid.SHORT
+        );
+      }
+    } catch {
+      ToastAndroid.show("Some error occurred", ToastAndroid.SHORT);
+    } finally {
+      setLoading(false);
     }
   };
 
-
- 
   const data = {
-    labels:history.map((item)=>item.createdAt),
+    labels: [
+      "",
+      ...history.map((item) => new Date(item.createdAt).toLocaleDateString()),
+    ],
     datasets: [
       {
-        data:history.map((item)=>item.new_price),
+        data: [0, ...history.map((item) => item.new_price)],
         color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
-        strokeWidth: 2 // optional
-      }
+        strokeWidth: 2, // optional
+      },
     ],
   };
   const chartConfig = {
-    backgroundGradientFrom: "black",
-    backgroundGradientFromOpacity: 0.6,
+    backgroundGradientFrom: "#000",
+    backgroundGradientFromOpacity: 1,
     backgroundGradientTo: "blue",
     backgroundGradientToOpacity: 0.6,
     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-    strokeWidth: 2, // optional, default 3
+    strokeWidth: 2,
     barPercentage: 0.5,
     useShadowColorFromDataset: false, // optional
+    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
   };
   return (
     <>
       <LinearGradient
-        // Background Linear Gradient
         colors={["#36A7E6", "#073854"]}
         style={styles.background}
       />
-      <ScrollView style={{ flex: 1, padding: 20 }}>
-        <View style={{ borderColor: "black" }}>
-          <View style={{ padding: 10 ,marginLeft:35}}>
-          <View style={{ width: 110 }}>
-          {product.image?.url ? (
-            <Image
-              source={{
-                uri: product.image?.url,
-              }}
-              style={{
-                borderRadius: 10,
-                width: 300,
-                height: 300,
-              }}
-              alt="image"
-            />
-          ) : (
-            <Text>No Image</Text>
-          )}
-        </View>
+      <ScrollView style={{ flex: 1, padding: 20, marginBottom: 10 }}>
+        <View style={{ borderColor: "black", marginBottom: 10 }}>
+          <View style={{ padding: 10, alignItems: "center" }}>
+            {product.image?.url ? (
+              <Image
+                source={{
+                  uri: product.image?.url,
+                }}
+                style={{
+                  borderRadius: 10,
+                  width: 300,
+                  height: 300,
+                }}
+                alt="image"
+              />
+            ) : (
+              <Text>No Image</Text>
+            )}
           </View>
           <View
             style={{
               borderWidth: 2,
               borderRadius: 15,
-              // backgroundColor: "#36A7E6",
             }}
           >
             <LinearGradient
-              // Background Linear Gradient
               colors={["#36A7E6", "#073854"]}
               style={{ width: "100%", borderRadius: 15 }}
             >
@@ -237,10 +255,9 @@ const Product = ({ route }) => {
                   <TextInput
                     style={{
                       backgroundColor: "#fff",
-                      height: 40,
-                      width: 40,
                       borderRadius: 5,
                       padding: 10,
+                      paddingHorizontal: 30,
                     }}
                     placeholder="Qty"
                     value={qty}
@@ -249,8 +266,8 @@ const Product = ({ route }) => {
                   />
                   <TouchableOpacity
                     style={{
-                      height: 40,
-                      width: 100,
+                      paddingHorizontal: 30,
+                      paddingVertical: 10,
                       backgroundColor: "#78e08f",
                       borderRadius: 5,
                     }}
@@ -267,7 +284,14 @@ const Product = ({ route }) => {
             </LinearGradient>
           </View>
         </View>
-     
+        <LineChart
+          data={data}
+          width={screenWidth}
+          height={350}
+          chartConfig={chartConfig}
+          fromZero={true}
+          yAxisLabel="Rs "
+        />
       </ScrollView>
     </>
   );
