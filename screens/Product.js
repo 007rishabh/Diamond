@@ -13,16 +13,31 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { BarChart } from "react-native-chart-kit";
+import { BarChart ,LineChart} from "react-native-chart-kit";
 import { baseurl } from "../Constant";
 import axios from 'axios'
 const Product = ({ route }) => {
   const { product } = route.params;
   const [qty, setQty] = useState();
   const [loading, setLoading] = useState(false);
+  const [history, setHistory] = useState([]);
 
+  const screenWidth = Dimensions.get("window").width;
   console.info(product)
-
+  
+  useEffect(()=>{
+    const getHistory = async()=>{
+        try {
+          const result = await axios.get(`${baseurl}/diamond/price-history/${product.id}`)
+        
+          console.log(result.data,'Result');
+          setHistory(result.data)
+        } catch (error) {
+          console.error(error);
+        }
+    }
+    getHistory()
+  },[])
   const buyDiamonds = async () => {
     try{
       setLoading(true)
@@ -57,12 +72,15 @@ const Product = ({ route }) => {
   };
 
 
+ 
   const data = {
-    labels: [10, 11, 12, 13, 14, 15, 16],
+    labels:history.map((item)=>item.createdAt),
     datasets: [
       {
-        data: [900, 200, 350, 450, 800, 700],
-      },
+        data:history.map((item)=>item.new_price),
+        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+        strokeWidth: 2 // optional
+      }
     ],
   };
   const chartConfig = {
@@ -249,14 +267,12 @@ const Product = ({ route }) => {
             </LinearGradient>
           </View>
         </View>
-
-        <BarChart
-          data={data}
-          width={Dimensions.get("window").width - 50}
-          height={250}
-          chartConfig={chartConfig}
-          style={{ alignItems: "center", borderRadius: 10, padding: 10 }}
-        />
+        <LineChart
+        data={data}
+        width={screenWidth}
+        height={200}    
+        chartConfig={chartConfig}
+      />
       </ScrollView>
     </>
   );

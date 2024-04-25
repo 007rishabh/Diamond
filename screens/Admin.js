@@ -21,35 +21,7 @@ export default function Admin() {
         style={styles.background}
       />
       <View style={{ marginTop: 10, padding: 5, gap: 8 }}>
-        <TouchableOpacity
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            height: 40,
-            backgroundColor: "#dfe6e9",
-            borderRadius: 5,
-            marginLeft: 5,
-          }}
-        >
-          <FontAwesome5
-            name="user-alt"
-            size={24}
-            color="black"
-            style={{ marginLeft: 5, marginTop: 5 }}
-          />
-          <Text
-            style={{
-              marginLeft: 50,
-              marginTop: 5,
-              fontSize: 15,
-              fontWeight: "bold",
-            }}
-            onPress={() => navigation.navigate("Register")}
-          >
-            ADD User
-          </Text>
-        </TouchableOpacity>
-
+        
         <TouchableOpacity
           style={{
             display: "flex",
@@ -288,7 +260,7 @@ export default function Admin() {
           onPress={() => navigation.navigate("CarouselImages")}
         >
           <Ionicons
-            name="log-out"
+            name="imagea"
             size={24}
             color="black"
             style={{ marginLeft: 5, marginTop: 5 }}
