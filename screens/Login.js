@@ -14,8 +14,8 @@ import {
 import { baseurl } from "../Constant";
 import axios from "axios";
 const Login = ({ navigation }) => {
-  const [password, setPassword] = useState("admin");
-  const [email, setEmail] = useState("admin@gmail.com");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -100,7 +100,7 @@ const Login = ({ navigation }) => {
       </Text>
       <TouchableOpacity
         disabled={loading}
-        onPress={() => navigation.navigate("ForgetPassword")}
+        onPress={() => navigation.navigate("ForgetPassword", { email })}
       >
         <Text style={{ fontSize: 15, color: "red", textAlign: "center" }}>
           Forget Password
